@@ -63,20 +63,6 @@ class Product extends Component
         $data->delete();
     }
 
-    // public function delete($id)
-    // {
-    //     $data = InventoryModel::find($id);
-    //     $file = $data->picture;
-    //     $path = 'public/images/products/';
-
-    //     if ($file !== null && Storage::exists($path . $file)) {
-    //         Storage::delete($path . $file);
-    //     }
-
-    //     $data->delete();
-    //     $this->dispatch('toast', type: 'success', message: $data->name . ' deleted successfully.');
-    // }
-
     public function render()
     {
         return view('livewire.admin.product', [

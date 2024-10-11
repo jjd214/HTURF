@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="title">
-                <h4>All products</h4>
+                <h4>All Consignments</h4>
             </div>
             <nav aria-label="breadcrumb" role="navigation">
                 <ol class="breadcrumb">
@@ -14,7 +14,7 @@
                         <a href="{{ route('admin.home') }}">Home</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        All products
+                        All Consignments
                     </li>
                 </ol>
             </nav>
@@ -25,8 +25,17 @@
     </div>
 </div>
 
-<div class="card-box mb-20 pd-20">
+<div class="mb-20" >
+    <ul>
+        <li><small><span class="badge badge-success">Expiry date</span> : 30 Days to expired</small></li>
+        <li><small><span class="badge badge-warning">Expiry date</span> : 7 Days to expired</small> </li>
+        <li><small><span class="badge badge-danger">Expiry date</span> : Below 7 days to expired</small> </li>
+        <li><small><span class="badge badge-secondary">Expiry date</span> : Expired</small> </li>
+    </ul>
+</div>
 
+<div class="card-box mb-20 pd-20">
+    @livewire('admin.consign')
 </div>
 
 @endsection
