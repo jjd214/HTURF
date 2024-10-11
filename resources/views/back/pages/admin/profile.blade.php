@@ -66,7 +66,7 @@
                 position: 'top-end',
                 iconColor: 'green',
                 customClass: {
-                    popup: 'colored-toast bg-green-500', // Add bg-green-500 class for green background
+                    popup: 'colored-toast bg-green-500',
                 },
                 title: message,
                 showConfirmButton: false,

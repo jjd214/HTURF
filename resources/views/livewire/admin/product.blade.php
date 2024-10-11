@@ -77,15 +77,12 @@
                         <span class="badge {{ $item->visibility == 'public' ? 'badge-success' : 'badge-primary' }}">{{ $item->visibility }}</span>
                     </td>
                     <td>
-                        <div class="dropdown">
-                            <a class="btn btn-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        <div wire:ignore class="dropdown">
+                            <a class="btn btn-link dropdown-toggle" href="javascript:;" role="button" data-toggle="dropdown">
                                 <i class="dw dw-more"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#" wire:click.prevent="showEditForm({{ $item->id }})"><i class="dw dw-eye"></i> View</a>
-                                {{-- <a class="dropdown-item" href="#" wire:confirm='Are you sure you want to delete {{ $item->name }}?' wire:click.prevent="delete({{ $item->id }})" >
-                                    <i class="dw dw-delete-3"></i> Delete
-                                </a> --}}
                                 <a class="dropdown-item" href="javascript:;" wire:click.prevent="delete({{ $item->id }}, '{{ $item->name }}')">
                                     <i class="dw dw-delete-3"></i> Delete
                                 </a>

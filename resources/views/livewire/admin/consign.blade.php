@@ -93,12 +93,14 @@
 
                                 if ($diffInDays > 30) {
                                     $badgeClass = 'badge-info'; // Long-term
-                                } elseif ($diffInDays <= 30 && $diffInDays > 7) {
+                                } elseif ($diffInDays <= 30 && $diffInDays > 14) {
                                     $badgeClass = 'badge-warning'; // Near expiry
-                                } elseif ($diffInDays <= 7 && $diffInDays >= 0) {
+                                } elseif ($diffInDays <= 14 && $diffInDays > 7) {
                                     $badgeClass = 'badge-danger'; // Nearly expired
-                                } else {
+                                } elseif ($diffInDays >= 0) {
                                     $badgeClass = 'badge-secondary'; // Expired
+                                } else {
+
                                 }
                             @endphp
                             <span class="badge {{ $badgeClass }}">
@@ -113,8 +115,8 @@
                         <span class="badge {{ $item->visibility == 'public' ? 'badge-success' : 'badge-primary' }}">{{ $item->visibility }}</span>
                     </td>
                     <td>
-                        <div class="dropdown">
-                            <a class="btn btn-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        <div wire:ignore class="dropdown">
+                            <a class="btn btn-link dropdown-toggle" href="javascript:;" role="button" data-toggle="dropdown">
                                 <i class="dw dw-more"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">

@@ -63,6 +63,11 @@ class Consign extends Component
         $data->delete();
     }
 
+    public function showEditForm($id)
+    {
+        $this->dispatch('editForm', id: $id);
+    }
+
     public function render()
     {
         $query = InventoryModel::leftJoin('consignments', 'inventories.consignment_id', '=', 'consignments.id')

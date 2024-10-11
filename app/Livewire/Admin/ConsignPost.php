@@ -55,7 +55,6 @@ class ConsignPost extends Component
 
         $consignment = new Consignment();
         $consignment->commission_percentage = $validatedData['commission_percentage'];
-        $consignment->consignment_price = $validatedData['selling_price'];
         $consignment->start_date = $validatedData['start_date'];
         $consignment->expiry_date = $validatedData['expiry_date'];
 

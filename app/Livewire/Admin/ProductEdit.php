@@ -54,6 +54,7 @@ class ProductEdit extends Component
     public function hideForm()
     {
         $this->editForm = false;
+        $this->temporary_picture = null;
     }
 
     public function store()

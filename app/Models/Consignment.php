@@ -13,7 +13,6 @@ class Consignment extends Model
     protected $fillable = [
         'consignor_id',
         'commission_percentage',
-        'consignment_price',
         'start_date',
         'expiry_date'
     ];
