@@ -1,5 +1,5 @@
 @extends('back.layout.pages-layout')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Store products')
+@section('pageTitle', isset($pageTitle) ? $pageTitle : 'All consignments')
 @section('content')
 
 <div class="page-header">
@@ -39,3 +39,30 @@
 </div>
 
 @endsection
+@push('scripts')
+<script>
+    window.addEventListener('deleteConsign', event => {
+        var id = event.detail.id;
+        var name = event.detail.name;
+        Swal.fire({
+            title: "Are you sure you want to delete " + name + " ?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch('deleteConsignHandler', [id]);
+
+                Swal.fire(
+                    'Deleted!',
+                     name + ' has been deleted.',
+                    'success'
+                );
+            }
+        });
+    });
+</script>
+@endpush

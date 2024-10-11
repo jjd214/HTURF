@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\Consignment;
@@ -12,6 +13,8 @@ class Consign extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
+
+    protected $listeners = ['deleteConsignHandler'];
 
     #[Url()]
     public $per_page = 5;
@@ -40,6 +43,24 @@ class Consign extends Component
             $this->sortDir = 'ASC';
         }
         $this->sortDir = 'DESC';
+    }
+
+    public function delete($id, $name)
+    {
+        $this->dispatch('deleteConsign', id: $id, name: $name);
+    }
+
+    public function deleteConsignHandler($id)
+    {
+        $data = InventoryModel::where('consignment_id', $id)->first();
+        $file = $data->picture;
+        $path = 'public/images/consignments/';
+
+        if ($file !== null && Storage::exists($path . $file)) {
+            Storage::delete($path . $file);
+        }
+
+        $data->delete();
     }
 
     public function render()
