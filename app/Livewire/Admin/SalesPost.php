@@ -6,7 +6,11 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use Livewire\Attrbutes\Rule;
 use App\Models\Inventory as InventoryModel;
+use App\Models\Consignment;
+use App\Models\Transaction;
+use App\Models\TransactionItem;
 
 class SalesPost extends Component
 {
@@ -26,13 +30,71 @@ class SalesPost extends Component
     public $amountPay = 0;
     public $totalAmount = 0;
     public $change = 0;
+    public $customer_name;
+
+    protected $rules = ['customer_name' => 'required'];
 
     public function store()
     {
+        $this->validate();
         if ($this->amountPay < $this->totalAmount || $this->totalAmount == 0) {
             $this->dispatch('toast', type: 'error', message: 'Payment amount must be greater than or equal to the total amount.');
             return;
         }
+
+        $totalItems = 0;
+        $totalAmount = 0;
+        $totalTax = 0;
+        $code = $this->generateTransactionCode();
+
+        foreach ($this->cart as $productId => $cartItem) {
+            $product = InventoryModel::find($productId);
+            $totalItems += $cartItem['qty'];
+            $totalAmount += $cartItem['total'];
+
+            if ($product->consignment_id) {
+                $consignment = Consignment::find($product->consignment_id);
+                $commission = $consignment->commission_percentage;
+                $productTax = ($cartItem['total'] * $commission) / 100;
+                $totalTax += $productTax;
+            }
+
+            TransactionItem::create([
+                'code' => $code,
+                'inventory_id' => $productId,
+                'qty' => $cartItem['qty'],
+                'total' => $cartItem['total']
+            ]);
+
+            $product->qty -= $cartItem['qty'];
+            $product->save();
+        }
+
+        Transaction::create([
+            'transaction_code' => $code,
+            'quantity_sold' => $totalItems,
+            'total_amount' => $totalAmount,
+            'amount_paid' => $this->amountPay,
+            'amount_change' => $this->change,
+            'commission_amount' => $totalTax,
+            'status' => 'Completed',
+            'customer_name' => $this->customer_name
+        ]);
+
+        $this->dispatch('toast', type: 'success', message: 'Sales added successfully.');
+
+        $this->clearCart();
+        $this->amountPay = 0;
+        $this->change = 0;
+        $this->customer_name = "";
+    }
+
+    public function generateTransactionCode()
+    {
+        $prefix = 'TRANSID-';
+        $timestamp = now()->format('YmdHis');
+        $randomNumber = random_int(1000, 9999);
+        return $prefix . $timestamp . '-' . $randomNumber;
     }
 
     public function addToCart($productId)

@@ -9,12 +9,14 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $table = "transaction_items";
-
     protected $fillable = [
-        'code',
-        'inventory_id',
-        'qty',
-        'total'
+        'transaction_code',
+        'quantity_sold',
+        'total_amount',
+        'amount_paid',
+        'amount_change',
+        'commission_amount',
+        'status',
+        'customer_name'
     ];
 }

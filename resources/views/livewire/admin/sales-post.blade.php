@@ -144,6 +144,16 @@
                     </div>
                 </div>
 
+                <div class="row mt-2">
+                    <div class="col-4">
+                        <label for=""><small><b>Customer name:</b></small></label>
+                        <input type="text" class="form-control" wire:model="customer_name" placeholder="Enter customer name" required>
+                        @error('customer_name')
+                        <span class="text-danger"><small>{{ $message }}</small></span>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="row mt-2 pd-20">
                     <button class="btn btn-success mr-10" wire:click="store">Create sales</button>
                     <button class="btn btn-secondary" wire:click="clearCart">Clear Cart</button>
