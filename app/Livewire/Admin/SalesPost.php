@@ -42,51 +42,52 @@ class SalesPost extends Component
             return;
         }
 
-        $totalItems = 0;
-        $totalAmount = 0;
-        $totalTax = 0;
-        $code = $this->generateTransactionCode();
+        return redirect()->route('admin.sales.order-summary');
+        // $totalItems = 0;
+        // $totalAmount = 0;
+        // $totalTax = 0;
+        // $code = $this->generateTransactionCode();
 
-        foreach ($this->cart as $productId => $cartItem) {
-            $product = InventoryModel::find($productId);
-            $totalItems += $cartItem['qty'];
-            $totalAmount += $cartItem['total'];
+        // foreach ($this->cart as $productId => $cartItem) {
+        //     $product = InventoryModel::find($productId);
+        //     $totalItems += $cartItem['qty'];
+        //     $totalAmount += $cartItem['total'];
 
-            if ($product->consignment_id) {
-                $consignment = Consignment::find($product->consignment_id);
-                $commission = $consignment->commission_percentage;
-                $productTax = ($cartItem['total'] * $commission) / 100;
-                $totalTax += $productTax;
-            }
+        //     if ($product->consignment_id) {
+        //         $consignment = Consignment::find($product->consignment_id);
+        //         $commission = $consignment->commission_percentage;
+        //         $productTax = ($cartItem['total'] * $commission) / 100;
+        //         $totalTax += $productTax;
+        //     }
 
-            TransactionItem::create([
-                'code' => $code,
-                'inventory_id' => $productId,
-                'qty' => $cartItem['qty'],
-                'total' => $cartItem['total']
-            ]);
+        //     TransactionItem::create([
+        //         'code' => $code,
+        //         'inventory_id' => $productId,
+        //         'qty' => $cartItem['qty'],
+        //         'total' => $cartItem['total']
+        //     ]);
 
-            $product->qty -= $cartItem['qty'];
-            $product->save();
-        }
+        //     $product->qty -= $cartItem['qty'];
+        //     $product->save();
+        // }
 
-        Transaction::create([
-            'transaction_code' => $code,
-            'quantity_sold' => $totalItems,
-            'total_amount' => $totalAmount,
-            'amount_paid' => $this->amountPay,
-            'amount_change' => $this->change,
-            'commission_amount' => $totalTax,
-            'status' => 'Completed',
-            'customer_name' => $this->customer_name
-        ]);
+        // Transaction::create([
+        //     'transaction_code' => $code,
+        //     'quantity_sold' => $totalItems,
+        //     'total_amount' => $totalAmount,
+        //     'amount_paid' => $this->amountPay,
+        //     'amount_change' => $this->change,
+        //     'commission_amount' => $totalTax,
+        //     'status' => 'Completed',
+        //     'customer_name' => $this->customer_name
+        // ]);
 
-        $this->dispatch('toast', type: 'success', message: 'Sales added successfully.');
+        // $this->dispatch('toast', type: 'success', message: 'Sales added successfully.');
 
-        $this->clearCart();
-        $this->amountPay = 0;
-        $this->change = 0;
-        $this->customer_name = "";
+        // $this->clearCart();
+        // $this->amountPay = 0;
+        // $this->change = 0;
+        // $this->customer_name = "";
     }
 
     public function generateTransactionCode()
