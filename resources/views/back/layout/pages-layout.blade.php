@@ -407,6 +407,22 @@
 							</a>
 						</li>
                         <li class="dropdown">
+                            <a href="javascript:;" class="dropdown-toggle {{ Route::is('admin.sales.*') ? 'active' : '' }}">
+                                <span class="micon bi bi-cash-stack"></span><span class="mtext">Sales</span>
+                            </a>
+                            <ul class="submenu">
+                                <li>
+                                    <a href="{{ route('admin.sales.add-sales') }}" class="{{ Route::is('admin.sales.add-sales') ? 'active' : '' }}">Create sales
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.consignment.all-consign') }}" class="{{ Route::is('admin.consignment.all-consign') ? 'active' : '' }}">Transactions
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
                             <a href="javascript:;" class="dropdown-toggle {{ Route::is('admin.product.*') ? 'active' : '' }}">
                                 <span class="micon bi bi-cart2"></span><span class="mtext">Products</span>
                             </a>

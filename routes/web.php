@@ -35,6 +35,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/change-favicon', 'changeFavicon')->name('change-favicon');
         });
 
+        Route::prefix('sales')->name('sales.')->group(function () {
+            Route::view('/add', 'back.pages.admin.add-sales')->name('add-sales');
+        });
+
         Route::prefix('product')->name('product.')->group(function () {
             Route::view('/all', 'back.pages.admin.all-products')->name('all-products');
             Route::view('/add', 'back.pages.admin.add-product')->name('add-product');
