@@ -208,7 +208,8 @@ class SalesPost extends Component
             }
         })->when($this->genderFilter !== '', function ($query) {
             $query->where('sex', $this->genderFilter);
-        })->paginate($this->per_page);
+        })->where('visibility', 'public')
+            ->paginate($this->per_page);
 
         return view('livewire.admin.sales-post', [
             'rows' => $products

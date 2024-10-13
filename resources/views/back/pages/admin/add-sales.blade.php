@@ -1,5 +1,5 @@
 @extends('back.layout.pages-layout')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Add product')
+@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Create sales')
 @section('content')
 
 <div class="page-header">
