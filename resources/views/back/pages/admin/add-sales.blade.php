@@ -25,4 +25,6 @@
     </div>
 </div>
 
+@livewire('admin.sales-post')
+
 @endsection
