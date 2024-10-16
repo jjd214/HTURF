@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PointOfSalesController;
+use App\Livewire\Admin\SalesPost;
 
 Route::get('/', function () {
     return view('welcome');

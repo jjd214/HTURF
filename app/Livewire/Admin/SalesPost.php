@@ -34,7 +34,7 @@ class SalesPost extends Component
 
     protected $rules = ['customer_name' => 'required'];
 
-    public function store()
+    public function checkout()
     {
         $this->validate();
         if ($this->amountPay < $this->totalAmount || $this->totalAmount == 0) {
@@ -42,52 +42,60 @@ class SalesPost extends Component
             return;
         }
 
+        session()->put('order_summary', [
+            'customer_name' => $this->customer_name,
+            'total_amount' => $this->totalAmount,
+            'amount_pay' => $this->amountPay,
+            'change' => $this->change,
+            'cart' => $this->cart,
+            'invoice_number' => $this->generateInvoiceNumber(),
+            'commission' => $this->calculateCommission()
+        ]);
+
         return redirect()->route('admin.sales.order-summary');
-        // $totalItems = 0;
-        // $totalAmount = 0;
-        // $totalTax = 0;
-        // $code = $this->generateTransactionCode();
+    }
 
-        // foreach ($this->cart as $productId => $cartItem) {
-        //     $product = InventoryModel::find($productId);
-        //     $totalItems += $cartItem['qty'];
-        //     $totalAmount += $cartItem['total'];
+    public function store()
+    {
 
-        //     if ($product->consignment_id) {
-        //         $consignment = Consignment::find($product->consignment_id);
-        //         $commission = $consignment->commission_percentage;
-        //         $productTax = ($cartItem['total'] * $commission) / 100;
-        //         $totalTax += $productTax;
-        //     }
+        if (!session()->has('order_summary')) {
+            $this->dispatch('toast', type: 'error', message: 'No order summary found.');
+            return;
+        }
 
-        //     TransactionItem::create([
-        //         'code' => $code,
-        //         'inventory_id' => $productId,
-        //         'qty' => $cartItem['qty'],
-        //         'total' => $cartItem['total']
-        //     ]);
+        // Retrieve order summary from session
+        $orderSummary = session('order_summary');
 
-        //     $product->qty -= $cartItem['qty'];
-        //     $product->save();
-        // }
+        dd($orderSummary);
+    }
 
-        // Transaction::create([
-        //     'transaction_code' => $code,
-        //     'quantity_sold' => $totalItems,
-        //     'total_amount' => $totalAmount,
-        //     'amount_paid' => $this->amountPay,
-        //     'amount_change' => $this->change,
-        //     'commission_amount' => $totalTax,
-        //     'status' => 'Completed',
-        //     'customer_name' => $this->customer_name
-        // ]);
 
-        // $this->dispatch('toast', type: 'success', message: 'Sales added successfully.');
+    public function calculateCommission()
+    {
+        $totalCommission = 0;
 
-        // $this->clearCart();
-        // $this->amountPay = 0;
-        // $this->change = 0;
-        // $this->customer_name = "";
+        foreach ($this->cart as $productId => $cartItem) {
+            $product = InventoryModel::find($productId);
+
+            if ($product->consignment_id) {
+                $consignment = Consignment::find($product->consignment_id);
+                $commissionPercentage = $consignment->commission_percentage;
+
+                $productCommission = ($cartItem['total'] * $commissionPercentage) / 100;
+                $totalCommission += $productCommission;
+            }
+        }
+
+        return $totalCommission;
+    }
+
+
+    public function generateInvoiceNumber()
+    {
+        $prefix = 'INV-';
+        $date = now()->format('Ymd');
+        $randomNumber = random_int(1000, 9999);
+        return $prefix . $date . '-' . $randomNumber;
     }
 
     public function generateTransactionCode()

@@ -155,7 +155,7 @@
                 </div>
 
                 <div class="row mt-2 pd-20">
-                    <button class="btn btn-success mr-10" wire:click="store">Create sales</button>
+                    <button class="btn btn-success mr-10" wire:click="checkout">Proceed to checkout</button>
                     <button class="btn btn-secondary" wire:click="clearCart">Clear Cart</button>
                 </div>
             </div>
