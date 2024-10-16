@@ -3,7 +3,8 @@
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
-                iconColor: event.detail.type === 'success' ? 'green' : 'red',
+                iconColor: event.detail.type === 'success' ? 'green' :
+                            event.detail.type === 'error' ? 'red' : 'orange',
                 customClass: {
                     popup: 'colored-toast',
                 },

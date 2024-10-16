@@ -28,8 +28,20 @@ class OrderSummary extends Component
     public function store()
     {
         $orderSummary = session('order_summary');
+
+        if ($orderSummary === null) {
+            // $this->dispatch('toast', type: 'error', message: 'Something went wrong try again.');
+            // return;
+
+            session()->flash('toast', [
+                'type' => 'fail',
+                'message' => 'Something went wrong, please try again.'
+            ]);
+            return redirect()->route('admin.sales.add-sales');
+        }
         dd($orderSummary);
     }
+
     public function render()
     {
         return view('livewire.admin.order-summary');

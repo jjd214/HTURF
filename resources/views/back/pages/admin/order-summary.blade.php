@@ -5,6 +5,7 @@
     <script>window.location = "{{ route('admin.sales.add-sales') }}"</script>
 @endif
 
+
 <div class="page-header">
     <div class="row">
         <div class="col-md-6 col-sm-12">
@@ -35,8 +36,6 @@
 <script>
     window.addEventListener('beforeunload', event => {
         Livewire.dispatch('removeOrderSummary');
-        event.preventDefault();
-        event.returnValue = '';
     });
     function printInvoice() {
         // Create a new window

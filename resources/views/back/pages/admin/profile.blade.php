@@ -59,31 +59,49 @@
           buttonsColor:['#30bf7d','#ee5155', -15],
           processUrl:'{{ route("admin.change-profile-picture") }}',
           withCSRF:['_token','{{ csrf_token() }}'],
-          onSuccess:function(message, element, status){
+          onSuccess:function(message, element, status, type){
             Livewire.dispatch('updateAdminHeaderInfo');
-            Swal.fire({
+            const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
-                iconColor: 'green',
+                iconColor: 'white',
                 customClass: {
-                    popup: 'colored-toast bg-green-500',
+                    popup: 'colored-toast',
                 },
-                title: message,
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 1500,
                 timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Your profile picture has been successfully updated.'
             });
           },
-          onError:function(message, element, status){
-            Swal.fire({
+          onError:function(message, element, status, type){
+            const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
-                icon: 'error',
-                iconColor: 'red',
-                title: message,
+                iconColor: 'white',
+                customClass: {
+                    popup: 'colored-toast',
+                },
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 1500,
                 timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            Toast.fire({
+                icon: 'error',
+                title: 'Something went wrong on server side.'
             });
           }
        });

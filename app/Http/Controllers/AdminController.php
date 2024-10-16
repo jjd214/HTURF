@@ -238,9 +238,9 @@ class AdminController extends Controller
                 File::delete(public_path($path . $old_picture));
             }
             $admin->update(['picture' => $filename]);
-            return response()->json(['status' => 1, 'msg' => 'Your profile picture has been successfully updated.']);
+            return response()->json(['status' => 1]);
         } else {
-            return response()->json(['status' => 0, 'msg' => 'Something went wrong']);
+            return response()->json(['status' => 0]);
         }
     }
 
