@@ -416,6 +416,10 @@
                                     </a>
                                 </li>
                                 <li>
+                                    <a href="{{ route('admin.sales.invoice') }}" class="{{ Route::is('admin.sales.invoice') ? 'active' : '' }}">Invoice
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="{{ route('admin.consignment.all-consign') }}" class="{{ Route::is('admin.consignment.all-consign') ? 'active' : '' }}">Transactions
                                     </a>
                                 </li>
