@@ -49,6 +49,7 @@ class SalesPost extends Component
             'change' => $this->change,
             'cart' => $this->cart,
             'invoice_number' => $this->generateInvoiceNumber(),
+            'transaction_code' => $this->generateTransactionCode(),
             'commission' => $this->calculateCommission()
         ]);
 

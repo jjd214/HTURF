@@ -1,9 +1,9 @@
 <div>
     <div class="card-box pd-20 mb-20">
         <!-- Customer & Payment Details -->
-        <h3 class="text-center">HypeArchivePh</h3>
-        <p class="text-center"><small>hypearchiveph@gmail.com</small></p>
-        <p class="text-center"><small>09394331559</small></p>
+        <h3 class="text-center">{{  get_settings()->site_name }}</h3>
+        <p class="text-center"><small>{{ get_settings()->site_email }}</small></p>
+        <p class="text-center"><small>{{ get_settings()->site_phone }}</small></p>
 
         <div class="row">
             <div class="col-md-4">
@@ -43,22 +43,10 @@
                         <td colspan="4" class="text-right"><strong>Sub total: </strong></td>
                         <td>{{ '₱' . number_format(session('order_summary.total_amount')) }}</td>
                     </tr>
-                    <tr>
-                        <td colspan="4" class="text-right"><strong>Commission: </strong></td>
-                        <td>{{ '₱' . number_format(session('order_summary.commission')) }}</td>
-                    </tr>
-                    <tr>
+                    {{-- <tr>
                         <td colspan="4" class="text-right"><strong>Total: </strong></td>
                         <td>{{ '₱' . number_format(session('order_summary.total_amount') - session('order_summary.commission')) }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" class="text-right"><strong>Amount pay:</strong></td>
-                        <td>{{ '₱' . number_format(session('order_summary.amount_pay')) }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" class="text-right"><strong>Amount change:</strong></td>
-                        <td>{{ '₱' . number_format(session('order_summary.change')) }}</td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
 

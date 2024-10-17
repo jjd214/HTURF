@@ -1,7 +1,7 @@
 @extends('back.layout.pages-layout')
 @section('pageTitle', isset($pageTitle) ? $pageTitle : 'Create sales')
 @section('content')
-@if (session('toast'))
+@if (session('fail'))
     <script>
         const Toast = Swal.mixin({
             toast: true,
@@ -22,6 +22,30 @@
         Toast.fire({
             icon: 'error',
             title: 'Something went wrong please try again.'
+        });
+    </script>
+@endif
+@if (session('success'))
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Toast.fire({
+            icon: 'success',
+            title: 'Transaction complete.'
         });
     </script>
 @endif
