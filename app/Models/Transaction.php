@@ -19,4 +19,9 @@ class Transaction extends Model
         'status',
         'customer_name'
     ];
+
+    public function items()
+    {
+        return $this->hasMany(TransactionItem::class, 'code', 'transaction_code');
+    }
 }

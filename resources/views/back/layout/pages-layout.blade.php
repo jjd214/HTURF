@@ -416,7 +416,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.consignment.all-consign') }}" class="{{ Route::is('admin.consignment.all-consign') ? 'active' : '' }}">Transactions
+                                    <a href="{{ route('admin.sales.transactions') }}" class="{{ Route::is('admin.sales.transactions') ? 'active' : '' }}">Transactions
                                     </a>
                                 </li>
                             </ul>
