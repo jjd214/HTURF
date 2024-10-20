@@ -39,7 +39,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('sales')->name('sales.')->group(function () {
             Route::view('/add', 'back.pages.admin.add-sales')->name('add-sales');
             Route::view('/order-summary', 'back.pages.admin.order-summary')->name('order-summary');
-            Route::view('/invoice', 'back.pages.admin.invoice')->name('invoice');
         });
 
         Route::prefix('product')->name('product.')->group(function () {
