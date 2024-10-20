@@ -57,11 +57,11 @@
                             <li class="clearfix">
                                 <div class="invoice-sub">
                                     <p class="font-14 mb-5">
-                                        Transaction id:
-                                        <strong class="weight-600">123 456 789</strong>
+
+                                        <strong class="weight-600">{{ session('order_summary.transaction_code') }}</strong>
                                     </p>
                                     <p class="font-14 mb-5">
-                                        Order id: <strong class="weight-600">4556</strong>
+                                        Mode of payment: <strong class="weight-600">Cash</strong>
                                     </p>
                                 </div>
                                 <div class="invoice-rate font-20 weight-600">
