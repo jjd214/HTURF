@@ -49,10 +49,7 @@
                                 <i class="dw dw-more"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#" wire:click.prevent="showEditForm({{ $item->id }})"><i class="dw dw-eye"></i> View</a>
-                                <a class="dropdown-item" href="javascript:;" wire:click.prevent="delete({{ $item->id }}, '{{ $item->name }}')">
-                                    <i class="dw dw-delete-3"></i> Delete
-                                </a>
+                                <a class="dropdown-item" href="{{ route('admin.sales.transaction-details', ['transaction_code' => $item->transaction_code]) }}" ><i class="dw dw-eye"></i> View</a>
                             </div>
                         </div>
                     </td>

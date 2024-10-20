@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PointOfSalesController;
-use App\Livewire\Admin\SalesPost;
+use App\Http\Controllers\SalesController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,6 +40,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::view('/add', 'back.pages.admin.add-sales')->name('add-sales');
             Route::view('/order-summary', 'back.pages.admin.order-summary')->name('order-summary');
             Route::view('/transactions', 'back.pages.admin.all_transactions')->name('transactions');
+            Route::get('/transactions/{transaction_code}', [SalesController::class, 'show'])->name('transaction-details');
         });
 
         Route::prefix('product')->name('product.')->group(function () {
