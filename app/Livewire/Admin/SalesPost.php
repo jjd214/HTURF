@@ -17,22 +17,138 @@ class SalesPost extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    #[Url()]
-    public $per_page;
-    #[Url(history: true)]
-    public $search = '';
-    #[Url(history: true)]
-    public $filter = '';
-    #[Url(history: true)]
-    public $genderFilter = '';
+    public $rows;
     public $cart = [];
+    public $order_details = [];
     public $quantities = [];
-    public $amountPay = 0;
+    public $amountPay;
     public $totalAmount = 0;
     public $change = 0;
     public $customer_name;
 
     protected $rules = ['customer_name' => 'required'];
+
+    public function mount()
+    {
+        // Initialize product data or fetch from the database
+        $this->rows = InventoryModel::all()->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'sku' => $product->sku,
+                'qty' => $product->qty, // Available quantity
+                'selling_price' => $product->selling_price,
+                'picture' => $product->picture,
+            ];
+        });
+    }
+
+    public function addToCart($productId)
+    {
+        // Find product
+        $product = collect($this->rows)->firstWhere('id', $productId);
+
+        // Get the selected quantity from input or default to 1
+        $selectedQuantity = $this->quantities[$productId] ?? 1;
+
+        // Check if selected quantity exceeds available quantity
+        if ($selectedQuantity > $product['qty']) {
+            $this->dispatch('toast', type: 'error', message: 'Selected quantity exceeds available stock.');
+            return;
+        }
+
+        // Deduct selected quantity from available quantity
+        $this->rows = collect($this->rows)->map(function ($item) use ($productId, $selectedQuantity) {
+            if ($item['id'] == $productId) {
+                $item['qty'] -= $selectedQuantity; // Deduct selected quantity from available qty
+            }
+            return $item;
+        })->toArray();
+
+        // Check if the product is already in the cart
+        $existingCartItem = collect($this->cart)->firstWhere('id', $productId);
+
+        if ($existingCartItem) {
+            // If the product is already in the cart, update the quantity
+            $this->cart = collect($this->cart)->map(function ($item) use ($productId, $selectedQuantity) {
+                if ($item['id'] == $productId) {
+                    $item['quantity'] += $selectedQuantity;
+                }
+                return $item;
+            })->toArray();
+        } else {
+            // Add new item to cart
+            $this->cart[] = [
+                'id' => $productId,
+                'name' => $product['name'],
+                'sku' => $product['sku'],
+                'quantity' => $selectedQuantity,
+                'price' => $product['selling_price'],
+                'total' => $product['selling_price'] * $selectedQuantity,
+                'picture' => $product['picture']
+            ];
+        }
+
+        // Update total amount
+        $this->updateTotals();
+    }
+
+    public function removeFromCart($productId)
+    {
+        // Find the item in the cart
+        $cartItem = collect($this->cart)->firstWhere('id', $productId);
+
+        if ($cartItem) {
+            // Restore the removed quantity to the available stock
+            $this->rows = collect($this->rows)->map(function ($item) use ($productId, $cartItem) {
+                if ($item['id'] == $productId) {
+                    // Add back the quantity removed from the cart
+                    $item['qty'] += $cartItem['quantity'];
+                }
+                return $item;
+            })->toArray();
+
+            // Remove the item from the cart
+            $this->cart = collect($this->cart)->reject(function ($item) use ($productId) {
+                return $item['id'] == $productId;
+            })->toArray();
+
+            // Update the totals
+            $this->updateTotals();
+        }
+    }
+
+
+    public function updateTotals()
+    {
+        // Calculate the total amount
+        $this->totalAmount = collect($this->cart)->sum(function ($item) {
+            return $item['quantity'] * $item['price'];
+        });
+
+        // Calculate change
+        $this->change = $this->amountPay - $this->totalAmount;
+    }
+
+    public function clearCart()
+    {
+        // When the cart is cleared, reset the product quantities
+        $this->cart = [];
+        $this->totalAmount = 0;
+        $this->change = 0;
+
+        // Reset the available quantities in $rows (without fetching again)
+        $this->rows = InventoryModel::all()->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'sku' => $product->sku,
+                'qty' => $product->qty, // Reset available quantity
+                'selling_price' => $product->selling_price,
+                'picture' => $product->picture,
+            ];
+        })->toArray();
+    }
 
     public function checkout()
     {
@@ -42,61 +158,86 @@ class SalesPost extends Component
             return;
         }
 
-        session()->put('order_summary', [
+
+        $this->order_details = array(
             'customer_name' => $this->customer_name,
             'total_amount' => $this->totalAmount,
             'amount_pay' => $this->amountPay,
             'change' => $this->change,
-            'cart' => $this->cart,
-            'invoice_number' => $this->generateInvoiceNumber(),
             'transaction_code' => $this->generateTransactionCode(),
             'commission' => $this->calculateCommission()
-        ]);
+        );
 
-        return redirect()->route('admin.sales.order-summary');
-    }
+        // dd($this->order_details, $this->cart);
 
-    public function store()
-    {
+        $totalItems = 0;
+        $totalAmount = 0;
+        $totalTax = 0;
 
-        if (!session()->has('order_summary')) {
-            $this->dispatch('toast', type: 'error', message: 'No order summary found.');
-            return;
+        foreach ($this->cart as $cartItem) {
+            $productId = $cartItem['id'];
+            $product = InventoryModel::find($productId);
+
+            if ($product) {
+                $totalItems += $cartItem['quantity'];
+                $totalAmount += $cartItem['total'];
+
+                if ($product->consignment_id) {
+                    $consignment = Consignment::find($product->consignment_id);
+
+                    if ($consignment) {
+                        $commission = $consignment->commission_percentage;
+                        $productTax = ($cartItem['total'] * $commission) / 100;
+                        $totalTax += $productTax;
+                    }
+                }
+                TransactionItem::create([
+                    'code' => $this->order_details['transaction_code'],
+                    'inventory_id' => $productId,
+                    'qty' => $cartItem['quantity'],
+                    'total' => $cartItem['total']
+                ]);
+
+                $product->qty -= $cartItem['quantity'];
+                $product->save();
+            }
         }
 
-        // Retrieve order summary from session
-        $orderSummary = session('order_summary');
+        Transaction::create([
+            'transaction_code' => $this->order_details['transaction_code'],
+            'quantity_sold' => $totalItems,
+            'total_amount' => $totalAmount,
+            'amount_paid' => $this->order_details['amount_pay'],
+            'amount_change' => $this->order_details['change'],
+            'commission_amount' => $totalTax,
+            'status' => 'Completed',
+            'customer_name' => $this->order_details['customer_name']
+        ]);
 
-        dd($orderSummary);
+        $this->clearCart();
+        $this->dispatch('toast', type: 'success', message: 'Checkout successfull.');
     }
-
 
     public function calculateCommission()
     {
         $totalCommission = 0;
 
-        foreach ($this->cart as $productId => $cartItem) {
+        foreach ($this->cart as $cartItem) {
+            $productId = $cartItem['id'];
             $product = InventoryModel::find($productId);
 
-            if ($product->consignment_id) {
+            if ($product && $product->consignment_id) {
                 $consignment = Consignment::find($product->consignment_id);
-                $commissionPercentage = $consignment->commission_percentage;
+                if ($consignment) {
+                    $commissionPercentage = $consignment->commission_percentage;
 
-                $productCommission = ($cartItem['total'] * $commissionPercentage) / 100;
-                $totalCommission += $productCommission;
+                    $productCommission = ($cartItem['total'] * $commissionPercentage) / 100;
+                    $totalCommission += $productCommission;
+                }
             }
         }
 
         return $totalCommission;
-    }
-
-
-    public function generateInvoiceNumber()
-    {
-        $prefix = 'INV-';
-        $date = now()->format('Ymd');
-        $randomNumber = random_int(1000, 9999);
-        return $prefix . $date . '-' . $randomNumber;
     }
 
     public function generateTransactionCode()
@@ -107,122 +248,10 @@ class SalesPost extends Component
         return $prefix . $timestamp . '-' . $randomNumber;
     }
 
-    public function addToCart($productId)
-    {
-        $product = InventoryModel::find($productId);
-
-        if (!$product) {
-            $this->dispatch('toast', type: 'error', message: 'Product not found.');
-            return;
-        }
-
-        $selectedQty = $this->quantities[$productId] ?? 1;
-
-        if ($selectedQty > $product->qty) {
-            $this->dispatch('toast', type: 'error', message: 'Selected quantity exceeds available quantity.');
-            return;
-        }
-
-        // Deduct available quantity
-        $product->qty -= $selectedQty;
-        $product->save();
-
-        // Safeguard: Ensure SKU exists before adding to cart
-        $sku = $product->sku ?? 'N/A'; // Provide a fallback in case SKU is null
-
-        // Add to cart and calculate total
-        if (isset($this->cart[$productId])) {
-            $this->cart[$productId]['qty'] += $selectedQty;
-            $this->cart[$productId]['total'] = $this->cart[$productId]['qty'] * $this->cart[$productId]['price'];
-        } else {
-            $this->cart[$productId] = [
-                'sku' => $sku, // Safeguard for SKU
-                'name' => $product->name,
-                'price' => $product->selling_price,
-                'qty' => $selectedQty,
-                'total' => $product->selling_price * $selectedQty,
-                'picture' => $product->picture // Add product picture to cart
-            ];
-        }
-
-        // Save the updated cart to the session
-        session()->put('cart', $this->cart);
-
-        $this->updateTotals();
-    }
-
-    public function removeFromCart($productId)
-    {
-        $product = InventoryModel::find($productId);
-        $cartItem = $this->cart[$productId];
-
-        // Restore available quantity
-        $product->qty += $cartItem['qty'];
-        $product->save();
-
-        // Remove from cart
-        unset($this->cart[$productId]);
-
-        // Update the session
-        session()->put('cart', $this->cart);
-
-        $this->updateTotals();
-    }
-
-    public function clearCart()
-    {
-        // Restore quantities of all products in the cart
-        foreach ($this->cart as $productId => $cartItem) {
-            $product = InventoryModel::find($productId);
-            if ($product) {
-                // Restore the available quantity
-                $product->qty += $cartItem['qty'];
-                $product->save();
-            }
-        }
-
-        // Clear the cart
-        $this->cart = [];
-        session()->forget('cart');
-        $this->updateTotals();
-    }
-
-    public function updateTotals()
-    {
-        $this->totalAmount = array_sum(array_column($this->cart, 'total'));
-
-        if ($this->amountPay > 0) {
-            $this->change = $this->amountPay - $this->totalAmount;
-        } else {
-            $this->change = 0;
-        }
-    }
-
-    public function mount()
-    {
-        // Retrieve cart from session if available
-        $this->cart = session()->get('cart', []);
-        $this->updateTotals();
-    }
-
     public function render()
     {
-        $products = InventoryModel::when($this->search, function ($query) {
-            $query->where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('sku', $this->search);
-        })->when($this->filter !== '', function ($query) {
-            if ($this->filter == '0') {
-                $query->where('consignment_id', '!=', null);
-            } elseif ($this->filter == '1') {
-                $query->where('consignment_id', '=', null);
-            }
-        })->when($this->genderFilter !== '', function ($query) {
-            $query->where('sex', $this->genderFilter);
-        })->where('visibility', 'public')
-            ->paginate($this->per_page);
-
         return view('livewire.admin.sales-post', [
-            'rows' => $products
+            'rows' => $this->rows,
         ]);
     }
 }

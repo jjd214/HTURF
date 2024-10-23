@@ -41,20 +41,26 @@
                     @forelse ($rows as $item)
                     <tr>
                         <td>
-                            @if ($item->picture == null)
+                            @if ($item['picture'] == null)
                                 <img src="{{ asset('storage/images/default-img.png') }}" width="70" style="height: 70px !important;" height="70" alt="Default Image" class="img-thumbnail">
-                            @elseif (Storage::exists('public/images/products/' . $item->picture))
-                                <img src="{{ asset('storage/images/products/' . $item->picture) }}" width="70" style="height: 70px !important;" alt="{{ $item->name }}" class="img-thumbnail">
-                            @elseif (Storage::exists('public/images/consignments/' . $item->picture))
-                                <img src="{{ asset('storage/images/consignments/' . $item->picture) }}" width="70" style="height: 70px !important;" alt="{{ $item->name }}" class="img-thumbnail">
+                            @elseif (Storage::exists('public/images/products/' . $item['picture']))
+                                <img src="{{ asset('storage/images/products/' . $item['picture']) }}" width="70" style="height: 70px !important;" alt="{{ $item['picture'] }}" class="img-thumbnail">
+                            @elseif (Storage::exists('public/images/consignments/' . $item['picture']))
+                                <img src="{{ asset('storage/images/consignments/' . $item['picture']) }}" width="70" style="height: 70px !important;" alt="{{ $item['picture'] }}" class="img-thumbnail">
                             @endif
                         </td>
-                        <td>{{ $item->sku }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>₱ {{ number_format($item->selling_price, 0) }}</td>
-                        <td>{{ $item->qty }}</td>
-                        <td><input type="number" class="form-control" wire:model.defer="quantities.{{ $item->id }}" value="1"></td>
-                        <td><button class="btn btn-success btn-block" wire:click="addToCart({{ $item->id }})"><i class="bi bi-cart-plus"></i></button></td>
+                        <td>{{ $item['sku'] }}</td>
+                        <td>{{ $item['name'] }}</td>
+                        <td>₱ {{ number_format($item['selling_price'], 0) }}</td>
+                        <td>{{ $item['qty'] }}</td>
+                        <td>
+                            <input type="number" class="form-control" wire:model.defer="quantities.{{ $item['id'] }}" value="1" min="1" max="{{ $item['qty'] }}">
+                        </td>
+                        <td>
+                            <button class="btn btn-success btn-block" wire:click="addToCart({{ $item['id'] }})">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
+                        </td>
                     </tr>
                     @empty
                     <tr>
@@ -62,6 +68,8 @@
                     </tr>
                     @endforelse
                 </tbody>
+
+
             </table>
 
             <div class="row">
@@ -74,7 +82,7 @@
                         <option value="20">20</option>
                     </select>
                 </div>
-                <div class="col-sm-12 col-md-9"> {{ $rows->links() }}</div>
+                {{-- <div class="col-sm-12 col-md-9"> {{ $rows->links() }}</div> --}}
             </div>
         </div>
     </div>
@@ -94,37 +102,34 @@
                         <th style="width: 5%;">Action</th>
                     </tr>
                 </thead>
+                <!-- Cart Table -->
                 <tbody>
-                @forelse($cart as $productId => $cartItem)
-                <tr>
-                    <td>
-                        @if (isset($cartItem['picture']))
-                            @if (Storage::exists('public/images/products/' . $cartItem['picture']))
-                                <img src="{{ asset('storage/images/products/' . $cartItem['picture']) }}" width="70" height="70" alt="{{ $cartItem['name'] }}" class="img-thumbnail">
-                            @elseif (Storage::exists('public/images/consignments/' . $cartItem['picture']))
-                                <img src="{{ asset('storage/images/consignments/' . $cartItem['picture']) }}" width="70" height="70" alt="{{ $cartItem['name'] }}" class="img-thumbnail">
-                            @else
-                                <img src="{{ asset('storage/images/default-img.png') }}" width="70" height="70" alt="Default Image">
+                    @forelse ($cart as $item)
+                    <tr>
+                        <td>
+                            @if ($item['picture'] == null)
+                                <img src="{{ asset('storage/images/default-img.png') }}" width="70" style="height: 70px !important;" height="70" alt="Default Image" class="img-thumbnail">
+                            @elseif (Storage::exists('public/images/products/' . $item['picture']))
+                                <img src="{{ asset('storage/images/products/' . $item['picture']) }}" width="70" style="height: 70px !important;" alt="{{ $item['picture'] }}" class="img-thumbnail">
+                            @elseif (Storage::exists('public/images/consignments/' . $item['picture']))
+                                <img src="{{ asset('storage/images/consignments/' . $item['picture']) }}" width="70" style="height: 70px !important;" alt="{{ $item['picture'] }}" class="img-thumbnail">
                             @endif
-                        @else
-                            <img src="{{ asset('storage/images/default-img.png') }}" width="70" height="70" alt="Default Image" class="img-thumbnail">
-                        @endif
-                    </td>
-                    <td>{{ $cartItem['sku'] ?? 'N/A' }}</td>
-                    <td>{{ $cartItem['name'] }}</td>
-                    <td>{{ $cartItem['qty'] }}</td>
-                    <td>₱ {{ number_format($cartItem['total'], 0) }}</td>
-                    <td>
-                        <button class="btn btn-danger btn-block" wire:click="removeFromCart({{ $productId }})">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="7" class="text-center py-4">Your cart is empty.</td>
-                </tr>
-                @endforelse
+                        </td>
+                        <td>{{ $item['sku'] }}</td>
+                        <td>{{ $item['name'] }}</td>
+                        <td>{{ $item['quantity'] }}</td>
+                        <td>₱ {{ number_format($item['quantity'] * $item['price'], 0) }}</td>
+                        <td>
+                            <button class="btn btn-danger btn-block" wire:click="removeFromCart({{ $item['id'] }})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="text-center py-4">Cart is empty.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
 
