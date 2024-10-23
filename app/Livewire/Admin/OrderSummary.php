@@ -16,7 +16,7 @@ class OrderSummary extends Component
 
     public function mount()
     {
-        if (!session()->has('order_summary')) {
+        if (!session()->has('order_details')) {
             return redirect()->route('admin.sales.add-sales');
         }
 

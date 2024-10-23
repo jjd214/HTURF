@@ -20,6 +20,7 @@ class SalesPost extends Component
     public $rows;
     public $cart = [];
     public $order_details = [];
+    public $order_summary = [];
     public $quantities = [];
     public $amountPay;
     public $totalAmount = 0;
@@ -214,8 +215,15 @@ class SalesPost extends Component
             'customer_name' => $this->order_details['customer_name']
         ]);
 
+
+        // $this->dispatch('toast', type: 'success', message: 'Checkout successfull.');
+
+        session()->put('cart', $this->cart);
+        session()->put('order_summary', $this->order_details);
+
+        return redirect()->route('admin.sales.order-summary');
+
         $this->clearCart();
-        $this->dispatch('toast', type: 'success', message: 'Checkout successfull.');
     }
 
     public function calculateCommission()
