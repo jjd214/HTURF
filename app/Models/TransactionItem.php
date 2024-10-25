@@ -13,6 +13,7 @@ class TransactionItem extends Model
         'code',
         'inventory_id',
         'qty',
-        'total'
+        'total',
+        'status'
     ];
 }

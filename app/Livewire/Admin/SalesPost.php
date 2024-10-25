@@ -40,6 +40,7 @@ class SalesPost extends Component
                 'qty' => $product->qty, // Available quantity
                 'selling_price' => $product->selling_price,
                 'picture' => $product->picture,
+                
             ];
         });
     }
@@ -196,7 +197,8 @@ class SalesPost extends Component
                     'code' => $this->order_details['transaction_code'],
                     'inventory_id' => $productId,
                     'qty' => $cartItem['quantity'],
-                    'total' => $cartItem['total']
+                    'total' => $cartItem['total'],
+                    'status' => 'Paid'
                 ]);
 
                 $product->qty -= $cartItem['quantity'];
