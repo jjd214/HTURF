@@ -50,6 +50,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="{{ route('admin.sales.transaction-details', ['transaction_code' => $item->transaction_code]) }}" ><i class="dw dw-eye"></i> View</a>
+                                <a class="dropdown-item" href="{{ route('admin.sales.transaction-details', ['transaction_code' => $item->transaction_code]) }}" ><i class="dw dw-money"></i> Refund</a>
                             </div>
                         </div>
                     </td>

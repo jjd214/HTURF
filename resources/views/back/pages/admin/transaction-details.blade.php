@@ -32,7 +32,7 @@
                 <div class="invoice-sub">Item</div>
                 <div class="invoice-rate">Price</div>
                 <div class="invoice-hours">Quantity</div>
-                <div class="invoice-subtotal"></div>
+                <div class="invoice-subtotal">Total</div>
             </div>
             <div class="invoice-desc-body">
                 <ul>
@@ -49,7 +49,7 @@
                     <div class="invoice-rate">{{ number_format($item['selling_price']) }}</div>
                     <div class="invoice-hours">{{ $item['qty'] }}</div>
                     <div class="invoice-subtotal">
-                        <span class="weight-600"><button class="btn btn-sm btn-danger">Refund</button></span>
+                        <span class="weight-600">{{ number_format($item['selling_price'] * $item['qty']) }}</span>
                     </div>
                 </li>
                 @endforeach
