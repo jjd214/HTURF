@@ -141,7 +141,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for=""><b>Consignor account: </b></label>
-                                <input type="text" wire:model.defer.defer="consignor_account" class="form-control" placeholder="Consignor name" readonly>
+                                <input type="text" wire:model.defer="consignor_account" class="form-control" placeholder="Consignor name" readonly>
                             </div>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for=""><b>Full name:</b></label>
-                                <input type="text" wire:model.defer.defer="consignor_name" class="form-control" placeholder="Consignor name" readonly>
+                                <input type="text" wire:model.defer="consignor_name" class="form-control" placeholder="Consignor name" readonly>
                                 @error('consignor_name') <span class="text-danger"><small>{{ $message }}</small></span> @enderror
                             </div>
                         </div>

@@ -24,62 +24,6 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 mb-30">
-        <div class="pd-20 card-box height-100-p">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for=""><b>Item</b></label>
-                        <select name="" id="" class="custom-select form-control">
-                            <option value="">Product 1</option>
-                            <option value="">Product 2</option>
-                            <option value="">Product 3</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for=""><b>Quantity</b></label>
-                        <input type="number" class="form-control">
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for=""><b>Reason for refund</b></label>
-                        <textarea name="" id="" class="form-control"></textarea>
-                    </div>
-                </div>
+@livewire('admin.create-refund', ['transaction_code' => $transaction_code])
 
-            </div>
-            <button class="btn btn-primary">Confirm</button>
-        </div>
-    </div>
-    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 mb-30">
-        <div class="card-box height-100-p overflow-hidden pd-20">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Item</th>
-                        <th>Size</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Samba OG</td>
-                        <td>47</td>
-                        <td>2</td>
-                        <td>9000</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <button class="btn btn-success">Refund</button>
-        </div>
-    </div>
-</div>
 @endsection

@@ -36,11 +36,12 @@ class SalesPost extends Component
             return [
                 'id' => $product->id,
                 'name' => $product->name,
+                'size' => $product->size,
                 'sku' => $product->sku,
                 'qty' => $product->qty, // Available quantity
                 'selling_price' => $product->selling_price,
                 'picture' => $product->picture,
-                
+
             ];
         });
     }
@@ -83,6 +84,7 @@ class SalesPost extends Component
             $this->cart[] = [
                 'id' => $productId,
                 'name' => $product['name'],
+                'size' => $product['size'],
                 'sku' => $product['sku'],
                 'quantity' => $selectedQuantity,
                 'price' => $product['selling_price'],
@@ -144,6 +146,7 @@ class SalesPost extends Component
             return [
                 'id' => $product->id,
                 'name' => $product->name,
+                'size' => $product->size,
                 'sku' => $product->sku,
                 'qty' => $product->qty, // Reset available quantity
                 'selling_price' => $product->selling_price,
@@ -222,6 +225,7 @@ class SalesPost extends Component
 
         session()->put('cart', $this->cart);
         session()->put('order_summary', $this->order_details);
+        session()->flash('success');
 
         return redirect()->route('admin.sales.order-summary');
 

@@ -31,6 +31,7 @@
                         <th style="width: 10%">Item</th>
                         <th style="width: 10%;">Style code</th>
                         <th style="width: 15%;">Name</th>
+                        <th style="width: 7%;">Size</th>
                         <th style="width: 10%;">Price</th>
                         <th style="width: 10%;">Available Qty</th>
                         <th style="width: 10%;">Selected Qty</th>
@@ -51,6 +52,7 @@
                         </td>
                         <td>{{ $item['sku'] }}</td>
                         <td>{{ $item['name'] }}</td>
+                        <td>{{ $item['size'] }}</td>
                         <td>₱ {{ number_format($item['selling_price'], 0) }}</td>
                         <td>{{ $item['qty'] }}</td>
                         <td>
@@ -97,6 +99,7 @@
                         <th style="width: 10%">Item</th>
                         <th style="width: 10%;">Style code</th>
                         <th style="width: 20%;">Name</th>
+                        <th style="width: 10%;">Size</th>
                         <th style="width: 10%;">Quantity</th>
                         <th style="width: 10%;">Price</th>
                         <th style="width: 5%;">Action</th>
@@ -117,6 +120,7 @@
                         </td>
                         <td>{{ $item['sku'] }}</td>
                         <td>{{ $item['name'] }}</td>
+                        <td>{{ $item['size'] }}</td>
                         <td>{{ $item['quantity'] }}</td>
                         <td>₱ {{ number_format($item['quantity'] * $item['price'], 0) }}</td>
                         <td>

@@ -32,6 +32,23 @@ class SalesController extends Controller
             ->where('transaction_items.code', $transaction_code)
             ->get();
 
-        return view('back.pages.admin.add-refund', ['rows' => $rows]);
+        $customer_name = $transactionItems['customer_name'];
+
+        return view(
+            'back.pages.admin.add-refund',
+            [
+                'rows' => $rows,
+                'customer_name' => $customer_name,
+                'transaction_code' => $transaction_code
+            ]
+        );
+    }
+
+    public function getItemQuantity($item_id)
+    {
+        $transactionItem = TransactionItem::where('inventory_id', $item_id);
+        $quantity = $transactionItem->qty;
+
+        return $quantity;
     }
 }

@@ -7,6 +7,31 @@
     $orderDetails = session('order_summary', []);
 @endphp
 
+@if (session('success'))
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Toast.fire({
+            icon: 'success',
+            title: 'Transaction complete.'
+        });
+    </script>
+@endif
+
 <div class="page-header">
     <div class="row">
         <div class="col-md-6 col-sm-12">
