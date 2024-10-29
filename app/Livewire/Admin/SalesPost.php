@@ -212,7 +212,7 @@ class SalesPost extends Component
         Transaction::create([
             'transaction_code' => $this->order_details['transaction_code'],
             'quantity_sold' => $totalItems,
-            'total_amount' => $totalAmount,
+            'total_amount' => $this->order_details['total_amount'],
             'amount_paid' => $this->order_details['amount_pay'],
             'amount_change' => $this->order_details['change'],
             'commission_amount' => $totalTax,

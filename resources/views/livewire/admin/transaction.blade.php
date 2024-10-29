@@ -34,7 +34,14 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $total = 0;
+                @endphp
                 @forelse ($rows as $item)
+                @php
+                    $itemTotal = $item->selling_price * $item->qty;
+                    $total += $itemTotal;
+                @endphp
                 <tr>
                     <td><small><b>{{ $item->transaction_code }}</b></small></td>
                     <td><span class="badge {{ $item->status == 'Completed' ? 'badge-success' : 'badge-danger' }}">{{ $item->status }}</span></td>
