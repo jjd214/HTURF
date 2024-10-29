@@ -419,6 +419,10 @@
                                     <a href="{{ route('admin.sales.transactions') }}" class="{{ Route::is('admin.sales.transactions') ? 'active' : '' }}">Transactions
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{ route('admin.sales.all-refunds') }}" class="{{ Route::is('admin.sales.all-refunds') ? 'active' : '' }}">Refunds
+                                    </a>
+                                </li>
                             </ul>
                         </li>
 

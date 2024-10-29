@@ -42,6 +42,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::view('/transactions', 'back.pages.admin.all_transactions')->name('transactions');
             Route::get('/transactions/{transaction_code}', [SalesController::class, 'show'])->name('transaction-details');
             Route::get('/refund/{transaction_code}', [SalesController::class, 'refund'])->name('refund');
+            Route::view('/refunds', 'back.pages.admin.all-refunds')->name('all-refunds');
         });
 
         Route::prefix('product')->name('product.')->group(function () {
