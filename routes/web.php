@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\SalesController;
-
+use App\Http\Controllers\RefundController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,10 +39,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('sales')->name('sales.')->group(function () {
             Route::view('/add', 'back.pages.admin.add-sales')->name('add-sales');
             Route::view('/order-summary', 'back.pages.admin.order-summary')->name('order-summary');
-            Route::view('/transactions', 'back.pages.admin.all_transactions')->name('transactions');
-            Route::get('/transactions/{transaction_code}', [SalesController::class, 'show'])->name('transaction-details');
-            Route::get('/refund/{transaction_code}', [SalesController::class, 'refund'])->name('refund');
-            Route::view('/refunds', 'back.pages.admin.all-refunds')->name('all-refunds');
+
+            Route::controller(TransactionController::class)->group(function () {
+                Route::get('/transactions', 'index')->name('all-transactions');
+                Route::get('/transactions/{transaction_code}', 'show')->name('transaction-details');
+            });
+
+            Route::controller(RefundController::class)->group(function () {
+                Route::get('/refunds', 'index')->name('all-refunds');
+                Route::get('/refund/{transaction_code}', 'show')->name('refund');
+            });
         });
 
         Route::prefix('product')->name('product.')->group(function () {
