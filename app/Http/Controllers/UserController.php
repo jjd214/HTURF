@@ -162,4 +162,12 @@ class UserController extends Controller
         Auth::guard('user')->logout();
         return redirect()->route('consignor.login')->with('fail', 'You are logged out!');
     }
+
+    public function forgotPassword(Request $request)
+    {
+        $data = [
+            'pageTitle' => 'Forgot password'
+        ];
+        return view('back.pages.user.auth.forgot', $data);
+    }
 }

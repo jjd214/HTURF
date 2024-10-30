@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RefundController;
 use App\Http\Controllers\TransactionController;
 
@@ -60,6 +61,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::view('/all', 'back.pages.admin.all-consign')->name('all-consign');
             Route::view('/add', 'back.pages.admin.add-consign')->name('add-consign');
         });
+
+        Route::prefix('payment')->name('payment.')->group(function () {
+            Route::controller(PaymentController::class)->group(function () {
+                Route::get('/all', 'index')->name('all-payments');
+            });
+        });
     });
 });
 
@@ -72,6 +79,9 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
             Route::post('/create', 'createConsignor')->name('create');
             Route::get('/account/verify/{token}', 'verifyAccount')->name('verify');
             Route::get('/register-success', 'registerSuccess')->name('register-success');
+            Route::get('/forgot-password', 'forgotPassword')->name('forgot-password');
+            Route::post('/send-password-reset-link', 'sendPasswordResetLink')->name('send-password-reset-link');
+            Route::get('/password/reset/{token}', 'showResetForm')->name('reset-password');
         });
     });
 

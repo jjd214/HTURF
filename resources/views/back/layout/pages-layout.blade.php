@@ -445,6 +445,12 @@
                                 {{-- <li><a  href="{{ route('admin.consignment.payments') }}" class="{{ Route::is('admin.consignment.payments') ? 'active' : '' }} " >Payments</a></li> --}}
 							</ul>
 						</li>
+                        <li>
+							<a  href="{{ route('admin.payment.all-payments') }}" class="dropdown-toggle no-arrow {{ Route::is('admin.payment.all-payments') ? 'active' : '' }}">
+								<span class="micon bi bi-cash-coin"></span
+								><span class="mtext">Payments</span>
+							</a>
+						</li>
                         {{-- <li>
 							<a href="invoice.html" class="dropdown-toggle no-arrow">
 								<span class="micon bi bi-credit-card"></span
@@ -453,8 +459,8 @@
 						</li> --}}
 						<li>
 							<a href="invoice.html" class="dropdown-toggle no-arrow">
-								<span class="micon bi bi-chat-dots"></span
-								><span class="mtext">Messages</span>
+								<span class="micon bi bi-chat-right-dots"></span
+								><span class="mtext">Chat</span>
 							</a>
 						</li>
 						<li>
