@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\Refund as RefundModel;
+use App\Models\Inventory;
 
 class Refund extends Component
 {
@@ -27,23 +28,31 @@ class Refund extends Component
 
     public function selectRefund($refundId)
     {
-        // Fetch the selected refund with inventory details
         $this->selectedRefund = RefundModel::with('inventory')->findOrFail($refundId);
-        $this->selectedInventory = $this->selectedRefund->inventory; // Assuming 'inventory' is the relationship name
+        $this->selectedInventory = $this->selectedRefund->inventory;
     }
 
+    public function restock()
+    {
+        if ($this->selectedRefund) {
+            $inventory = Inventory::find($this->selectedInventory->id);
+            $inventory->qty += $this->selectedRefund->quantity;
+            $inventory->save();
+
+            $this->selectedRefund->status = 'Restocked';
+            $this->selectedRefund->save();
+
+            $this->dispatch('toast', type: 'success', message: 'Quantity has been successfully added back to inventory.');
+        }
+    }
 
     public function render()
     {
-        $rows = RefundModel::search($this->search)
-            ->filterStatus($this->status)
-            ->leftJoin('inventories', 'refunds.inventory_id', '=', 'inventories.id') // Perform left join
-            ->select('refunds.*', 'inventories.name AS inventory_name', 'inventories.brand AS inventory_brand', 'inventories.size AS inventory_size', 'inventories.color AS inventory_color') // Select refund and inventory details
-            ->orderBy('refunds.id', 'asc')
-            ->paginate($this->per_page);
-
         return view('livewire.admin.refund', [
-            'rows' => $rows,
+            'rows' => RefundModel::search($this->search)
+                ->filterStatus($this->status)
+                ->orderBy('id', 'desc')
+                ->paginate($this->per_page),
         ]);
     }
 }

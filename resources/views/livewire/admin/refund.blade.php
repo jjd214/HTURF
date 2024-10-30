@@ -94,10 +94,10 @@
                             <div class="col-md-6 mb-3">
                                 <strong><i class="fa fa-cube mr-2 text-primary"></i>Item Details:</strong>
                                 @if($selectedInventory)
-                                    <p class="ml-4"><small><b>Item:</b> {{ $selectedInventory->name }}</small></p>
-                                    <p class="ml-4"><small><b>Brand:</b> {{ $selectedInventory->brand }}</small></p>
-                                    <p class="ml-4"><small><b>Size:</b> {{ $selectedInventory->size }}</small></p>
-                                    <p class="ml-4"><small><b>Color:</b> {{ $selectedInventory->color }}</small></p>
+                                    <p class="ml-4 text-muted"><small><b>Item:</b> {{ $selectedInventory->name }}</small></p>
+                                    <p class="ml-4 text-muted"><small><b>Brand:</b> {{ $selectedInventory->brand }}</small></p>
+                                    <p class="ml-4 text-muted"><small><b>Size:</b> {{ $selectedInventory->size }}</small></p>
+                                    <p class="ml-4 text-muted"><small><b>Color:</b> {{ $selectedInventory->color }}</small></p>
                                 @else
                                     <p class="text-muted">No item details available.</p>
                                 @endif
@@ -125,6 +125,9 @@
                 </div>
 
                 <div class="modal-footer">
+                    @if ($selectedRefund && $selectedRefund->status === 'Refunded')
+                    <button class="btn btn-success" wire:click.prevent="restock">Restock</button>
+                    @endif
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
