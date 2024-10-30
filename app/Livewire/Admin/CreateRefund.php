@@ -126,6 +126,7 @@ class CreateRefund extends Component
                 'inventory_id' => $item['item_id'],
                 'size' => $item['size'],
                 'quantity' => $item['quantity'],
+                'total_price' => $item['price'] * $item['quantity'],
                 'reason_for_refund' => $this->reasonForRefund,
                 'customer_name' => $item['customer_name'],
                 'status' => 'Refunded',

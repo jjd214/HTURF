@@ -23,4 +23,8 @@
         </div>
     </div>
 </div>
+
+<div class="card-box mb-20 pd-20">
+    @livewire('admin.refund')
+</div>
 @endsection
