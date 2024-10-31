@@ -1,12 +1,12 @@
 @extends('back.layout.pages-layout')
-@section('pageTitle', isset($pageTitle) ? $pageTitle : 'All payments')
+@section('pageTitle', isset($pageTitle) ? $pageTitle : 'Payment details')
 @section('content')
 
 <div class="page-header">
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="title">
-                <h4>All payments</h4>
+                <h4>Payment details</h4>
             </div>
             <nav aria-label="breadcrumb" role="navigation">
                 <ol class="breadcrumb">
@@ -14,16 +14,15 @@
                         <a href="{{ route('admin.home') }}">Home</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        All payments
+                        Payment details
                     </li>
                 </ol>
             </nav>
         </div>
+        <div class="col-md-6 col-sm-12 text-right">
+           <a href="{{ route('admin.payment.all-payments') }}" class="btn btn-primary">Back</a>
+        </div>
     </div>
-</div>
-
-<div class="card-box pd-20 mb-20">
-    @livewire('admin.payments')
 </div>
 
 @endsection
