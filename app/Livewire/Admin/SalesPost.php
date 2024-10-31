@@ -11,6 +11,9 @@ use App\Models\Inventory as InventoryModel;
 use App\Models\Consignment;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
+use App\Models\Payment;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class SalesPost extends Component
 {
@@ -158,11 +161,11 @@ class SalesPost extends Component
     public function checkout()
     {
         $this->validate();
+
         if ($this->amountPay < $this->totalAmount || $this->totalAmount == 0) {
             $this->dispatch('toast', type: 'error', message: 'Payment amount must be greater than or equal to the total amount.');
             return;
         }
-
 
         $this->order_details = array(
             'customer_name' => $this->customer_name,
@@ -172,8 +175,6 @@ class SalesPost extends Component
             'transaction_code' => $this->generateTransactionCode(),
             'commission' => $this->calculateCommission()
         );
-
-        // dd($this->order_details, $this->cart);
 
         $totalItems = 0;
         $totalAmount = 0;
@@ -186,51 +187,70 @@ class SalesPost extends Component
             if ($product) {
                 $totalItems += $cartItem['quantity'];
                 $totalAmount += $cartItem['total'];
+                $productTax = 0; // Reset productTax for each product
 
                 if ($product->consignment_id) {
                     $consignment = Consignment::find($product->consignment_id);
 
                     if ($consignment) {
                         $commission = $consignment->commission_percentage;
-                        $productTax = ($cartItem['total'] * $commission) / 100;
+                        $productTax = ($product->selling_price * $cartItem['quantity'] * $commission) / 100;
                         $totalTax += $productTax;
                     }
+
+                    // Generate a unique payment code
+                    do {
+                        $paymentCode = 'PAY-' . $consignment->consignor_id . '-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(4));
+                    } while (Payment::where('payment_code', $paymentCode)->exists());
+
+                    // Insert data for payment table
+                    Payment::create([
+                        'inventory_id' => $productId,
+                        'payment_code' => $paymentCode,
+                        'quantity' => $cartItem['quantity'],
+                        'tax' => $productTax,
+                        'total' => ($cartItem['price'] * $cartItem['quantity']) - $productTax,
+                        'status' => 'Pending',
+                        'date_of_payment' => null
+                    ]);
                 }
+
+                // Insert into transaction items table
                 TransactionItem::create([
                     'code' => $this->order_details['transaction_code'],
                     'inventory_id' => $productId,
                     'qty' => $cartItem['quantity'],
-                    'total' => $cartItem['total'],
                     'status' => 'Paid'
                 ]);
 
+                // Update product quantity in inventory
                 $product->qty -= $cartItem['quantity'];
                 $product->save();
             }
         }
 
+        // Create main transaction record
         Transaction::create([
             'transaction_code' => $this->order_details['transaction_code'],
             'quantity_sold' => $totalItems,
             'total_amount' => $this->order_details['total_amount'],
             'amount_paid' => $this->order_details['amount_pay'],
             'amount_change' => $this->order_details['change'],
-            'commission_amount' => $totalTax,
+            'commission_amount' => $totalTax, // Correct total commission amount
             'status' => 'Completed',
             'customer_name' => $this->order_details['customer_name']
         ]);
 
-
-        // $this->dispatch('toast', type: 'success', message: 'Checkout successfull.');
-
+        // Save cart and order details to the session and clear the cart
         session()->put('cart', $this->cart);
         session()->put('order_summary', $this->order_details);
-        session()->flash('success');
-
-        return redirect()->route('admin.sales.order-summary');
+        session()->flash('success', 'Checkout successful.');
 
         $this->clearCart();
+
+        return redirect()->route('admin.sales.order-summary');
     }
+
 
     public function calculateCommission()
     {

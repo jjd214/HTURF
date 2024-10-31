@@ -65,6 +65,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('payment')->name('payment.')->group(function () {
             Route::controller(PaymentController::class)->group(function () {
                 Route::get('/all', 'index')->name('all-payments');
+                
             });
         });
     });
