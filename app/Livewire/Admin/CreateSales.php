@@ -15,7 +15,7 @@ use App\Models\Payment;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
-class SalesPost extends Component
+class CreateSales extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
@@ -284,7 +284,7 @@ class SalesPost extends Component
 
     public function render()
     {
-        return view('livewire.admin.sales-post', [
+        return view('livewire.admin.create-sales', [
             'rows' => $this->rows,
         ]);
     }

@@ -38,7 +38,7 @@
     @livewire('admin.consign')
 </div>
 
-@livewire('admin.consign-edit')
+@livewire('admin.edit-consign')
 
 @endsection
 @push('scripts')

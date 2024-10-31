@@ -72,6 +72,6 @@
     </div>
 </div>
 
-@livewire('admin.sales-post')
+@livewire('admin.create-sales')
 
 @endsection

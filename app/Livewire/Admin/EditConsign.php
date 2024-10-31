@@ -10,7 +10,7 @@ use App\Models\Inventory as InventoryModel;
 use App\Models\User;
 use App\Models\Consignment;
 
-class ConsignEdit extends Component
+class EditConsign extends Component
 {
     use WithFileUploads;
 
@@ -120,7 +120,7 @@ class ConsignEdit extends Component
 
     public function render()
     {
-        return view('livewire.admin.consign-edit', [
+        return view('livewire.admin.edit-consign', [
             'rows' => User::orderBy('email', 'ASC')->get()
         ]);
     }

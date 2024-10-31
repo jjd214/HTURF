@@ -6,7 +6,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Inventory as InventoryModel;
 
-class ProductPost extends Component
+class CreateProduct extends Component
 {
     use WithFileUploads;
 
@@ -44,6 +44,6 @@ class ProductPost extends Component
 
     public function render()
     {
-        return view('livewire.admin.product-post');
+        return view('livewire.admin.create-product');
     }
 }

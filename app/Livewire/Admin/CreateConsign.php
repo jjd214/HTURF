@@ -8,7 +8,7 @@ use App\Models\Inventory as InventoryModel;
 use App\Models\Consignment;
 use App\Models\User;
 
-class ConsignPost extends Component
+class CreateConsign extends Component
 {
     use WithFileUploads;
 
@@ -90,7 +90,7 @@ class ConsignPost extends Component
 
     public function render()
     {
-        return view('livewire.admin.consign-post', [
+        return view('livewire.admin.create-consign', [
             'rows' => User::orderBy('email', 'ASC')->get()
         ]);
     }

@@ -8,7 +8,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Inventory as InventoryModel;
 
-class ProductEdit extends Component
+class EditProduct extends Component
 {
     use WithFileUploads;
 
@@ -95,6 +95,6 @@ class ProductEdit extends Component
 
     public function render()
     {
-        return view('livewire.admin.product-edit');
+        return view('livewire.admin.edit-product');
     }
 }

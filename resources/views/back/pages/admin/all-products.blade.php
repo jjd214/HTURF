@@ -29,7 +29,7 @@
     @livewire('admin.product')
 </div>
 
-@livewire('admin.product-edit')
+@livewire('admin.edit-product')
 
 @endsection
 @push('scripts')

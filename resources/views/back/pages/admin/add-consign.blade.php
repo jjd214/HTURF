@@ -72,7 +72,7 @@
     </div>
 </div>
 
-@livewire('admin.consign-post')
+@livewire('admin.create-consign')
 
 
 @endsection

@@ -25,7 +25,7 @@
     </div>
 </div>
 
-@livewire('admin.product-post')
+@livewire('admin.create-product')
 
 
 @endsection
