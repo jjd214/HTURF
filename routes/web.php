@@ -82,6 +82,7 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
             Route::get('/forgot-password', 'forgotPassword')->name('forgot-password');
             Route::post('/send-password-reset-link', 'sendPasswordResetLink')->name('send-password-reset-link');
             Route::get('/password/reset/{token}', 'showResetForm')->name('reset-password');
+            Route::post('/reset-password-handler', 'resetPasswordHandler')->name('reset-password-handler');
         });
     });
 

@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\VerificationToken;
+use Illuminate\Support\Facades\DB;
+use constGuards;
+use constDefaults;
 
 class UserController extends Controller
 {
@@ -169,5 +172,123 @@ class UserController extends Controller
             'pageTitle' => 'Forgot password'
         ];
         return view('back.pages.user.auth.forgot', $data);
+    }
+
+    public function sendPasswordResetLink(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ], [
+            'email.required' => 'The :attribute is required',
+            'email.email' => 'Invalid email address',
+            'email.exists' => 'The :attribute is not exists in our system'
+        ]);
+
+        $consignor = User::where('email', $request->email)->first();
+
+        $token = base64_encode(Str::random(64));
+
+        $oldToken = DB::table('password_reset_tokens')
+            ->where(['email' => $consignor->email, 'guard' => constGuards::USER])
+            ->first();
+
+        if ($oldToken) {
+            DB::table('password_reset_tokens')
+                ->where(['email' => $consignor->email, 'guard' => constGuards::USER])
+                ->update([
+                    'token' => $token,
+                    'created_at' => Carbon::now()
+                ]);
+        } else {
+            DB::table('password_reset_tokens')
+                ->insert([
+                    'email' => $consignor->email,
+                    'guard' => constGuards::USER,
+                    'token' => $token,
+                    'created_at' => Carbon::now()
+                ]);
+        }
+
+        $actionLink = route('consignor.reset-password', ['token' => $token, 'email' => urlencode($consignor->email)]);
+
+        $data['actionLink'] = $actionLink;
+        $data['consignor'] = $consignor;
+        $mail_body = view('email-templates.user-forgot-email-template', $data)->render();
+
+        $mailConfig = array(
+            'mail_from_email' => env('EMAIL_FROM_ADDRESS'),
+            'mail_from_name' => env('EMAIL_FROM_NAME'),
+            'mail_recipient_email' => $consignor->email,
+            'mail_recipient_name' => $consignor->name,
+            'mail_subject' => 'Reset password',
+            'mail_body' => $mail_body
+        );
+
+        if (sendEmail($mailConfig)) {
+            return redirect()->route('consignor.forgot-password')->with('success', 'We have e-mailed your password reset link.');
+        } else {
+            return redirect()->route('consignor.forgot-password')->with('error', 'Something went wrong.');
+        }
+    }
+
+    public function showResetForm(Request $request, $token = null)
+    {
+        $get_token = DB::table('password_reset_tokens')
+            ->where(['token' => $token, 'guard' => constGuards::USER])
+            ->first();
+
+        if ($get_token) {
+            $diffMins = Carbon::createFromFormat('Y-m-d H:i:s', $get_token->created_at)
+                ->diffInMinutes(Carbon::now());
+
+            if ($diffMins > constDefaults::tokenExpiredMinutes) {
+                return redirect()->route('consignor.forgot-password', ['token' => $token])->with('fail', 'Token expired!, Request another reset password link.');
+            } else {
+                return view('back.pages.user.auth.reset')->with(['token' => $token]);
+            }
+        } else {
+            return redirect()->route('consignor.forgot-password', ['token' => $token])->with('fail', 'Invalid token!, request another reset password link.');
+        }
+    }
+
+    public function resetPasswordHandler(Request $request)
+    {
+        $request->validate([
+            'new_password' => 'required|min:5|max:45|required_with:confirm_new_password|same:confirm_new_password',
+            'confirm_new_password' => 'required'
+        ]);
+
+        $token = DB::table('password_reset_tokens')
+            ->where(['token' => $request->token, 'guard' => constGuards::USER])
+            ->first();
+
+        $consignor = User::where('email', $token->email)->first();
+
+        User::where('email', $consignor->email)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        DB::table('password_reset_tokens')->where([
+            'email' => $consignor->email,
+            'token' => $request->token,
+            'guard' => constGuards::USER
+        ])->delete();
+
+        $data['consignor'] = $consignor;
+        $data['new_password'] = $request->new_password;
+
+        $mail_body = view('email-templates.user-reset-email-template', $data);
+
+        $mailConfig = array(
+            'mail_from_email' => env('EMAIL_FROM_ADDRESS'),
+            'mail_from_name' => env('EMAIL_FROM_NAME'),
+            'mail_recipient_email' => $consignor->email,
+            'mail_recipient_name' => $consignor->name,
+            'mail_subject' => 'Password changed',
+            'mail_body' => $mail_body
+        );
+
+        sendEmail($mailConfig);
+        return redirect()->route('consignor.login')->with('success', 'Done!, Your password has been changed. Use new password to login into system.');
     }
 }
