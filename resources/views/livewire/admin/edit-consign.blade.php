@@ -123,7 +123,7 @@
                         <div class="col-md-6 mb-10">
                             <div class="form-group">
                                 <label for=""><b>Consign percentage:</b></label>
-                                <input type="number" wire:model.defer="commission_percentage" class="form-control" placeholder="Enter consign commission">
+                                <input type="number" wire:model.defer="commission_percentage" class="form-control" placeholder="Enter consign commission" readonly>
                                 @error('commission_percentage') <span class="text-danger"> {{ $message }} </span> @enderror
                             </div>
                         </div>
