@@ -38,6 +38,7 @@ class Payments extends Component
                 'users.username',
                 'users.email'
             )
+            ->orderBy('payments.id', 'desc')
             ->get();
 
         return view(

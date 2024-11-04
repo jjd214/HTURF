@@ -115,7 +115,7 @@
 
                             <div class="col-md-6 mb-3">
                                 <strong><i class="fa fa-dollar-sign mr-2 text-primary"></i>Refund Amount:</strong>
-                                <p class="ml-4 text-muted">${{ number_format($selectedRefund->total_price, 2) }}</p>
+                                <p class="ml-4 text-muted">{{ number_format($selectedRefund->total_price, 0) }}</p>
                             </div>
                         </div>
                     </div>

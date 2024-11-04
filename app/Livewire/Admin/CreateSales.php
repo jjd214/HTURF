@@ -29,6 +29,9 @@ class CreateSales extends Component
     public $totalAmount = 0;
     public $change = 0;
     public $customer_name;
+    public $search = '';
+    public $filter = '';
+    public $genderFilter = '';
 
     protected $rules = ['customer_name' => 'required'];
 
@@ -44,10 +47,79 @@ class CreateSales extends Component
                 'qty' => $product->qty, // Available quantity
                 'selling_price' => $product->selling_price,
                 'picture' => $product->picture,
-
             ];
         });
     }
+
+    public function updatedSearch()
+    {
+        $this->rows = InventoryModel::where('name', 'like', '%' . $this->search . '%')
+            ->orWhere('sku', 'like', '%' . $this->search . '%')
+            ->get()
+            ->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'size' => $product->size,
+                    'sku' => $product->sku,
+                    'qty' => $product->qty,
+                    'selling_price' => $product->selling_price,
+                    'picture' => $product->picture,
+                ];
+            });
+    }
+
+    public function updatedFilter()
+    {
+        // Add filtering logic based on `filter` and `genderFilter` properties
+        $query = InventoryModel::query();
+
+        if ($this->filter === '1') {
+            $query->where('consignment_id', '=', null);
+        }
+
+        if ($this->filter === '0') {
+            $query->where('consignment_id', '!=', null);
+        }
+
+        if ($this->genderFilter) {
+            $query->where('sex', $this->genderFilter);
+        }
+
+        $this->rows = $query->get()->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'size' => $product->size,
+                'sku' => $product->sku,
+                'qty' => $product->qty,
+                'selling_price' => $product->selling_price,
+                'picture' => $product->picture,
+            ];
+        });
+    }
+
+    public function updatedGenderFilter()
+    {
+        $query = InventoryModel::query();
+
+        if ($this->genderFilter) {
+            $query->where('sex', $this->genderFilter);
+        }
+
+        $this->rows = $query->get()->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'size' => $product->size,
+                'sku' => $product->sku,
+                'qty' => $product->qty,
+                'selling_price' => $product->selling_price,
+                'picture' => $product->picture,
+            ];
+        });
+    }
+
 
     public function addToCart($productId)
     {
@@ -134,7 +206,7 @@ class CreateSales extends Component
         });
 
         // Calculate change
-        $this->change = $this->amountPay - $this->totalAmount;
+        $this->change = (float) $this->amountPay - $this->totalAmount;
     }
 
     public function clearCart()
@@ -284,6 +356,7 @@ class CreateSales extends Component
 
     public function render()
     {
+
         return view('livewire.admin.create-sales', [
             'rows' => $this->rows,
         ]);

@@ -154,8 +154,9 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form  method="POST">
+                                <form action="{{ route('admin.payment.send-payment-details') }}" method="POST">
                                     @csrf
+                                    <input type="hidden" name="payment_id" value="{{ $itemDetails['id'] }}">
                                     <div class="form-group">
                                         <label for="claimDate">Select Date</label>
                                         <input type="date" name="claim_date" id="claimDate" class="form-control" required>

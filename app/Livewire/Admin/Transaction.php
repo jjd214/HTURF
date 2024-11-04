@@ -23,7 +23,7 @@ class Transaction extends Component
     public function render()
     {
         // Query transactions with eager-loaded items
-        $query = TransactionModel::with('items')
+        $query = TransactionModel::orderBy('id', 'desc')
             ->when($this->search, function ($query) {
                 $query->where('transaction_code', 'like', '%' . $this->search . '%')
                     ->orWhere('customer_name', 'like', '%' . $this->search . '%');

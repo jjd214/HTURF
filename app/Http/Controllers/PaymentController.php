@@ -6,12 +6,24 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\User;
 use App\Models\Consignment;
+use App\Models\Inventory;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
     public function index()
     {
         return view('back.pages.admin.all-payments');
+    }
+
+    public function sendPaymentDetails(Request $request)
+    {
+        $item_details = Payment::leftjoin('inventories', 'payments.inventory_id', '=', 'inventories.id')
+            ->select('inventories.consignment_id', 'inventories.name', 'inventories.brand', 'inventories.sku', 'inventories.color', 'inventories.selling_price', 'inventories.picture', 'payments.*')
+            ->where('payments.id', $request->payment_id)
+            ->first();
+
+        dd($item_details);
     }
 
     public function showPaymentDetails(Request $request, $payment_code)

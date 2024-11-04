@@ -84,7 +84,7 @@
             </select>
         </div>
         <div class="col-md-9 text-right">
-            {{-- {{ $rows->links() }} --}}
+            {{ $rows->links() }}
         </div>
     </div>
 </div>
