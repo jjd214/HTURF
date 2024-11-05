@@ -73,7 +73,7 @@
             </thead>
             <tbody>
                 @forelse ($rows as $item)
-                <tr @if($item->expiry_date && \Carbon\Carbon::parse($item->expiry_date)->isPast()) style="opacity: 0.5; pointer-events: none;" @endif>
+                <tr @if($item->expiry_date && \Carbon\Carbon::parse($item->expiry_date)->isPast()) style="opacity: 0.5; pointer-events: none;" @endif wire:key={{ $item->id }}>
                     <td>
                         @if ($item->picture === null)
                         <img src="{{ asset('storage/images/default-img.png') }}" width="70" class="img-thumbnail" alt="Default Image">

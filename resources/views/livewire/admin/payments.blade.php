@@ -12,7 +12,7 @@
             </thead>
             <tbody>
                 @forelse ($rows as $item)
-                <tr style="cursor: pointer;" wire:click.prevent="showPaymentForm({{ $item->id }})">
+                <tr style="cursor: pointer;" wire:click.prevent="showPaymentForm({{ $item->id }})" wire:key={{ $item->id }}>
                     <td><small><b>{{ $item->payment_code }}</b></small></td>
                     <td>
                         <span class="badge

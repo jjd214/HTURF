@@ -40,7 +40,7 @@
                 </thead>
                 <tbody>
                     @forelse ($rows as $item)
-                    <tr>
+                    <tr wire:key={{ $item->id }}>
                         <td>
                             @if ($item['picture'] == null)
                                 <img src="{{ asset('storage/images/default-img.png') }}" width="70" style="height: 70px !important;" height="70" alt="Default Image" class="img-thumbnail">
