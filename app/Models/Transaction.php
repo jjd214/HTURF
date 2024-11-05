@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Transaction extends Model
 {
@@ -24,4 +25,13 @@ class Transaction extends Model
     {
         return $this->hasMany(TransactionItem::class, 'code', 'transaction_code');
     }
+
+    // public static function generateUniqueTransactionCode()
+    // {
+    //     do {
+    //         $code = 'TRX-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(4));
+    //     } while (Self::where('transaction_code', $code));
+
+    //     return $code;
+    // }
 }

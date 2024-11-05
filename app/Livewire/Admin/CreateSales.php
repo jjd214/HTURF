@@ -2,237 +2,120 @@
 
 namespace App\Livewire\Admin;
 
-
+use App\Models\Consignment;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use Livewire\Attrbutes\Rule;
 use App\Models\Inventory as InventoryModel;
-use App\Models\Consignment;
-use App\Models\Transaction;
-use App\Models\TransactionItem;
-use App\Models\Payment;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
+use App\Models\Payment;
+use App\Models\TransactionItem;
+use App\Models\Transaction;
+
 
 class CreateSales extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-    public $rows;
     public $cart = [];
-    public $order_details = [];
-    public $order_summary = [];
     public $quantities = [];
-    public $amountPay;
+    public $updatedQuantities = [];
     public $totalAmount = 0;
+    public $amountPay = 0;
     public $change = 0;
     public $customer_name;
-    public $search = '';
-    public $filter = '';
-    public $genderFilter = '';
+    public $order_details;
 
-    protected $rules = ['customer_name' => 'required'];
+    #[Url(history: true)]
+    public $per_page = 5;
+    #[Url(history: true)]
+    public $search = ''; // Search input
+    #[Url()]
+    public $filter = ''; // Filter for consignment/store
+    #[Url(history: true)]
+    public $genderFilter = ''; // Filter for gender
 
     public function mount()
     {
-        // Initialize product data or fetch from the database
-        $this->rows = InventoryModel::all()->map(function ($product) {
-            return [
-                'id' => $product->id,
-                'name' => $product->name,
-                'size' => $product->size,
-                'sku' => $product->sku,
-                'qty' => $product->qty, // Available quantity
-                'selling_price' => $product->selling_price,
-                'picture' => $product->picture,
-            ];
-        });
+        // Initialize available quantities based on inventory
+        foreach (InventoryModel::all() as $item) {
+            $this->updatedQuantities[$item->id] = $item->qty;
+        }
     }
 
-    public function updatedSearch()
+    public function addToCart($itemId)
     {
-        $this->rows = InventoryModel::where('name', 'like', '%' . $this->search . '%')
-            ->orWhere('sku', 'like', '%' . $this->search . '%')
-            ->get()
-            ->map(function ($product) {
-                return [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'size' => $product->size,
-                    'sku' => $product->sku,
-                    'qty' => $product->qty,
-                    'selling_price' => $product->selling_price,
-                    'picture' => $product->picture,
-                ];
-            });
-    }
+        // Find item in the Inventory
+        $item = InventoryModel::find($itemId);
 
-    public function updatedFilter()
-    {
-        // Add filtering logic based on `filter` and `genderFilter` properties
-        $query = InventoryModel::query();
-
-        if ($this->filter === '1') {
-            $query->where('consignment_id', '=', null);
+        if (!$item) {
+            return;
         }
 
-        if ($this->filter === '0') {
-            $query->where('consignment_id', '!=', null);
+        // Retrieve selected quantity, default to 1 if not set
+        $quantity = $this->quantities[$itemId] ?? 1;
+
+        if ($quantity <= 0) {
+            $this->dispatch('toast', type: 'error', message: 'Invalid input.');
+            return;
         }
 
-        if ($this->genderFilter) {
-            $query->where('sex', $this->genderFilter);
-        }
-
-        $this->rows = $query->get()->map(function ($product) {
-            return [
-                'id' => $product->id,
-                'name' => $product->name,
-                'size' => $product->size,
-                'sku' => $product->sku,
-                'qty' => $product->qty,
-                'selling_price' => $product->selling_price,
-                'picture' => $product->picture,
-            ];
-        });
-    }
-
-    public function updatedGenderFilter()
-    {
-        $query = InventoryModel::query();
-
-        if ($this->genderFilter) {
-            $query->where('sex', $this->genderFilter);
-        }
-
-        $this->rows = $query->get()->map(function ($product) {
-            return [
-                'id' => $product->id,
-                'name' => $product->name,
-                'size' => $product->size,
-                'sku' => $product->sku,
-                'qty' => $product->qty,
-                'selling_price' => $product->selling_price,
-                'picture' => $product->picture,
-            ];
-        });
-    }
-
-
-    public function addToCart($productId)
-    {
-        // Find product
-        $product = collect($this->rows)->firstWhere('id', $productId);
-
-        // Get the selected quantity from input or default to 1
-        $selectedQuantity = $this->quantities[$productId] ?? 1;
-
-        // Check if selected quantity exceeds available quantity
-        if ($selectedQuantity > $product['qty']) {
+        // Ensure the selected quantity does not exceed the available quantity
+        if ($quantity > $this->updatedQuantities[$itemId]) {
             $this->dispatch('toast', type: 'error', message: 'Selected quantity exceeds available stock.');
             return;
         }
 
-        // Deduct selected quantity from available quantity
-        $this->rows = collect($this->rows)->map(function ($item) use ($productId, $selectedQuantity) {
-            if ($item['id'] == $productId) {
-                $item['qty'] -= $selectedQuantity; // Deduct selected quantity from available qty
-            }
-            return $item;
-        })->toArray();
-
-        // Check if the product is already in the cart
-        $existingCartItem = collect($this->cart)->firstWhere('id', $productId);
-
-        if ($existingCartItem) {
-            // If the product is already in the cart, update the quantity
-            $this->cart = collect($this->cart)->map(function ($item) use ($productId, $selectedQuantity) {
-                if ($item['id'] == $productId) {
-                    $item['quantity'] += $selectedQuantity;
-                }
-                return $item;
-            })->toArray();
+        // Check if the item already exists in the cart
+        if (isset($this->cart[$itemId])) {
+            // Increment quantity in the cart
+            $this->cart[$itemId]['quantity'] += $quantity;
         } else {
-            // Add new item to cart
-            $this->cart[] = [
-                'id' => $productId,
-                'name' => $product['name'],
-                'size' => $product['size'],
-                'sku' => $product['sku'],
-                'quantity' => $selectedQuantity,
-                'price' => $product['selling_price'],
-                'total' => $product['selling_price'] * $selectedQuantity,
-                'picture' => $product['picture']
+            // Add new item to the cart
+            $this->cart[$itemId] = [
+                'id' => $item->id,
+                'picture' => $item->picture,
+                'name' => $item->name,
+                'sku' => $item->sku,
+                'size' => $item->size,
+                'price' => $item->selling_price,
+                'quantity' => $quantity,
+                'total' => $item->selling_price * $quantity
             ];
         }
+
+        // Update the available quantity in real-time
+        $this->updatedQuantities[$itemId] -= $quantity;
 
         // Update total amount
         $this->updateTotals();
     }
 
-    public function removeFromCart($productId)
-    {
-        // Find the item in the cart
-        $cartItem = collect($this->cart)->firstWhere('id', $productId);
-
-        if ($cartItem) {
-            // Restore the removed quantity to the available stock
-            $this->rows = collect($this->rows)->map(function ($item) use ($productId, $cartItem) {
-                if ($item['id'] == $productId) {
-                    // Add back the quantity removed from the cart
-                    $item['qty'] += $cartItem['quantity'];
-                }
-                return $item;
-            })->toArray();
-
-            // Remove the item from the cart
-            $this->cart = collect($this->cart)->reject(function ($item) use ($productId) {
-                return $item['id'] == $productId;
-            })->toArray();
-
-            // Update the totals
-            $this->updateTotals();
-        }
-    }
-
-
     public function updateTotals()
     {
-        // Calculate the total amount
-        $this->totalAmount = collect($this->cart)->sum(function ($item) {
-            return $item['quantity'] * $item['price'];
-        });
+        $this->totalAmount = array_sum(array_map(function ($item) {
+            return $item['price'] * $item['quantity'];
+        }, $this->cart));
 
-        // Calculate change
         $this->change = (float) $this->amountPay - $this->totalAmount;
     }
 
     public function clearCart()
     {
-        // When the cart is cleared, reset the product quantities
         $this->cart = [];
         $this->totalAmount = 0;
+        $this->amountPay = 0;
         $this->change = 0;
-
-        // Reset the available quantities in $rows (without fetching again)
-        $this->rows = InventoryModel::all()->map(function ($product) {
-            return [
-                'id' => $product->id,
-                'name' => $product->name,
-                'size' => $product->size,
-                'sku' => $product->sku,
-                'qty' => $product->qty, // Reset available quantity
-                'selling_price' => $product->selling_price,
-                'picture' => $product->picture,
-            ];
-        })->toArray();
+        $this->quantities = [];
     }
+
 
     public function checkout()
     {
-        $this->validate();
+        $this->validate([
+            'customer_name' => 'required|string|max:255',
+        ]);
 
         if ($this->amountPay < $this->totalAmount || $this->totalAmount == 0) {
             $this->dispatch('toast', type: 'error', message: 'Payment amount must be greater than or equal to the total amount.');
@@ -323,7 +206,6 @@ class CreateSales extends Component
         return redirect()->route('admin.sales.order-summary');
     }
 
-
     public function calculateCommission()
     {
         $totalCommission = 0;
@@ -349,16 +231,60 @@ class CreateSales extends Component
     public function generateTransactionCode()
     {
         $prefix = 'TRANSID-';
-        $timestamp = now()->format('YmdHis');
-        $randomNumber = random_int(1000, 9999);
-        return $prefix . $timestamp . '-' . $randomNumber;
+        $timestamp = now()->format('Ymd');
+        $randomString = strtoupper(substr(bin2hex(random_bytes(4)), 0, 8));
+        return $prefix . $timestamp . '-' . $randomString;
     }
+
+    public function removeFromCart($itemId)
+    {
+        if (isset($this->cart[$itemId])) {
+            // Retrieve the quantity of the item being removed
+            $quantityToRestore = $this->cart[$itemId]['quantity'];
+
+            // Restore the quantity back to the available stock
+            $this->updatedQuantities[$itemId] += $quantityToRestore;
+
+            // Remove the item from the cart
+            unset($this->cart[$itemId]);
+
+            // Update the total amount
+            $this->updateTotals();
+        }
+    }
+
 
     public function render()
     {
+        // Build the query based on the filters
+        $query = InventoryModel::query();
+
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('sku', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        if ($this->filter === '1') {
+            $query->where('consignment_id', '=', null);
+        }
+
+        if ($this->filter === '0') {
+            $query->where('consignment_id', '!=', null);
+        }
+
+        if ($this->genderFilter) {
+            $query->where('sex', $this->genderFilter);
+        }
+
+        $query->orderBy('created_at', 'desc');
+
+        // Paginate the results
+        $rows = $query->paginate($this->per_page);
 
         return view('livewire.admin.create-sales', [
-            'rows' => $this->rows,
+            'rows' => $rows,
         ]);
     }
 }

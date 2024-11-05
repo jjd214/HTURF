@@ -54,9 +54,9 @@
                         <td>{{ $item['name'] }}</td>
                         <td>{{ $item['size'] }}</td>
                         <td>₱ {{ number_format($item['selling_price'], 0) }}</td>
-                        <td>{{ $item['qty'] }}</td>
+                        <td>{{ $updatedQuantities[$item['id']] ?? $item['qty'] }}</td> <!-- Display updated quantity -->
                         <td>
-                            <input type="number" class="form-control" wire:model.defer="quantities.{{ $item['id'] }}" value="1" min="1" max="{{ $item['qty'] }}">
+                            <input type="number" class="form-control" wire:model.defer="quantities.{{ $item['id'] }}" value="1" min="1" max="{{ $updatedQuantities[$item['id']] ?? $item['qty'] }}">
                         </td>
                         <td>
                             <button class="btn btn-success btn-block" wire:click="addToCart({{ $item['id'] }})">
@@ -70,21 +70,20 @@
                     </tr>
                     @endforelse
                 </tbody>
-
-
             </table>
 
             <div class="row">
                 <div class="col-sm-12 col-md-3">
                     <select class="custom-select form-control" wire:model.live="per_page">
                         <option value="">Select Perpage</option>
-                        <option value="1">1</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
                         <option value="20">20</option>
                     </select>
                 </div>
-                {{-- <div class="col-sm-12 col-md-9"> {{ $rows->links() }}</div> --}}
+                <div class="col-sm-12 col-md-9"> {{ $rows->links() }}</div>
             </div>
         </div>
     </div>
@@ -92,7 +91,8 @@
     <div class="card-box pd-20 mb-20">
         <h2 class="text-xl mb-4">Cart</h2>
 
-        <div class="table-responsive">
+        <!-- Make the cart table scrollable -->
+        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
             <table class="table table-hover" style="width: 100%" wire:poll.keep-alive>
                 <thead>
                     <tr>
@@ -105,7 +105,6 @@
                         <th style="width: 5%;">Action</th>
                     </tr>
                 </thead>
-                <!-- Cart Table -->
                 <tbody>
                     @forelse ($cart as $item)
                     <tr>
@@ -122,7 +121,7 @@
                         <td>{{ $item['name'] }}</td>
                         <td>{{ $item['size'] }}</td>
                         <td>{{ $item['quantity'] }}</td>
-                        <td>₱ {{ number_format($item['quantity'] * $item['price'], 0) }}</td>
+                        <td>₱ {{ number_format($item['price'], 0) }}</td>
                         <td>
                             <button class="btn btn-danger btn-block" wire:click="removeFromCart({{ $item['id'] }})">
                                 <i class="bi bi-trash"></i>
@@ -131,44 +130,46 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center py-4">Cart is empty.</td>
+                        <td colspan="7" class="text-center">No items in cart</td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
+        </div>
+        <hr class="m-2">
+    </div>
 
-            <div class="mt-4">
-                <div class="row">
-                    <div class="col-4">
-                        <label for=""><b>Amount pay:</b></label>
-                        <input type="number" class="form-control" wire:model="amountPay" wire:keyup="updateTotals">
-                    </div>
-                    <div class="col-4">
-                        <label for=""><b>Total amount of items:</b></label>
-                        <input type="number" class="form-control" wire:model="totalAmount" readonly>
-                    </div>
-                    <div class="col-4">
-                        <label for=""><b>Total change: </b></label>
-                        <input type="number" class="form-control" wire:model="change" readonly>
-                    </div>
+    <div class="card-box pd-20 mb-20">
+        <div>
+            <div class="row">
+                <div class="col-4">
+                    <label for=""><b>Amount pay:</b></label>
+                    <input type="number" class="form-control" wire:model="amountPay" wire:keyup="updateTotals">
                 </div>
-
-                <div class="row mt-2">
-                    <div class="col-4">
-                        <label for=""><small><b>Customer name:</b></small></label>
-                        <input type="text" class="form-control" wire:model="customer_name" placeholder="Enter customer name" required>
-                        @error('customer_name')
-                        <span class="text-danger"><small>{{ $message }}</small></span>
-                        @enderror
-                    </div>
+                <div class="col-4">
+                    <label for=""><b>Total amount of items:</b></label>
+                    <input type="number" class="form-control" wire:model="totalAmount" readonly>
                 </div>
-
-                <div class="row mt-2 pd-20">
-                    <button class="btn btn-success mr-10" wire:click="checkout">Proceed to checkout</button>
-                    <button class="btn btn-secondary" wire:click="clearCart">Clear Cart</button>
+                <div class="col-4">
+                    <label for=""><b>Total change: </b></label>
+                    <input type="number" class="form-control" wire:model="change" readonly>
                 </div>
             </div>
 
+            <div class="row mt-2">
+                <div class="col-4">
+                    <label for=""><small><b>Customer name:</b></small></label>
+                    <input type="text" class="form-control" wire:model="customer_name" placeholder="Enter customer name" required>
+                    @error('customer_name')
+                    <span class="text-danger"><small>{{ $message }}</small></span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="row mt-2 pd-20">
+                <button class="btn btn-success mr-10" wire:click="checkout">Proceed to checkout</button>
+                <button class="btn btn-secondary" wire:click="clearCart">Clear Cart</button>
+            </div>
         </div>
     </div>
 </div>
