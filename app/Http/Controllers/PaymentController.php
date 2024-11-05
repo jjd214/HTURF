@@ -18,13 +18,82 @@ class PaymentController extends Controller
 
     public function sendPaymentDetails(Request $request)
     {
-        $item_details = Payment::leftjoin('inventories', 'payments.inventory_id', '=', 'inventories.id')
-            ->select('inventories.consignment_id', 'inventories.name', 'inventories.brand', 'inventories.sku', 'inventories.color', 'inventories.selling_price', 'inventories.picture', 'payments.*')
+        $item_details = Payment::leftJoin('inventories', 'payments.inventory_id', '=', 'inventories.id')
+            ->select(
+                'inventories.consignment_id',
+                'inventories.name',
+                'inventories.brand',
+                'inventories.sku',
+                'inventories.color',
+                'inventories.selling_price',
+                'inventories.picture',
+                'payments.*'
+            )
             ->where('payments.id', $request->payment_id)
             ->first();
 
-        dd($item_details);
+        if (!$item_details) {
+            return response()->json([
+                'status' => 0,
+                'msg' => 'Payment details not found.',
+                'type' => 'error',
+            ]);
+        }
+
+        $consignment_details = Consignment::find($item_details->consignment_id);
+        $consignor_details = $consignment_details ? User::find($consignment_details->consignor_id) : null;
+
+        if (!$consignment_details || !$consignor_details) {
+            return response()->json([
+                'status' => 0,
+                'msg' => 'Consignment or consignor details not found.',
+                'type' => 'error',
+            ]);
+        }
+
+        // Assign data to $data array for the email template
+        $data = [
+            'item_name' => $item_details->name,
+            'item_brand' => $item_details->brand,
+            'item_sku' => $item_details->sku,
+            'item_color' => $item_details->color,
+            'item_price' => $item_details->selling_price,
+            'item_qty' => $item_details->quantity,
+            'consignor_name' => $consignor_details->name,
+            'consignor_email' => $consignor_details->email,
+            'consignment_commission_percentage' => $consignment_details->commission_percentage,
+            'consignment_start_date' => $consignment_details->start_date,
+            'consignment_expiry_date' => $consignment_details->expiry_date,
+            'purchase_date' => $item_details->created_at,
+            'payment_code' => $item_details->payment_code,
+            'sub_total' => $item_details->selling_price * $item_details->quantity,
+            'total_tax' => $item_details->tax,
+            'total' => $item_details->selling_price * $item_details->quantity - $item_details->tax,
+            'claim_date' => $request->claim_date,
+            'claim_time' => $request->claim_time
+        ];
+
+        $mail_body = view('email-templates.user-payment-email-template', $data);
+
+        $mailConfig = [
+            'mail_from_email' => env('EMAIL_FROM_ADDRESS'),
+            'mail_from_name' => env('EMAIL_FROM_NAME'),
+            'mail_recipient_email' => $consignor_details->email,
+            'mail_recipient_name' => $consignor_details->name,
+            'mail_subject' => 'Payment Details',
+            'mail_body' => $mail_body,
+        ];
+
+        if (sendEmail($mailConfig)) {
+            $item_details->status = "Notified";
+            $item_details->date_of_payment = $request->claim_date . " " . $request->claim_time;
+            $item_details->save();
+            return redirect()->back()->with('success', 'Email sent successfully!');
+        } else {
+            return redirect()->back()->with('fail', 'Something went wrong.');
+        }
     }
+
 
     public function showPaymentDetails(Request $request, $payment_code)
     {

@@ -1,7 +1,54 @@
 @extends('back.layout.pages-layout')
 @section('pageTitle', isset($pageTitle) ? $pageTitle : 'Payment details')
 @section('content')
+@if (session('success'))
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        iconColor: 'white',
+         customClass: {
+            popup: 'colored-toast',
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
 
+    Toast.fire({
+        icon: 'success',
+        title: 'Email sent successfully.'
+    });
+</script>
+@endif
+@if (session('fail'))
+<script>
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        iconColor: 'white',
+         customClass: {
+            popup: 'colored-toast',
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    Toast.fire({
+        icon: 'success',
+        title: 'Email sent successfully.'
+    });
+</script>
+@endif
 <div class="page-header mb-4">
     <div class="row align-items-center">
         <div class="col-md-6 col-sm-12">
