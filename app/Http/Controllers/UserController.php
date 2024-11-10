@@ -291,4 +291,9 @@ class UserController extends Controller
         sendEmail($mailConfig);
         return redirect()->route('consignor.login')->with('success', 'Done!, Your password has been changed. Use new password to login into system.');
     }
+
+    public function profileView(Request $request)
+    {
+        return view('back.pages.user.profile');
+    }
 }

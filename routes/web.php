@@ -93,6 +93,7 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
         Route::controller(UserController::class)->group(function () {
             Route::get('/home', 'home')->name('home');
             Route::post('/logout', 'logoutHandler')->name('logout-handler');
+            Route::get('/profile', 'profileView')->name('profile');
         });
     });
 });

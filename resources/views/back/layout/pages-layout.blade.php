@@ -398,7 +398,6 @@
 			<div class="menu-block customscroll">
 				<div class="sidebar-menu">
 					<ul id="accordion-menu">
-
                         @if ( Route::is('admin.*'))
                         <li>
 							<a  href="{{ route('admin.home') }}" class="dropdown-toggle no-arrow {{ Route::is('admin.home') ? 'active' : '' }}">
@@ -425,7 +424,6 @@
                                 </li>
                             </ul>
                         </li>
-
                         <li class="dropdown">
                             <a href="javascript:;" class="dropdown-toggle {{ Route::is('admin.product.*') ? 'active' : '' }}">
                                 <span class="micon bi bi-cart2"></span><span class="mtext">Products</span>
@@ -451,12 +449,6 @@
 								><span class="mtext">Payments</span>
 							</a>
 						</li>
-                        {{-- <li>
-							<a href="invoice.html" class="dropdown-toggle no-arrow">
-								<span class="micon bi bi-credit-card"></span
-								><span class="mtext">Payments</span>
-							</a>
-						</li> --}}
 						<li>
 							<a href="invoice.html" class="dropdown-toggle no-arrow">
 								<span class="micon bi bi-chat-right-dots"></span
@@ -481,7 +473,6 @@
 								><span class="mtext">Settings</span>
 							</a>
 						</li>
-
                         {{-- <li>
                             <a href="" class="dropdown-toggle no-arrow {{ Route::is('admin.logs') ? 'active' : '' }}">
                                 <span class="micon bi bi-clipboard-data"></span>
@@ -489,7 +480,25 @@
                             </a>
                         </li> --}}
                         @endif
-
+                        @if (Route::is('consignor.*'))
+                        <li>
+							<a  href="{{ route('consignor.home') }}" class="dropdown-toggle no-arrow {{ Route::is('consignor.home') ? 'active' : '' }}">
+								<span class="micon bi bi-house"></span
+								><span class="mtext">Home</span>
+							</a>
+						</li>
+                        <div class="dropdown-divider"></div>
+						</li>
+						<li>
+							<div class="sidebar-small-cap">Settings</div>
+						</li>
+                        <li>
+							<a  href="{{ route('consignor.profile') }}" class="dropdown-toggle no-arrow {{ Route::is('consignor.profile') ? 'active' : "" }}">
+								<span class="micon bi bi-person"></span
+								><span class="mtext">Profile</span>
+							</a>
+						</li>
+                        @endif
 					</ul>
 				</div>
 			</div>
