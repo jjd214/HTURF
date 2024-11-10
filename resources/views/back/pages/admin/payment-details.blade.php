@@ -106,7 +106,7 @@
                         <img src="{{ asset('images/users/default-avatar.png') }}" alt="user image" class="img-thumbnail" style="width: 100px; height: auto;">
                     @else
                     <div class="col-md-6 d-flex justify-content-end align-items-center">
-                        <img src="{{ public_path('images/users/consignors/'.$consignorDetails['picture']) }}" alt="Item Image" class="img-thumbnail" style="width: 100px; height: auto;">
+                        <img src="{{ $consignorDetails['picture'] }}" alt="Item Image" class="img-thumbnail" style="width: 100px; height: auto;">
                     </div>
                     @endif
                 </div>
