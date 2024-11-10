@@ -95,6 +95,7 @@
                                 <strong><i class="fa fa-cube mr-2 text-primary"></i>Item Details:</strong>
                                 @if($selectedInventory)
                                     <p class="ml-4 text-muted"><small><b>Item:</b> {{ $selectedInventory->name }}</small></p>
+                                    <p class="ml-4 text-muted"><small><b>Sku:</b> {{ $selectedInventory->sku }}</small></p>
                                     <p class="ml-4 text-muted"><small><b>Brand:</b> {{ $selectedInventory->brand }}</small></p>
                                     <p class="ml-4 text-muted"><small><b>Size:</b> {{ $selectedInventory->size }}</small></p>
                                     <p class="ml-4 text-muted"><small><b>Color:</b> {{ $selectedInventory->color }}</small></p>
