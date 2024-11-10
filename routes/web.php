@@ -67,6 +67,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/all', 'index')->name('all-payments');
                 Route::get('/details/{payment_code}', 'showPaymentDetails')->name('details');
                 Route::post('/send-payment-details', 'sendPaymentDetails')->name('send-payment-details');
+                Route::post('/complete-payment-handler', 'completePaymentHandler')->name('complete-payment-handler');
             });
         });
     });

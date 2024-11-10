@@ -115,4 +115,17 @@ class PaymentController extends Controller
             'paymentDetails' => $payment_details
         ]);
     }
+
+    public function completePaymentHandler(Request $request)
+    {
+        $payment_details = Payment::find($request->payment_id);
+        $payment_details->status = "Completed";
+        $payment_details->save();
+
+        if ($payment_details->save()) {
+            return redirect()->back()->with('success', 'Payment completed 👍');
+        } else {
+            return redirect()->back()->with('fail', 'Something went wrong.');
+        }
+    }
 }

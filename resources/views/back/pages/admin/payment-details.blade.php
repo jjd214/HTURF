@@ -7,7 +7,7 @@
         toast: true,
         position: 'top-end',
         iconColor: 'white',
-         customClass: {
+        customClass: {
             popup: 'colored-toast',
         },
         showConfirmButton: false,
@@ -21,7 +21,7 @@
 
     Toast.fire({
         icon: 'success',
-        title: 'Email sent successfully.'
+        title: '{{ session('success') }}'
     });
 </script>
 @endif
@@ -45,7 +45,7 @@
 
     Toast.fire({
         icon: 'success',
-        title: 'Email sent successfully.'
+        title: '{{ session('fail') }}'
     });
 </script>
 @endif
@@ -221,9 +221,13 @@
                     </div>
                 </div>
                 @elseif ($paymentDetails['status'] === "Notified")
-                <button class="btn btn-success">
-                    <i class="fa fa-check me-2"></i> Complete payment
-                </button>
+                <form action="{{ route('admin.payment.complete-payment-handler') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="payment_id" value="{{ $paymentDetails['id'] }}">
+                    <button class="btn btn-success">
+                        <i class="fa fa-check me-2"></i> Complete payment
+                    </button>
+                </form>
                 @else
                 <p class="text-center"><small><b>Thank you for your purchase!</b></small></p>
                 @endif

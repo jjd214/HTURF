@@ -1,4 +1,32 @@
 <div>
+    <div class="row">
+        <div class="col-md-3 mb-10">
+            <div class="input-group custom">
+                <div class="input-group-prepend custom">
+                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+                </div>
+                <input type="text" class="form-control" wire:model.live.debounce.300ms="search" placeholder="Search payment">
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12 mb-10">
+            <div class="row">
+                <div class="col-md-6 col-sm-12 mb-10">
+                    <input type="date" class="form-control" wire:model.live="startDate">
+                </div>
+                <div class="col-md-6">
+                    <input type="date" class="form-control" wire:model.live="endDate">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-10">
+            <select class="custom-select form-control" wire:model.live="status">
+                <option value="">All</option>
+                <option value="Pending">Pending</option>
+                <option value="Notified">Notified</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+    </div>
     <div class="table-responsive">
         <table class="table table-hover stripe" style="width: 100%;" wire:poll.keep-alive>
             <thead class="">
@@ -31,10 +59,24 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6">No result found</td>
+                    <td colspan="6" class="text-center">No result found</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
+    </div>
+    <div class="row mt-20">
+        <div class="col-md-3">
+            <select class="custom-select form-control" wire:model.live="per_page">
+                <option value="">Select Per Page</option>
+                <option value="1">1</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+        <div class="col-md-9 text-right">
+            {{ $rows->links() }}
+        </div>
     </div>
 </div>
