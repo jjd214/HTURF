@@ -83,33 +83,30 @@
             </div>
         </div>
         <div class="invoice-desc pb-30">
-            <div class="invoice-desc-head clearfix">
-                <div class="invoice-sub">Item</div>
-                <div class="invoice-rate">Price</div>
-                <div class="invoice-hours">Quantity</div>
-                <div class="invoice-subtotal">Total</div>
-            </div>
-            <div class="invoice-desc-body">
-                <ul>
-                @php
-                    $total = 0;
-                @endphp
-                @foreach ($cart as $item)
-                {{-- @php
-                    $itemTotal = $item->selling_price * $item->qty;
-                    $total += $itemTotal;
-                @endphp --}}
-                <li class="clearfix">
-                    <div class="invoice-sub">{{ $item['name'] }}</div>
-                    <div class="invoice-rate">{{ number_format($item['price']) }}</div>
-                    <div class="invoice-hours">{{ $item['quantity'] }}</div>
-                    <div class="invoice-subtotal">
-                        <span class="weight-600">{{ number_format($item['price'] * $item['quantity']) }}</span>
-                    </div>
-                </li>
-                @endforeach
-                </ul>
-            </div>
+            <table class="table" style="margin-bottom: 200px;">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Item</th>
+                        <th>Sku</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($cart as $item)
+                    <tr>
+                        <td>{{ $item['name'] }}</td>
+                        <td>{{ $item['sku'] }}</td>
+                        <td>{{ $item['size'] }}</td>
+                        <td>{{ number_format($item['price']) }}</td>
+                        <td>{{ $item['quantity'] }}</td>
+                        <td>{{ number_format($item['price'] * $item['quantity'], 0) }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
             <div class="invoice-desc-footer">
                 <div class="invoice-desc-head clearfix">
                     <div class="invoice-sub">Order info</div>
@@ -132,7 +129,7 @@
                                 {{ now()->format('F d, Y') }}
                             </div>
                             <div class="invoice-subtotal">
-                                <span class="weight-600 font-24 text-danger">{{ number_format($orderDetails['total_amount'], 2) }}</span>
+                                <span class="weight-600 font-24 text-danger">{{ number_format($orderDetails['total_amount'], 0) }}</span>
                             </div>
                         </li>
                     </ul>

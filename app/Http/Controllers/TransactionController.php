@@ -18,7 +18,7 @@ class TransactionController extends Controller
         $transactionItems = Transaction::where('transaction_code', $transaction_code)->first();
 
         $rows = TransactionItem::leftJoin('inventories', 'transaction_items.inventory_id', '=', 'inventories.id')
-            ->select('inventories.name', 'inventories.picture', 'inventories.selling_price', 'inventories.qty', 'transaction_items.*')
+            ->select('inventories.name', 'inventories.picture', 'inventories.selling_price', 'inventories.size', 'inventories.qty', 'inventories.sku', 'transaction_items.*')
             ->where('transaction_items.code', $transaction_code)
             ->get();
 

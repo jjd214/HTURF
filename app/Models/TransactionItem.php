@@ -12,6 +12,7 @@ class TransactionItem extends Model
     protected $fillable = [
         'code',
         'inventory_id',
+        'original_price',
         'qty',
         'total',
         'status'

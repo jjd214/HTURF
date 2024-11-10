@@ -28,33 +28,38 @@
             </div>
         </div>
         <div class="invoice-desc pb-30">
-            <div class="invoice-desc-head clearfix">
-                <div class="invoice-sub">Item</div>
-                <div class="invoice-rate">Price</div>
-                <div class="invoice-hours">Quantity</div>
-                <div class="invoice-subtotal">Total</div>
-            </div>
-            <div class="invoice-desc-body">
-                <ul>
-                @php
-                    $total = 0;
-                @endphp
-                @foreach ($rows as $item)
-                @php
-                    $itemTotal = $item->selling_price * $item->qty;
-                    $total += $itemTotal;
-                @endphp
-                <li class="clearfix">
-                    <div class="invoice-sub">{{ $item['name'] }}</div>
-                    <div class="invoice-rate">{{ number_format($item['selling_price']) }}</div>
-                    <div class="invoice-hours">{{ $item['qty'] }}</div>
-                    <div class="invoice-subtotal">
-                        <span class="weight-600">{{ number_format($item['selling_price'] * $item['qty']) }}</span>
-                    </div>
-                </li>
-                @endforeach
-                </ul>
-            </div>
+
+            <table class="table" style="margin-bottom: 200px;">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Item</th>
+                        <th>Sku</th>
+                        <th>Size</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $total = 0;
+                    @endphp
+                    @foreach ($rows as $item)
+                    @php
+                        $itemTotal = $item->original_price * $item->qty;
+                        $total += $itemTotal;
+                    @endphp
+                    <tr>
+                        <td>{{ $item['name'] }}</td>
+                        <td>{{ $item['sku'] }}</td>
+                        <td>{{ $item['size'] }}</td>
+                        <td>{{ number_format($item['original_price']) }}</td>
+                        <td>{{ $item['qty'] }}</td>
+                        <td>{{ number_format($itemTotal) }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
             <div class="invoice-desc-footer">
                 <div class="invoice-desc-head clearfix">
                     <div class="invoice-sub">Order info</div>

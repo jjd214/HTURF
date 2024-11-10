@@ -174,6 +174,7 @@ class CreateSales extends Component
                 TransactionItem::create([
                     'code' => $this->order_details['transaction_code'],
                     'inventory_id' => $productId,
+                    'original_price' => $cartItem['price'],
                     'qty' => $cartItem['quantity'],
                     'status' => 'Paid'
                 ]);
