@@ -61,7 +61,7 @@
                         class="sorting"
                         wire:click="setSortBy('expiry_date')"
                         style="width: 15%; cursor: pointer;">
-                        <b>Expiry Date</b>
+                        <b>Pullout date</b>
                         <i class="fa fa-arrow-up"
                            style="{{ $sortBy === 'expiry_date' && $sortDir === 'ASC' ? 'color: #007bff;' : 'color: #000;' }}"></i>
                         <i class="fa fa-arrow-down"
@@ -73,42 +73,29 @@
             </thead>
             <tbody>
                 @forelse ($rows as $item)
-                <tr @if($item->expiry_date && \Carbon\Carbon::parse($item->expiry_date)->isPast()) style="opacity: 0.5; pointer-events: none;" @endif wire:key={{ $item->id }}>
+                <tr wire:key={{ $item->id }}>
                     <td>
                         @if ($item->picture === null)
-                        <img src="{{ asset('storage/images/default-img.png') }}" width="70" class="img-thumbnail" alt="Default Image">
+                            <img src="{{ asset('storage/images/default-img.png') }}" width="70" class="img-thumbnail" alt="Default Image">
                         @else
-                        <img src="{{ asset('storage/images/consignments/'.$item->picture) }}" width="70" class="img-thumbnail" alt="{{ $item->name }}" style="height: 70px !important;">
+                            <div class="position-relative">
+                                <!-- Product Image -->
+                                <img src="{{ asset('storage/images/consignments/'.$item->picture) }}" width="70" class="img-thumbnail" alt="{{ $item->name }}" style="height: 70px !important;">
+
+                                <!-- Pullout Date Notification Icon if Expiry Date Passed -->
+                                @if($item->expiry_date && \Carbon\Carbon::parse($item->expiry_date)->isPast())
+                                    <span class="position-absolute top-0 end-0 p-1" style="z-index: 10; color: red;">
+                                        <i class="fa fa-exclamation-triangle" title="Pullout Date Passed"></i>
+                                    </span>
+                                @endif
+                            </div>
                         @endif
                     </td>
                     <td>{{ $item->sku }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->brand }}</td>
                     <td>
-                        @if ($item->expiry_date)
-                            @php
-                                $expiryDate = \Carbon\Carbon::parse($item->expiry_date);
-                                $today = \Carbon\Carbon::today();
-                                $diffInDays = $today->diffInDays($expiryDate);
-
-                                if ($diffInDays > 30) {
-                                    $badgeClass = 'badge-info'; // Long-term
-                                } elseif ($diffInDays <= 30 && $diffInDays > 14) {
-                                    $badgeClass = 'badge-warning'; // Near expiry
-                                } elseif ($diffInDays <= 14 && $diffInDays > 7) {
-                                    $badgeClass = 'badge-danger'; // Nearly expired
-                                } elseif ($diffInDays >= 0) {
-                                    $badgeClass = 'badge-secondary'; // Expired
-                                } else {
-
-                                }
-                            @endphp
-                            <span class="badge {{ $badgeClass }}">
-                                {{ $expiryDate->format('Y-m-d') }}
-                            </span>
-                        @else
-                            <span class="badge badge-secondary">N/A</span>
-                        @endif
+                        {{ \Carbon\Carbon::parse($item->expiry_date)->toFormattedDateString() }}
                     </td>
 
                     <td>

@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="d-flex" style="margin-top: 20px;">
-                    <button class="btn btn-success mr-2">Add product</button>
+                    <button class="btn btn-success mr-2">Save changes</button>
                     <button class="btn btn-info" wire:click.prevent="hideForm">Cancel</button>
                 </div>
 
@@ -164,7 +164,7 @@
                         </div>
                         <div class="col-md-6 mb-5">
                             <div class="form-group">
-                                <label for=""><b>Expiry date: </b></label>
+                                <label for=""><b>Pullout date: </b></label>
                                 <input type="date" wire:model.defer="expiry_date" class="form-control" placeholder="Consignment expiry date">
                                 @error('expiry_date') <span class="text-danger"><small>{{ $message }} </small> </span> @enderror
                             </div>

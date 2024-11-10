@@ -25,15 +25,6 @@
     </div>
 </div>
 
-<div class="mb-20" >
-    <ul>
-        <li><small><span class="badge badge-success">Expiry date</span> : 30 Days to expired</small></li>
-        <li><small><span class="badge badge-warning">Expiry date</span> : 14 Days to expired</small> </li>
-        <li><small><span class="badge badge-danger">Expiry date</span> : Below 7 days to expired</small> </li>
-        <li><small><span class="badge badge-secondary">Expiry date</span> : Expired</small> </li>
-    </ul>
-</div>
-
 <div class="card-box mb-20 pd-20">
     @livewire('admin.consign')
 </div>
