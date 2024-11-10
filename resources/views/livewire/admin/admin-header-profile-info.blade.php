@@ -41,9 +41,9 @@
                 data-toggle="dropdown"
             >
                 <span class="user-icon">
-                    <img src="" alt="" />
+                    <img src="{{ $user->picture }}" alt="{{ $user->name }}" />
                 </span>
-                <span class="user-name"></span>
+                <span class="user-name">{{ $user->name }}</span>
             </a>
             <div
                 class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list"

@@ -43,4 +43,13 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function getPictureAttribute($value)
+    {
+        if ($value) {
+            return asset('/images/users/consignors/' . $value);
+        } else {
+            return asset('/images/users/default-avatar.png');
+        }
+    }
 }

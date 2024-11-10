@@ -11,7 +11,7 @@ class AdminProfileTabs extends Component
 {
     public $tab = null;
     public $tabname = "personal_details";
-    protected $queryString = ['tab'];
+    protected $queryString = ['tab' => ['keep' => true]];
 
     public $name, $username, $email, $admin_id;
 
