@@ -126,9 +126,15 @@
     <!-- Receipt Column -->
     <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 mb-4">
         <div class="card-box height-100-p overflow-hidden pd-20 shadow-sm border rounded bg-white">
+            @if ($paymentDetails->status === "Completed")
+            <h6 class="mb-3"><b>Date payed: </b> {{ \Carbon\Carbon::parse($paymentDetails['updated_at'])->format('F j, Y') }}</h6>
+            @elseif($paymentDetails->status === "Notified")
+            <h6 class="mb-3"><b>Date notified: </b> {{ \Carbon\Carbon::parse($paymentDetails['updated_at'])->format('F j, Y') }}</h6>
+            @else
             <h6 class="mb-3"><b>Date purchased: </b> {{ \Carbon\Carbon::parse($paymentDetails['created_at'])->format('F j, Y') }}</h6>
+            @endif
             <div class="receipt-content">
-                <p><small><b>Date:</b> {{ now()->setTimezone('Asia/Manila')->format('F j, Y h:i A') }}</small></p>
+                <p><small><b>Reference number:</b> {{ ($paymentDetails['status'] === "Completed") ? $paymentDetails['reference_no'] ?? "xxxxxxxxxx" : "Not yet paid" }}</small></p>
                 <p><small><b>Payment Code:</b> {{ $paymentDetails['payment_code'] }}</small></p>
                 <p><small><b>Status:</b>
                     @if ($paymentDetails['status'] === 'Pending')

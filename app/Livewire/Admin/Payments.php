@@ -60,6 +60,7 @@ class Payments extends Component
         if (!empty($this->search)) {
             $query->where(function ($q) {
                 $q->where('payments.payment_code', 'like', '%' . $this->search . '%')
+                    ->orWhere('payments.reference_no', $this->search)
                     ->orWhere('users.name', 'like', '%' . $this->search . '%')
                     ->orWhere('users.username', 'like', '%' . $this->search . '%')
                     ->orWhere('users.email', 'like', '%' . $this->search . '%');

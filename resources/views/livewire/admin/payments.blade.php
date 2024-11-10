@@ -5,7 +5,7 @@
                 <div class="input-group-prepend custom">
                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                 </div>
-                <input type="text" class="form-control" wire:model.live.debounce.300ms="search" placeholder="Search payment">
+                <input type="text" id="search" class="form-control" wire:model.live.debounce.300ms="search" placeholder="Payment, Consignor, or Ref. No.">
             </div>
         </div>
         <div class="col-md-6 col-sm-12 mb-10">
