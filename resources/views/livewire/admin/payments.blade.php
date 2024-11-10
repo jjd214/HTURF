@@ -51,7 +51,9 @@
                             {{ $item->status }}
                         </span>
                     </td>
-                    <td>{{ ($item->date_of_payment === null) ? 'Not yet emailed' : $item->date_of_payment }}</td>
+                    <td>
+                        {{ ($item->date_of_payment === null) ? 'Not yet emailed' : \Carbon\Carbon::parse        ($item->date_of_payment)->toFormattedDateString() }}
+                    </td>
                     <td><i class="fa fa-user-circle fa-sm ml-2"></i>
                         {{ $item->consignor_name }}
                     </td>

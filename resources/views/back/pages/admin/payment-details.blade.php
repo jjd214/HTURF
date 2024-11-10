@@ -221,7 +221,7 @@
                     </div>
                 </div>
                 @elseif ($paymentDetails['status'] === "Notified")
-                <form action="{{ route('admin.payment.complete-payment-handler') }}" method="POST">
+                <form action="{{ route('admin.payment.complete-payment-handler') }}" method="POST" class="mb-10">
                     @csrf
                     <input type="hidden" name="payment_id" value="{{ $paymentDetails['id'] }}">
                     <button class="btn btn-success">
@@ -229,10 +229,138 @@
                     </button>
                 </form>
                 @else
-                <p class="text-center"><small><b>Thank you for your purchase!</b></small></p>
+                <p class="text-center mt-10"><small><b>Thank you for your purchase!</b></small></p>
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-primary" onclick="printReceipt()">Print as receipt</button>
+                </div>
                 @endif
             </div>
         </div>
     </div>
 </div>
+
+<div class="thermal-print" id="thermal-receipt" style="display: none;">
+    <style>
+        .thermal-print {
+            width: 250px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.4em;
+            padding: 10px;
+        }
+        .thermal-print .text-center {
+            text-align: center;
+        }
+        .thermal-print hr {
+            border: none;
+            border-top: 1px dashed #000;
+            margin: 8px 0;
+        }
+        .thermal-print .section {
+            margin-bottom: 8px;
+        }
+        .thermal-print .item-detail, .thermal-print .total-detail {
+            display: flex;
+            justify-content: space-between;
+        }
+        .thermal-print .label {
+            font-weight: bold;
+        }
+    </style>
+
+    <!-- Store Details -->
+    <div class="section text-center">
+        <h3>{{ get_settings()->site_name }}</h3>
+        <p>{{ get_settings()->site_email }}</p>
+        <p>{{ get_settings()->site_phone }}</p>
+    </div>
+    <hr>
+
+    <!-- Receipt Header -->
+    <div class="section text-center">
+        <h4>Payment Receipt</h4>
+        <p>Reference No: <strong>{{ $paymentDetails['reference_no'] ?? '123456789' }}</strong></p>
+        <p>Date: {{ now()->format('F d, Y - h:i A') }}</p>
+    </div>
+    <hr>
+
+    <!-- Consignor Details -->
+    <div class="section">
+        <p><span class="label">Consignor:</span> {{ $consignorDetails['name'] }}</p>
+    </div>
+    <hr>
+
+    <!-- Item Details -->
+    <div class="section">
+        <p class="label">Item:</p>
+        <div class="item-detail">
+            <span><b>Name</b></span>
+            <span>{{ $itemDetails['name'] }}</span>
+        </div>
+        <div class="item-detail">
+            <span><b>SKU</b></span>
+            <span>{{ $itemDetails['sku'] }}</span>
+        </div>
+        <div class="item-detail">
+            <span><b>Price</b></span>
+            <span>{{ number_format($itemDetails['selling_price'], 2) }}</span>
+        </div>
+        <div class="item-detail">
+            <span><b>Quantity</b></span>
+            <span>{{ $itemDetails['quantity'] }}</span>
+        </div>
+        <div class="item-detail">
+            <span><b>Subtotal</b></span>
+            <span>{{ number_format($itemDetails['selling_price'] * $itemDetails['quantity'], 2) }}</span>
+        </div>
+        <div class="item-detail">
+            <span><b>Tax</b></span>
+            <span>{{ number_format($paymentDetails['tax'], 2) }}</span>
+        </div>
+        <div class="item-detail">
+            <span class="label"><b>Total</b></span>
+            <span class="label">{{ number_format($paymentDetails['total'], 2) }}</span>
+        </div>
+    </div>
+    <hr>
+
+    <!-- Totals and Payment -->
+    <div class="section">
+        <div class="total-detail">
+            <span class="label"><b>Total Amount:</b></span>
+            <span>{{ number_format($paymentDetails['total'], 2) }}</span>
+        </div>
+        <div class="total-detail">
+            <span class="label"><b>Payment Method:</b></span>
+            <span>Cash</span>
+        </div>
+    </div>
+    <hr>
+
+    <!-- Footer -->
+    <div class="section text-center">
+        <p>Thank you for your purchase!</p>
+        <p>Visit us again!</p>
+    </div>
+</div>
+
 @endsection
+@push('scripts')
+<script>
+    function printReceipt() {
+        var receiptContent = document.getElementById('thermal-receipt').innerHTML;
+        var printWindow = window.open('', '', 'width=320,height=600');
+        printWindow.document.write('<html><head><title>Print Receipt</title>');
+        printWindow.document.write('<style>');
+        printWindow.document.write('body { font-family: monospace; font-size: 12px; text-align: center; margin: 0; padding: 10px; }');
+        printWindow.document.write('hr { border: none; border-top: 1px dashed #000; margin: 10px 0; }');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(receiptContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+    }
+</script>
+@endpush

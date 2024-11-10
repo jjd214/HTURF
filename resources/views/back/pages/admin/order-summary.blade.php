@@ -144,9 +144,9 @@
 </div>
 
 <div id="thermal-receipt" class="thermal-receipt" style="display: none;">
-    <h3 class="text-center">Hype Archive Ph</h3>
-    <p class="text-center">info@hypearchive.test</p>
-    <p class="text-center">09394331558</p>
+    <h3 class="text-center">{{ get_settings()->site_name }}</h3>
+    <p class="text-center">{{ get_settings()->site_email }}</p>
+    <p class="text-center">{{ get_settings()->site_phone }}</p>
     <hr>
     <h4 class="text-center">Order Receipt</h4>
     <p class="text-center">Transaction ID: <strong>{{ $orderDetails['transaction_code'] }}</strong></p>
@@ -209,5 +209,5 @@
         printWindow.print();
         printWindow.close();
     }
-    </script>
+</script>
 @endpush

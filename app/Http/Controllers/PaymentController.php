@@ -119,8 +119,15 @@ class PaymentController extends Controller
     public function completePaymentHandler(Request $request)
     {
         $payment_details = Payment::find($request->payment_id);
+
+        if (!$payment_details->reference_no) {
+            do {
+                $reference_number = mt_rand(1000000000, 9999999999);
+            } while (Payment::where('reference_no', $reference_number)->exists());
+            $payment_details->reference_no = $reference_number;
+        }
+
         $payment_details->status = "Completed";
-        $payment_details->save();
 
         if ($payment_details->save()) {
             return redirect()->back()->with('success', 'Payment completed 👍');
