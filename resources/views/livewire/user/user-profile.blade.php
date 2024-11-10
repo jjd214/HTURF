@@ -1,10 +1,12 @@
 <div>
     <div class="row">
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-30">
-            <div class="pd-20 card-box height-100-p">
+            <div class="card-box pd-20 fixed-height-card overflow-hidden">
+            {{-- <div class="pd-20 card-box height-100-p"> --}}
                 <div class="profile-photo">
-                    <a href="modal" data-toggle="modal" data-target="#modal" class="edit-avatar"><i class="fa fa-pencil"></i></a>
-                    <img src="{{ $user->picture }}" alt="" class="avatar-photo">
+                    <a href="javascript:;" onclick="event.preventDefault();document.getElementById('userProfilePictureFile').click();" class="edit-avatar"><i class="fa fa-pencil"></i></a>
+                    <img src="{{ $user->picture }}" alt="" class="avatar-photo" id="userProfilePicture">
+                    <input type="file" name="userProfilePictureFile" id="userProfilePictureFile" class="d-none" style="opacity: 0;">
                 </div>
                 <h5 class="text-center h5 mb-0">{{ $user->name }}</h5>
                 <p class="text-center text-muted font-14">
@@ -69,7 +71,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="">Addresss</label>
-                                                    <input type="text" class="form-control" placeholder="Enter address" wire:model.live='address'>
+                                                    <textarea class="form-control" placeholder="Enter your address" wire:model.live='address'></textarea>
                                                     @error('address')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror

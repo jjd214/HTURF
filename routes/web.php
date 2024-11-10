@@ -94,6 +94,7 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
             Route::get('/home', 'home')->name('home');
             Route::post('/logout', 'logoutHandler')->name('logout-handler');
             Route::get('/profile', 'profileView')->name('profile');
+            Route::post('/change-profile-picture', 'changeProfilePicture')->name('change-profile-picture');
         });
     });
 });

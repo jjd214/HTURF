@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -295,5 +296,27 @@ class UserController extends Controller
     public function profileView(Request $request)
     {
         return view('back.pages.user.profile');
+    }
+
+    public function changeProfilePicture(Request $request)
+    {
+        $consignor = User::findOrFail(auth('user')->id());
+        $path = 'images/users/consignors/';
+        $file = $request->file('userProfilePictureFile');
+        $old_picture = $consignor->getAttributes()['picture'];
+        $file_path = $path . $old_picture;
+        $filename = 'USER_IMG_' . rand(2, 1000) . $consignor->id . time() . uniqid() . '.jpg';
+
+        $upload = $file->move(public_path($path), $filename);
+
+        if ($upload) {
+            if ($old_picture != null && File::exists(public_path($path . $old_picture))) {
+                File::delete(public_path($path . $old_picture));
+            }
+            $consignor->update(['picture' => $filename]);
+            return response()->json(['status' => 1]);
+        } else {
+            return response()->json(['status' => 0]);
+        }
     }
 }

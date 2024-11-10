@@ -25,3 +25,61 @@
 @livewire('user.user-profile')
 
 @endsection
+@push('scripts')
+<script>
+$('input[type="file"][name="userProfilePictureFile"][id="userProfilePictureFile"]').ijaboCropTool({
+    preview: '#userProfilePicture',
+    setRatio:1,
+    allowedExtensions: ['jpg','jpeg','png'],
+    buttonsText:['CROP','QUIT'],
+    buttonsColor:['#30bf7d','#ee5155',-15],
+    processUrl: '{{ route("consignor.change-profile-picture")  }}',
+    withCSRF:['_token','{{ csrf_token() }}'],
+    onSuccess:function(message,element,status){
+        Livewire.dispatch('updateAdminHeaderInfo');
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Toast.fire({
+            icon: 'success',
+            title: 'Your profile picture has been successfully updated.'
+        });
+    },
+    onError:function(message,element,status){
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Toast.fire({
+            icon: 'error',
+            title: 'Something went wrong on server side.'
+        });
+    }
+});
+</script>
+@endpush
