@@ -84,7 +84,7 @@
                             <button wire:loading.attr="disabled" type="submit" class="btn btn-primary">
                                 <div wire:loading.delay class="spinner-border spinner-border-sm" role="status" >
                                     <span class="visually-hidden"></span>
-                                  </div>
+                                </div>
                                 Update password
                             </button>
 
