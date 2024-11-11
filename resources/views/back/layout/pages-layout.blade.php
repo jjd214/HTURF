@@ -487,6 +487,18 @@
 								><span class="mtext">Home</span>
 							</a>
 						</li>
+                        <li>
+							<a  href="{{ route('consignor.home') }}" class="dropdown-toggle no-arrow {{ Route::is('consignor.home') ? 'active' : '' }}">
+                                <span class="micon bi bi-file-earmark-arrow-up"></span>
+								<span class="mtext">Consignment</span>
+							</a>
+						</li>
+                        <li>
+							<a href="invoice.html" class="dropdown-toggle no-arrow">
+								<span class="micon bi bi-chat-right-dots"></span
+								><span class="mtext">Chat</span>
+							</a>
+						</li>
                         <div class="dropdown-divider"></div>
 						</li>
 						<li>
@@ -497,6 +509,15 @@
 								<span class="micon bi bi-person"></span
 								><span class="mtext">Profile</span>
 							</a>
+						</li>
+                        <li>
+							<a  href="{{ route('consignor.logout-handler') }}" onclick="event.preventDefault();document.getElementById('userLogoutForm').submit();" class="dropdown-toggle no-arrow">
+                                <span class="micon bi bi-box-arrow-right"></span>
+								<span class="mtext">Logout</span>
+							</a>
+                            <form action="{{ route('consignor.logout-handler') }}" id="userLogoutForm" method="post">
+                                @csrf
+                            </form>
 						</li>
                         @endif
 					</ul>

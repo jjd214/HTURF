@@ -1,11 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\RefundController;
-use App\Http\Controllers\TransactionController;
+
+use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\PaymentController;
+use App\Http\Controllers\admin\RefundController;
+use App\Http\Controllers\admin\TransactionController;
+
+use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\user\ConsignmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -95,6 +98,12 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
             Route::post('/logout', 'logoutHandler')->name('logout-handler');
             Route::get('/profile', 'profileView')->name('profile');
             Route::post('/change-profile-picture', 'changeProfilePicture')->name('change-profile-picture');
+        });
+
+        Route::prefix('consignment')->name('consignment.')->group(function () {
+            Route::controller(ConsignmentController::class)->group(function () {
+                Route::get('/add', 'createConsignment')->name('add-consignment');
+            });
         });
     });
 });
