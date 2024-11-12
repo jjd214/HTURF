@@ -4,7 +4,9 @@
 		<!-- Basic Page Info -->
 		<meta charset="utf-8" />
 		<title>@yield('pageTitle')</title>
-
+        {{-- <meta name="description" content="@yield('pageDescription', 'Default description for the page')" />
+		<meta name="keywords" content="keyword1, keyword2, keyword3" />
+		<meta name="author" content="Your Site Name" /> --}}
 		<!-- Site favicon -->
 
 		<link
@@ -32,6 +34,24 @@
 			type="text/css"
 			href="/back/vendors/styles/icon-font.min.css"
 		/>
+        {{-- <!-- Mobile Specific Metas -->
+		<meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+        /> --}}
+        {{-- <meta property="og:type" content="website" />
+		<meta property="og:title" content="@yield('pageTitle')" />
+		<meta property="og:description" content="@yield('pageDescription', 'Default description for the page')" />
+		<meta property="og:image" content="/images/site/{{ get_settings()->site_image }}" />
+		<meta property="og:url" content="{{ url()->current() }}" />
+		<meta property="og:site_name" content="Your Site Name" />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="@yield('pageTitle')" />
+		<meta name="twitter:description" content="@yield('pageDescription', 'Default description for the page')" />
+		<meta name="twitter:image" content="/images/site/{{ get_settings()->site_image }}" /> --}}
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 		<link rel="stylesheet" type="text/css" href="/back/vendors/styles/style.css" />
@@ -488,7 +508,7 @@
 							</a>
 						</li>
                         <li>
-							<a  href="{{ route('consignor.home') }}" class="dropdown-toggle no-arrow {{ Route::is('consignor.home') ? 'active' : '' }}">
+							<a  href="{{ route('consignor.consignment.add-consignment') }}" class="dropdown-toggle no-arrow {{ Route::is('consignor.consignment.add-consignment') ? 'active' : '' }}">
                                 <span class="micon bi bi-file-earmark-arrow-up"></span>
 								<span class="mtext">Consignment</span>
 							</a>
