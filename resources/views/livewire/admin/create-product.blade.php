@@ -37,6 +37,7 @@
                     <div class="form-group">
                         <label for=""><b>Picture:</b></label>
                         <input type="file" class="form-control" multiple wire:model="pictures" accept="image/png, image/jpeg" id="picture-input">
+                        <span class="pd-5"><small><b>Note:</b> You can select multiple images</small></span>
                         @error('picture') <span class="text-danger"> {{ $message }} </span> @enderror
                         <div wire:loading wire:target="picture" class="spinner-grow spinner-grow-sm" role="status">
                             <span class="visually-hidden"></span>
@@ -115,34 +116,21 @@
                 </div>
             </div>
         </div>
-        @if ($pictures == null)
-        <div class="row d-none">
-            <div class="col-md-12">
-                <div class="card-box pd-20 mb-20">
-                    @if ($pictures)
-                    <div class="d-flex flex-wrap gap-4">
-                        @foreach ($pictures as $picture)
-                            <img src="{{ $picture->temporaryUrl() }}" class="img-thumbnail" style="width: 200px; height: 200px; object-fit: cover;">
-                        @endforeach
+        @if ($pictures)
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-box pd-20 mb-20">
+                        <div class="d-flex flex-wrap gap-4">
+                            @foreach ($pictures as $index => $picture)
+                                <img src="{{ $picture->temporaryUrl() }}"
+                                    class="img-thumbnail"
+                                    style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;"
+                                    wire:click.prevent="removePicture({{ $index }})">
+                            @endforeach
+                        </div>
                     </div>
-                    @endif
                 </div>
             </div>
-        </div>
-        @else
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card-box pd-20 mb-20">
-                    @if ($pictures)
-                    <div class="d-flex flex-wrap gap-4">
-                        @foreach ($pictures as $picture)
-                            <img src="{{ $picture->temporaryUrl() }}" class="img-thumbnail" style="width: 200px; height: 200px; margin-right: 10px; object-fit: cover;">
-                        @endforeach
-                    </div>
-                    @endif
-                </div>
-            </div>
-        </div>
         @endif
         <div class="d-flex mb-20">
             <button class="btn btn-success mr-2">Add product</button>

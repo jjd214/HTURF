@@ -38,6 +38,7 @@
                     <div class="form-group">
                         <label for=""><b>Picture:</b></label>
                         <input type="file" class="form-control" multiple wire:model="temporary_pictures" accept="image/png, image/jpeg" id="picture-input">
+                        <span class="pd-5"><small><b>Note:</b> You can select multiple images</small></span>
                         @error('picture') <span class="text-danger"> {{ $message }} </span> @enderror
                         <div wire:loading wire:target="picture" class="spinner-grow spinner-grow-sm" role="status">
                             <span class="visually-hidden"></span>
@@ -49,15 +50,6 @@
                             <span class="visually-hidden"></span>
                         </div>
                     </div>
-                    {{-- <div class="d-block mb-3" style="max-width: 250px;">
-                        @if ($temporary_picture)
-                        <img src="{{ $temporary_picture->temporaryUrl() }}" class="img-thumbnail" style="height: 200px;">
-                        @elseif ($pictures)
-                        <img src="{{ Storage::url('images/products/' . $pictures) }}" class="img-thumbnail" id="image-preview" style="height: 200px;">
-                        @else
-                        <img src="{{ asset('storage/images/default-img.png') }}" class="img-thumbnail" alt="Default Image" style="height: 200px;">
-                        @endif
-                    </div> --}}
                 </div>
 
             </div>

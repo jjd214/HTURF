@@ -60,6 +60,16 @@ class CreateProduct extends Component
         $this->dispatch('toast', type: 'success', message: 'Product added successfully.');
     }
 
+    public function removePicture($pictureIndex)
+    {
+        if (isset($this->pictures[$pictureIndex])) {
+            unset($this->pictures[$pictureIndex]);
+            // Re-index array to avoid gaps
+            $this->pictures = array_values($this->pictures);
+        }
+    }
+
+
     public function render()
     {
         return view('livewire.admin.create-product');

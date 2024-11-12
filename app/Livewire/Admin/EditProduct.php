@@ -100,6 +100,7 @@ class EditProduct extends Component
         }
     }
 
+
     public function removePicture($picture)
     {
         // Retrieve the product
@@ -126,7 +127,6 @@ class EditProduct extends Component
         // Update the local `pictures` array to reflect the changes
         $this->pictures = $imagePaths;
     }
-
 
 
 
