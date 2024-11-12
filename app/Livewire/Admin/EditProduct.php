@@ -128,8 +128,6 @@ class EditProduct extends Component
         $this->pictures = $imagePaths;
     }
 
-
-
     public function render()
     {
         return view('livewire.admin.edit-product');

@@ -12,7 +12,7 @@ class CreateConsign extends Component
 {
     use WithFileUploads;
 
-    public $name, $brand, $sku, $color, $size, $description, $picture, $visibility, $sex, $purchase_price, $selling_price, $commission_percentage, $qty, $consignor_id, $consignor_name, $start_date, $expiry_date;
+    public $name, $brand, $sku, $color, $size, $description, $pictures = [], $visibility, $sex, $purchase_price, $selling_price, $commission_percentage, $qty, $consignor_id, $consignor_name, $start_date, $expiry_date;
 
     protected $rules = [
         'name' => 'required',
@@ -22,7 +22,7 @@ class CreateConsign extends Component
         'size' => 'required|min:0',
         'qty' => 'required|integer|min:0',
         'description' => 'nullable',
-        'picture' => 'nullable|image',
+        'pictures.*' => 'nullable|image',
         'visibility' => 'required',
         'purchase_price' => 'required|numeric|min:0',
         'selling_price' => 'required|numeric|min:0',
@@ -61,10 +61,15 @@ class CreateConsign extends Component
         $consignment->user()->associate($consignor);
         $consignment->save();
 
-        if ($this->picture) {
-            $filename = 'IMG_' . uniqid() . '.' . $this->picture->getClientOriginalExtension();
-            $validatedData['picture'] = $filename;
-            $this->picture->storeAs('images/consignments/', $filename, 'public');
+        $imagePaths = [];
+
+        if ($this->pictures) {
+            foreach ($this->pictures as $picture) {
+                $filename = 'IMG_' . uniqid() . '.' . $picture->getClientOriginalExtension();
+                $picture->storeAs('images/consignments/', $filename, 'public');
+                array_push($imagePaths, $filename);
+            }
+            $validatedData['pictures'] = json_encode($imagePaths);
         }
 
         $inventory = new InventoryModel();
@@ -75,7 +80,7 @@ class CreateConsign extends Component
         $inventory->color = $validatedData['color'];
         $inventory->size = $validatedData['size'];
         $inventory->description = $validatedData['description'];
-        $inventory->picture = $validatedData['picture'];
+        $inventory->picture = $validatedData['pictures'];
         $inventory->visibility = $validatedData['visibility'];
         $inventory->purchase_price = $validatedData['purchase_price'];
         $inventory->selling_price = $validatedData['selling_price'];
@@ -86,6 +91,15 @@ class CreateConsign extends Component
 
         $this->reset();
         $this->dispatch('toast', type: 'success', message: 'Consignment added successfully.');
+    }
+
+    public function removePicture($pictureIndex)
+    {
+        if (isset($this->pictures[$pictureIndex])) {
+            unset($this->pictures[$pictureIndex]);
+            // Re-index array to avoid gaps
+            $this->pictures = array_values($this->pictures);
+        }
     }
 
     public function render()

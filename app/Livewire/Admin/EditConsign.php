@@ -14,7 +14,7 @@ class EditConsign extends Component
 {
     use WithFileUploads;
 
-    public $consignment_id, $name, $brand, $sku, $color, $size, $description, $temporary_picture, $picture, $visibility, $sex, $purchase_price, $selling_price, $commission_percentage, $qty, $consignor_account, $consignor_name, $start_date, $expiry_date;
+    public $consignment_id, $name, $brand, $sku, $color, $size, $description, $temporary_pictures = [], $pictures = [], $visibility, $sex, $purchase_price, $selling_price, $commission_percentage, $qty, $consignor_account, $consignor_name, $start_date, $expiry_date;
 
     protected $rules = [
         'name' => 'required',
@@ -24,7 +24,7 @@ class EditConsign extends Component
         'size' => 'required|min:0',
         'qty' => 'required|integer|min:0',
         'description' => 'nullable',
-        'picture' => 'nullable',
+        'pictures.*' => 'nullable',
         'visibility' => 'required',
         'purchase_price' => 'required|numeric|min:0',
         'selling_price' => 'required|numeric|min:0',
@@ -55,7 +55,7 @@ class EditConsign extends Component
         $this->color = $product->color;
         $this->size = $product->size;
         $this->description = $product->description;
-        $this->picture = $product->picture;
+        $this->pictures = explode(',', $product->picture);
         $this->visibility = $product->visibility;
         $this->sex = $product->sex;
         $this->purchase_price = $product->purchase_price;
@@ -73,7 +73,7 @@ class EditConsign extends Component
     public function hideForm()
     {
         $this->editForm = false;
-        $this->temporary_picture = null;
+        $this->temporary_pictures = null;
     }
 
     public function store()
@@ -83,16 +83,15 @@ class EditConsign extends Component
         $product = InventoryModel::where('consignment_id', $this->consignment_id)->first();
         $consignment = Consignment::find($this->consignment_id);
 
-        if ($this->temporary_picture) {
-            $path = 'public/images/consignments/';
-            $old_picture = $product->picture;
-            $filename = 'IMG_' . uniqid() . '.' . $this->temporary_picture->getClientOriginalExtension();
+        $imagePaths = json_decode($product->picture, true);
 
-            if ($old_picture !== null && Storage::exists($path . $old_picture)) {
-                Storage::delete($path . $old_picture);
+        if ($this->temporary_pictures) {
+            foreach ($this->temporary_pictures as $temporary_picture) {
+                $filename = 'IMG_' . uniqid() . '.' . $temporary_picture->getClientOriginalExtension();
+                $temporary_picture->storeAs('images/consignments/', $filename, 'public');
+                array_push($imagePaths, $filename);
             }
-            $this->temporary_picture->storeAs('images/consignments/', $filename, 'public');
-            $product->picture = $filename;
+            $product->picture = json_encode($imagePaths);
         }
 
         $product->name = $this->name;
@@ -110,12 +109,49 @@ class EditConsign extends Component
         $consignment->start_date = $this->start_date;
         $consignment->expiry_date = $this->expiry_date;
 
-        $this->temporary_picture = null;
+        $this->temporary_pictures = null;
 
         $product->save();
         $consignment->save();
         $this->hideForm();
         $this->dispatch('toast', type: 'success', message: 'Consignment updated successfully.');
+    }
+
+    public function removeTemporaryPicture($pictureIndex)
+    {
+        if (isset($this->temporary_pictures[$pictureIndex])) {
+            unset($this->temporary_pictures[$pictureIndex]);
+            // Re-index array to avoid gaps
+            $this->temporary_pictures = array_values($this->temporary_pictures);
+        }
+    }
+
+
+    public function removePicture($picture)
+    {
+        // Retrieve the product
+        $product = InventoryModel::where('consignment_id', $this->consignment_id)->first();
+
+        // Decode the JSON array from the `picture` column
+        $imagePaths = json_decode($product->picture, true);
+
+        // Find the index of the picture to be removed and unset it
+        if (($key = array_search($picture, $imagePaths)) !== false) {
+            unset($imagePaths[$key]);
+
+            // Delete the image file from storage if it exists
+            $filePath = 'images/consignments/' . $picture;
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+        }
+
+        // Update the product's `picture` column with the modified array
+        $product->picture = json_encode(array_values($imagePaths)); // Re-index the array
+        $product->save();
+
+        // Update the local `pictures` array to reflect the changes
+        $this->pictures = $imagePaths;
     }
 
     public function render()

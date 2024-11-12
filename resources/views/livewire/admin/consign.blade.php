@@ -75,20 +75,25 @@
                 @forelse ($rows as $item)
                 <tr wire:key={{ $item->id }}>
                     <td>
-                        @if ($item->picture === null)
+                        @php
+                            // Decode the picture array from JSON
+                            $pictures = json_decode($item->picture, true);
+                            // Get the first picture if available
+                            $firstPicture = $pictures && count($pictures) > 0 ? $pictures[0] : null;
+                        @endphp
+
+                        @if ($firstPicture === null)
                             <img src="{{ asset('storage/images/default-img.png') }}" width="70" class="img-thumbnail" alt="Default Image">
                         @else
-                            <div class="position-relative">
-                                <!-- Product Image -->
-                                <img src="{{ asset('storage/images/consignments/'.$item->picture) }}" width="70" class="img-thumbnail" alt="{{ $item->name }}" style="height: 70px !important;">
-
-                                <!-- Pullout Date Notification Icon if Expiry Date Passed -->
-                                @if($item->expiry_date && \Carbon\Carbon::parse($item->expiry_date)->isPast())
-                                    <span class="position-absolute top-0 end-0 p-1" style="z-index: 10; color: red;">
-                                        <i class="fa fa-exclamation-triangle" title="Pullout Date Passed"></i>
-                                    </span>
-                                @endif
-                            </div>
+                        <div class="position-relative">
+                            <img src="{{ asset('storage/images/consignments/'.$firstPicture) }}" width="70" class="img-thumbnail" alt="{{ $item->name }}" style="height: 70px !important;">
+                            <!-- Pullout Date Notification Icon if Expiry Date Passed -->
+                            @if($item->expiry_date && \Carbon\Carbon::parse($item->expiry_date)->isPast())
+                            <span class="position-absolute top-0 end-0 p-1" style="z-index: 10; color: red;">
+                                <i class="fa fa-exclamation-triangle" title="Pullout Date Passed"></i>
+                            </span>
+                            @endif
+                        </div>
                         @endif
                     </td>
                     <td>{{ $item->sku }}</td>

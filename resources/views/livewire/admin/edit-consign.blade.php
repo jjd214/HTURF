@@ -37,7 +37,8 @@
                     </div>
                     <div class="form-group">
                         <label for=""><b>Picture:</b></label>
-                        <input type="file" class="form-control" wire:model="temporary_picture" accept="image/png, image/jpeg" id="picture-input">
+                        <input type="file" class="form-control" multiple wire:model="temporary_pictures" accept="image/png, image/jpeg" id="picture-input">
+                        <span class="pd-5"><small><b>Note:</b> You can select multiple images</small></span>
                         @error('picture') <span class="text-danger"> {{ $message }} </span> @enderror
                         <div wire:loading wire:target="picture" class="spinner-grow spinner-grow-sm" role="status">
                             <span class="visually-hidden"></span>
@@ -49,22 +50,7 @@
                             <span class="visually-hidden"></span>
                         </div>
                     </div>
-                    <div class="mb-3" style="max-width: 250px; height: 200px;">
-                        @if ($temporary_picture)
-                        <img src="{{ $temporary_picture->temporaryUrl() }}" class="img-thumbnail" style="height: 200px;">
-                        @elseif ($picture)
-                        <img src="{{ Storage::url('images/consignments/' . $picture) }}" class="img-thumbnail" id="image-preview" style="height: 200px;">
-                        @else
-                        <img src="{{ asset('storage/images/default-img.png') }}" class="img-thumbnail" alt="Default Image" style="height: 200px;">
-                        @endif
-                    </div>
                 </div>
-
-                <div class="d-flex" style="margin-top: 20px;">
-                    <button class="btn btn-success mr-2">Save changes</button>
-                    <button class="btn btn-info" wire:click.prevent="hideForm">Cancel</button>
-                </div>
-
             </div>
             <div class="col-md-6 mb-20">
                 <div class="card-box min-height-100px pd-20" style="position: relative;">
@@ -173,6 +159,55 @@
                 </div>
             </div>
         </div>
+        @if ($pictures && !$temporary_pictures)
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-box pd-20 mb-20">
+                            <div class="d-flex flex-wrap gap-4">
+                                @foreach ($pictures as $picture)
+                                    <img src="{{ Storage::url('images/consignments/' . trim($picture, '[]"')) }}" class="img-thumbnail" style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;" wire:click.prevent="removePicture({{ json_encode(trim($picture, '[]"')) }})"
+                                    >
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @elseif($temporary_pictures)
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-box pd-20 mb-20">
+                            <div class="d-flex flex-wrap gap-4">
+                                @if($pictures)
+                                    @foreach ($pictures as $picture)
+                                        <img src="{{ Storage::url('images/consignments/' . trim($picture, '[]"')) }}" class="img-thumbnail" style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;" wire:click.prevent="removePicture({{ json_encode(trim($picture, '[]"')) }})"
+                                        >
+                                    @endforeach
+                                @endif
+                                @foreach ($temporary_pictures as $index => $tempPicture)
+                                    <img src="{{ $tempPicture->temporaryUrl() }}" class="img-thumbnail"
+                                        style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;"
+                                        wire:click.prevent="removeTemporaryPicture({{ $index }})">
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-box pd-20 mb-20">
+                            <div class="d-flex flex-wrap gap-4">
+                                <img src="{{ asset('storage/images/default-img.png') }}" class="img-thumbnail" style="width: 200px; height: 200px; object-fit: cover;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            <div class="d-flex mb-20">
+                <button class="btn btn-success mr-2">Save changes</button>
+                <button class="btn btn-info" wire:click.prevent="hideForm">Cancel</button>
+            </div>
+
         <script>
             $(document).ready(function() {
                 $('.custom-select2').select2();

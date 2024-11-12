@@ -38,7 +38,7 @@
                         <label for=""><b>Picture:</b></label>
                         <input type="file" class="form-control" multiple wire:model="pictures" accept="image/png, image/jpeg" id="picture-input">
                         <span class="pd-5"><small><b>Note:</b> You can select multiple images</small></span>
-                        @error('picture') <span class="text-danger"> {{ $message }} </span> @enderror
+                        @error('pictures') <span class="text-danger"> {{ $message }} </span> @enderror
                         <div wire:loading wire:target="picture" class="spinner-grow spinner-grow-sm" role="status">
                             <span class="visually-hidden"></span>
                         </div>
