@@ -90,7 +90,11 @@
                     @if ($itemDetails['picture'] === null)
                         <img src="{{ asset('storage/images/default-img.png') }}" alt="Item Image" class="img-thumbnail" style="width: 200px; height: 200px;">
                     @else
-                        <img src="{{ asset('storage/images/consignments/'.$itemDetails->picture) }}" alt="Item Image" class="img-thumbnail" style="width: 100px; height: auto;">
+                    @php
+                        $pictures = json_decode($itemDetails->picture, true);
+                        $firstPicture = $pictures && count($pictures) > 0 ? $pictures[0] : null;
+                    @endphp
+                        <img src="{{ asset('storage/images/consignments/'.$firstPicture) }}" alt="Item Image" class="img-thumbnail" style="width: 100px; height: auto;">
                     @endif
                 </div>
             </div>

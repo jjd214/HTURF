@@ -41,13 +41,17 @@
                 <tbody>
                     @forelse ($rows as $item)
                     <tr wire:key={{ $item->id }}>
+                        @php
+                        $pictures = json_decode($item['picture'], true);
+                        $firstPicture = $pictures && count($pictures) > 0 ? $pictures[0] : null;
+                        @endphp
                         <td>
-                            @if ($item['picture'] == null)
+                            @if ($firstPicture == null)
                                 <img src="{{ asset('storage/images/default-img.png') }}" width="70" style="height: 70px !important;" height="70" alt="Default Image" class="img-thumbnail">
-                            @elseif (Storage::exists('public/images/products/' . $item['picture']))
-                                <img src="{{ asset('storage/images/products/' . $item['picture']) }}" width="70" style="height: 70px !important;" alt="{{ $item['picture'] }}" class="img-thumbnail">
-                            @elseif (Storage::exists('public/images/consignments/' . $item['picture']))
-                                <img src="{{ asset('storage/images/consignments/' . $item['picture']) }}" width="70" style="height: 70px !important;" alt="{{ $item['picture'] }}" class="img-thumbnail">
+                            @elseif (Storage::exists('public/images/products/' . $firstPicture))
+                                <img src="{{ asset('storage/images/products/' . $firstPicture) }}" width="70" style="height: 70px !important;" alt="{{ $firstPicture }}" class="img-thumbnail">
+                            @elseif (Storage::exists('public/images/consignments/' . $firstPicture))
+                                <img src="{{ asset('storage/images/consignments/' . $firstPicture) }}" width="70" style="height: 70px !important;" alt="{{ $firstPicture }}" class="img-thumbnail">
                             @endif
                         </td>
                         <td>{{ $item['sku'] }}</td>
@@ -108,13 +112,17 @@
                 <tbody>
                     @forelse ($cart as $item)
                     <tr>
+                        @php
+                        $pictures = json_decode($item['picture'], true);
+                        $firstPicture = $pictures && count($pictures) > 0 ? $pictures[0] : null;
+                        @endphp
                         <td>
-                            @if ($item['picture'] == null)
+                            @if ($firstPicture == null)
                                 <img src="{{ asset('storage/images/default-img.png') }}" width="70" style="height: 70px !important;" height="70" alt="Default Image" class="img-thumbnail">
-                            @elseif (Storage::exists('public/images/products/' . $item['picture']))
-                                <img src="{{ asset('storage/images/products/' . $item['picture']) }}" width="70" style="height: 70px !important;" alt="{{ $item['picture'] }}" class="img-thumbnail">
-                            @elseif (Storage::exists('public/images/consignments/' . $item['picture']))
-                                <img src="{{ asset('storage/images/consignments/' . $item['picture']) }}" width="70" style="height: 70px !important;" alt="{{ $item['picture'] }}" class="img-thumbnail">
+                            @elseif (Storage::exists('public/images/products/' . $firstPicture))
+                                <img src="{{ asset('storage/images/products/' . $firstPicture) }}" width="70" style="height: 70px !important;" alt="{{ $firstPicture }}" class="img-thumbnail">
+                            @elseif (Storage::exists('public/images/consignments/' . $firstPicture))
+                                <img src="{{ asset('storage/images/consignments/' . $firstPicture) }}" width="70" style="height: 70px !important;" alt="{{ $firstPicture }}" class="img-thumbnail">
                             @endif
                         </td>
                         <td>{{ $item['sku'] }}</td>
