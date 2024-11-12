@@ -64,12 +64,20 @@
                 @forelse ($rows as $item)
                 <tr wire:key={{ $item->id }}>
                     <td>
-                        @if ($item->picture === null)
-                        <img src="{{ asset('storage/images/default-img.png') }}" width="70" class="img-thumbnail" alt="Default Image">
+                        @php
+                            // Decode the picture array from JSON
+                            $pictures = json_decode($item->picture, true);
+                            // Get the first picture if available
+                            $firstPicture = $pictures && count($pictures) > 0 ? $pictures[0] : null;
+                        @endphp
+
+                        @if ($firstPicture === null)
+                            <img src="{{ asset('storage/images/default-img.png') }}" width="70" class="img-thumbnail" alt="Default Image">
                         @else
-                        <img src="{{ asset('storage/images/products/'.$item->picture) }}" width="70" class="img-thumbnail" alt="{{ $item->name }}" style="height: 70px !important;">
+                            <img src="{{ asset('storage/images/products/'.$firstPicture) }}" width="70" class="img-thumbnail" alt="{{ $item->name }}" style="height: 70px !important;">
                         @endif
                     </td>
+
                     <td>{{ $item->sku }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->brand }}</td>

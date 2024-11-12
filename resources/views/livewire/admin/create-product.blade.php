@@ -3,7 +3,7 @@
         @csrf
         <div class="row">
             <div class="col-md-6 mb-20">
-                <div class="card-box height-100-p pd-20" style="position: relative; height: 1050px;">
+                <div class="card-box height-100-p pd-20" style="position: relative; height: auto;">
                     <div class="form-group">
                         <label for=""><b>Product name:</b></label>
                         <input type="text" class="form-control" wire:model="name" placeholder="Enter product name">
@@ -36,7 +36,7 @@
                     </div>
                     <div class="form-group">
                         <label for=""><b>Picture:</b></label>
-                        <input type="file" class="form-control" wire:model="picture" accept="image/png, image/jpeg" id="picture-input">
+                        <input type="file" class="form-control" multiple wire:model="pictures" accept="image/png, image/jpeg" id="picture-input">
                         @error('picture') <span class="text-danger"> {{ $message }} </span> @enderror
                         <div wire:loading wire:target="picture" class="spinner-grow spinner-grow-sm" role="status">
                             <span class="visually-hidden"></span>
@@ -48,18 +48,7 @@
                             <span class="visually-hidden"></span>
                         </div>
                     </div>
-                    @if ($picture)
-                    <div class="mb-3" style="max-width: 250px; height: 200px;">
-                        <img src="{{ $picture->temporaryUrl() }}" class="img-thumbnail" style="max-width: 100%; height: 200px;">
-                    </div>
-                    @endif
                 </div>
-
-                <div class="d-flex" style="margin-top: 20px;">
-                    <button class="btn btn-success mr-2">Add product</button>
-                    <button class="btn btn-info">Reset</button>
-                </div>
-
             </div>
             <div class="col-md-6 mb-20">
                 <div class="card-box min-height-100px pd-20" style="position: relative;">
@@ -125,6 +114,39 @@
                     </div>
                 </div>
             </div>
+        </div>
+        @if ($pictures == null)
+        <div class="row d-none">
+            <div class="col-md-12">
+                <div class="card-box pd-20 mb-20">
+                    @if ($pictures)
+                    <div class="d-flex flex-wrap gap-4">
+                        @foreach ($pictures as $picture)
+                            <img src="{{ $picture->temporaryUrl() }}" class="img-thumbnail" style="width: 200px; height: 200px; object-fit: cover;">
+                        @endforeach
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        @else
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-box pd-20 mb-20">
+                    @if ($pictures)
+                    <div class="d-flex flex-wrap gap-4">
+                        @foreach ($pictures as $picture)
+                            <img src="{{ $picture->temporaryUrl() }}" class="img-thumbnail" style="width: 200px; height: 200px; margin-right: 10px; object-fit: cover;">
+                        @endforeach
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        @endif
+        <div class="d-flex mb-20">
+            <button class="btn btn-success mr-2">Add product</button>
+            {{-- <button class="btn btn-info" >Reset</button> --}}
         </div>
     </form>
 </div>

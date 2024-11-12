@@ -14,7 +14,7 @@ class EditProduct extends Component
 
     public bool $editForm = false;
 
-    public $product_id, $name, $brand, $sku, $color, $size, $description, $temporary_picture, $picture, $visibility, $sex, $purchase_price, $selling_price, $qty;
+    public $product_id, $name, $brand, $sku, $color, $size, $description, $temporary_pictures = [], $pictures = [], $visibility, $sex, $purchase_price, $selling_price, $qty;
 
     protected $rules = [
         'name' => 'required',
@@ -26,7 +26,7 @@ class EditProduct extends Component
         'description' => 'nullable',
         'purchase_price' => 'required|numeric',
         'selling_price' => 'required|numeric',
-        'picture' => 'nullable',
+        'pictures.*' => 'nullable',
         'visibility' => 'required'
     ];
 
@@ -43,7 +43,7 @@ class EditProduct extends Component
         $this->color = $product->color;
         $this->size = $product->size;
         $this->description = $product->description;
-        $this->picture = $product->picture;
+        $this->pictures = explode(',', $product->picture);
         $this->visibility = $product->visibility;
         $this->sex = $product->sex;
         $this->purchase_price = $product->purchase_price;
@@ -54,24 +54,22 @@ class EditProduct extends Component
     public function hideForm()
     {
         $this->editForm = false;
-        $this->temporary_picture = null;
+        $this->temporary_pictures = null;
     }
 
     public function store()
     {
         $this->validate();
         $product = InventoryModel::find($this->product_id);
+        $imagePaths = json_decode($product->picture, true);
 
-        if ($this->temporary_picture) {
-            $path = 'public/images/products/';
-            $old_picture = $product->picture;
-            $filename = 'IMG_' . uniqid() . '.' . $this->temporary_picture->getClientOriginalExtension();
-
-            if ($old_picture !== null && Storage::exists($path . $old_picture)) {
-                Storage::delete($path . $old_picture);
+        if ($this->temporary_pictures) {
+            foreach ($this->temporary_pictures as $temporary_picture) {
+                $filename = 'IMG_' . uniqid() . '.' . $temporary_picture->getClientOriginalExtension();
+                $temporary_picture->storeAs('images/products/', $filename, 'public');
+                array_push($imagePaths, $filename);
             }
-            $this->temporary_picture->storeAs('images/products/', $filename, 'public');
-            $product->picture = $filename;
+            $product->picture = json_encode($imagePaths);
         }
 
         $product->name = $this->name;
@@ -86,12 +84,51 @@ class EditProduct extends Component
         $product->selling_price = $this->selling_price;
         $product->qty = $this->qty;
 
-        $this->temporary_picture = null;
+        $this->temporary_pictures = null;
 
         $product->save();
         $this->hideForm();
         $this->dispatch('toast', type: 'success', message: 'Product updated successfully.');
     }
+
+    public function removeTemporaryPicture($pictureIndex)
+    {
+        if (isset($this->temporary_pictures[$pictureIndex])) {
+            unset($this->temporary_pictures[$pictureIndex]);
+            // Re-index array to avoid gaps
+            $this->temporary_pictures = array_values($this->temporary_pictures);
+        }
+    }
+
+    public function removePicture($picture)
+    {
+        // Retrieve the product
+        $product = InventoryModel::find($this->product_id);
+
+        // Decode the JSON array from the `picture` column
+        $imagePaths = json_decode($product->picture, true);
+
+        // Find the index of the picture to be removed and unset it
+        if (($key = array_search($picture, $imagePaths)) !== false) {
+            unset($imagePaths[$key]);
+
+            // Delete the image file from storage if it exists
+            $filePath = 'images/products/' . $picture;
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+        }
+
+        // Update the product's `picture` column with the modified array
+        $product->picture = json_encode(array_values($imagePaths)); // Re-index the array
+        $product->save();
+
+        // Update the local `pictures` array to reflect the changes
+        $this->pictures = $imagePaths;
+    }
+
+
+
 
     public function render()
     {

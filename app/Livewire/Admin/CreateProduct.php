@@ -10,7 +10,7 @@ class CreateProduct extends Component
 {
     use WithFileUploads;
 
-    public $name, $brand, $sku, $color, $size, $description, $picture, $visibility, $sex, $purchase_price, $selling_price, $qty;
+    public $name, $brand, $sku, $color, $size, $description, $pictures = [], $visibility, $sex, $purchase_price, $selling_price, $qty;
 
     protected $rules = [
         'name' => 'required',
@@ -21,7 +21,7 @@ class CreateProduct extends Component
         'description' => 'nullable',
         'purchase_price' => 'required|numeric|min:0',
         'selling_price' => 'required|numeric|min:0',
-        'picture' => 'nullable|image',
+        'pictures.*' => 'nullable|image',
         'visibility' => 'required',
         'qty' => 'required|integer|min:1'
     ];
@@ -29,14 +29,32 @@ class CreateProduct extends Component
     public function store()
     {
         $validatedData = $this->validate();
+        $imagePaths = [];
 
-        if ($this->picture) {
-            $filename = 'IMG_' . uniqid() . '.' . $this->picture->getClientOriginalExtension();
-            $validatedData['picture'] = $filename;
-            $this->picture->storeAs('images/products/', $filename, 'public');
+        if ($this->pictures) {
+            foreach ($this->pictures as $picture) {
+                $filename = 'IMG_' . uniqid() . '.' . $picture->getClientOriginalExtension();
+                $picture->storeAs('images/products/', $filename, 'public');
+                array_push($imagePaths, $filename);
+            }
+            $validatedData['pictures'] = json_encode($imagePaths);
         }
 
-        InventoryModel::create($validatedData);
+        // dd($validatedData['pictures']);
+
+        InventoryModel::create([
+            'name' => $validatedData['name'],
+            'brand' => $validatedData['brand'],
+            'sku' => $validatedData['sku'],
+            'size' => $validatedData['size'],
+            'color' => $validatedData['color'],
+            'qty' => $validatedData['qty'],
+            'description' => $validatedData['description'],
+            'purchase_price' => $validatedData['purchase_price'],
+            'selling_price' => $validatedData['selling_price'],
+            'picture' => $validatedData['pictures'],
+            'visibility' => $validatedData['visibility']
+        ]);
         $this->reset();
 
         $this->dispatch('toast', type: 'success', message: 'Product added successfully.');
