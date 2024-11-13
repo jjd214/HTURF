@@ -63,6 +63,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('consignment')->name('consignment.')->group(function () {
             Route::view('/all', 'back.pages.admin.all-consign')->name('all-consign');
             Route::view('/add', 'back.pages.admin.add-consign')->name('add-consign');
+            Route::view('/all-requests', 'back.pages.admin.all-consign-request')->name('all-request');
         });
 
         Route::prefix('payment')->name('payment.')->group(function () {

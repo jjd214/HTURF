@@ -459,8 +459,8 @@
 							</a>
 							<ul class="submenu">
 								<li><a  href="{{ route('admin.consignment.all-consign') }}" class="{{ Route::is('admin.consignment.all-consign') ? 'active' : '' }} ">All consignments</a></li>
+                                <li><a  href="{{ route('admin.consignment.all-request') }}" class="{{ Route::is('admin.consignment.all-request') ? 'active' : '' }} " >All requests</a></li>
 								<li><a  href="{{ route('admin.consignment.add-consign') }}" class="{{ Route::is('admin.consignment.add-consign') ? 'active' : '' }} " >Add consignment</a></li>
-                                {{-- <li><a  href="{{ route('admin.consignment.payments') }}" class="{{ Route::is('admin.consignment.payments') ? 'active' : '' }} " >Payments</a></li> --}}
 							</ul>
 						</li>
                         <li>
