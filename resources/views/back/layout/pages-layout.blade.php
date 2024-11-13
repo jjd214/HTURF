@@ -470,7 +470,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="invoice.html" class="dropdown-toggle no-arrow">
+							<a href="" class="dropdown-toggle no-arrow ">
 								<span class="micon bi bi-chat-right-dots"></span
 								><span class="mtext">Chat</span>
 							</a>

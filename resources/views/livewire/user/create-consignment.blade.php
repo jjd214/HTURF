@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for=""><b>Style code (SKU)</b> </label>
+                        <label for=""><b>Style code (SKU)</b><small class="text-info"> <b>Important</b></small></label>
                         <input type="text" class="form-control" placeholder="Enter sku" wire:model="sku">
                         @error('sku')
                         <span class="text-danger"><small>{{ $message }}</small></span>

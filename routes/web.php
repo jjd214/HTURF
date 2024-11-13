@@ -6,9 +6,10 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\PaymentController;
 use App\Http\Controllers\admin\RefundController;
 use App\Http\Controllers\admin\TransactionController;
+use App\Http\Controllers\admin\ConsignmentController as adminConsignmentController;
 
 use App\Http\Controllers\user\UserController;
-use App\Http\Controllers\user\ConsignmentController;
+use App\Http\Controllers\user\ConsignmentController as userConsignmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -61,9 +62,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         Route::prefix('consignment')->name('consignment.')->group(function () {
-            Route::view('/all', 'back.pages.admin.all-consign')->name('all-consign');
-            Route::view('/add', 'back.pages.admin.add-consign')->name('add-consign');
-            Route::view('/all-requests', 'back.pages.admin.all-consign-request')->name('all-request');
+            Route::controller(adminConsignmentController::class)->group(function () {
+                Route::get('/all', 'index')->name('all-consign');
+                Route::get('/add', 'createConsignment')->name('add-consign');
+                Route::get('/all-requests', 'consignmentRequest')->name('all-request');
+                Route::get('/details/{id}', 'showConsignmentDetails')->name('details');
+            });
         });
 
         Route::prefix('payment')->name('payment.')->group(function () {
@@ -102,7 +106,7 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
         });
 
         Route::prefix('consignment')->name('consignment.')->group(function () {
-            Route::controller(ConsignmentController::class)->group(function () {
+            Route::controller(userConsignmentController::class)->group(function () {
                 Route::get('/add', 'createConsignment')->name('add-consignment');
             });
         });

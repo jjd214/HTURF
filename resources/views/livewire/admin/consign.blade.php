@@ -76,9 +76,7 @@
                 <tr wire:key={{ $item->id }}>
                     <td>
                         @php
-                            // Decode the picture array from JSON
                             $pictures = json_decode($item->picture, true);
-                            // Get the first picture if available
                             $firstPicture = $pictures && count($pictures) > 0 ? $pictures[0] : null;
                         @endphp
 
