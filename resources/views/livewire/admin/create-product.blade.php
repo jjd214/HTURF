@@ -87,7 +87,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-box min-height-200px pd-20" style="margin-top: 20px;">
+                <div class="card-box min-height-200px pd-20" style="margin-top: 20px; height: 528px;">
                     <div class="row pd-10">
                         <div class="col-md-6 mb-10">
                             <div class="form-group">
