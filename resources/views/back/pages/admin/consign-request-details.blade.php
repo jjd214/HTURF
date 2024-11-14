@@ -79,7 +79,7 @@
             <div class="image-container" style="display: flex; justify-content: start; padding: 5px; border: 1px solid grey; border-radius: 7px; width: 100%; height: 80px; overflow: auto; flex-direction: row; column-gap: 5px; margin-bottom: 10px;">
                 @php $images = json_decode($consignmentRequestDetails->image, true); @endphp
                 @foreach ($images as $image)
-                    <img src="{{ Storage::url('images/requests/' . trim($image, '[]"')) }}" class="img-thumbnail img-clickable">
+                    <img src="{{ Storage::url('images/requests/' . trim($image, '[]"')) }}" class="img-thumbnail img-clickable" style="cursor: pointer;">
                 @endforeach
             </div>
             <hr>
@@ -178,7 +178,7 @@
                 <div class="col-md-12">
                     <div class="d-flex justify-content-center mb-2">
                         <!-- Clickable profile picture -->
-                        <img src="{{ $consignorDetails['picture'] }}" alt="Profile Picture" class="img-thumbnail border-radius-100 img-clickable" style="height: 200px; width: 200px;">
+                        <img src="{{ $consignorDetails['picture'] }}" alt="Profile Picture" class="img-thumbnail border-radius-100 img-clickable" style="height: 200px; width: 200px; cursor: pointer;">
                     </div>
                     <h5 class="text-center h5 mb-0" id="adminProfileName">{{ $consignorDetails['name'] }}</h5>
                     <p class="text-center text-muted font-14" id="adminProfileEmail">
@@ -222,6 +222,19 @@
 
 @endsection
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const clickableImages = document.querySelectorAll('.img-clickable');
+
+        clickableImages.forEach(img => {
+            img.addEventListener('click', function() {
+                modalImage.src = this.src;
+                $(modal).modal('show'); // Use jQuery to show the Bootstrap modal
+            });
+        });
+    });
+
     function confirmAction(action) {
         let formId = action === 'accept' ? '#accept-form' : '#reject-form';
         let actionText = action === 'accept' ? 'Accept' : 'Reject';
