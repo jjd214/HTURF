@@ -54,7 +54,9 @@
                     <td>{{ $item->condition }}</td>
                     <td>{{ $item->consignorName }}</td>
                     <td>
-                        <span class="badge {{ $item->status == 'Pending' ? 'badge-info' : 'badge-danger' }}">{{ $item->status }}</span>
+                        <span class="badge {{ $item->status == 'Pending' ? 'badge-info' : ($item->status == 'Approved' ? 'badge-success' : 'badge-danger') }}">
+                            {{ $item->status }}
+                        </span>
                     </td>
                     <td>
                         <span class="badge badge-success">High priority</span>

@@ -67,6 +67,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::get('/add', 'createConsignment')->name('add-consign');
                 Route::get('/all-requests', 'consignmentRequest')->name('all-request');
                 Route::get('/details/{id}', 'showConsignmentDetails')->name('details');
+                Route::post('/accept-consignment-request/{id}', 'acceptConsignmentRequest')->name('accept-consignment-request');
+                Route::post('/reject-consignment-request/{id}', 'rejectConsignmentRequest')->name('reject-consignment-request');
             });
         });
 

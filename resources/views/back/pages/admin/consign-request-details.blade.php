@@ -1,7 +1,54 @@
 @extends('back.layout.pages-layout')
 @section('pageTitle', isset($pageTitle) ? $pageTitle : 'Page Title Here')
 @section('content')
+@if (session('info'))
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
 
+        Toast.fire({
+            icon: 'info',
+            title: '{{ session('info') }}'
+        });
+    </script>
+@endif
+@if (session('success'))
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            iconColor: 'white',
+            customClass: {
+                popup: 'colored-toast',
+            },
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        Toast.fire({
+            icon: 'success',
+            title: '{{ session('success') }}'
+        });
+    </script>
+@endif
 <div class="page-header mb-4">
     <div class="row align-items-center">
         <div class="col-md-6 col-sm-12">
@@ -30,94 +77,95 @@
         <div class="pd-20 card-box height-100-p shadow-sm border rounded bg-white">
             <small class="ml-1"><b>Images</b></small>
             <div class="image-container" style="display: flex; justify-content: start; padding: 5px; border: 1px solid grey; border-radius: 7px; width: 100%; height: 80px; overflow: auto; flex-direction: row; column-gap: 5px; margin-bottom: 10px;">
-                <!-- Clickable images -->
-                <img src="{{ asset('images/users/default-avatar.png') }}" alt="Image 1" class="img-thumbnail img-clickable">
-                <img src="{{ asset('images/users/consignors/USER_IMG_902151731482306673452c2488e1.jpg') }}" alt="Image 2" class="img-thumbnail img-clickable">
+                @php $images = json_decode($consignmentRequestDetails->image, true); @endphp
+                @foreach ($images as $image)
+                    <img src="{{ Storage::url('images/requests/' . trim($image, '[]"')) }}" class="img-thumbnail img-clickable">
+                @endforeach
             </div>
             <hr>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Product name</b></small></label>
-                        <input type="text" class="form-control" value="Product name namenamename" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ $consignmentRequestDetails['name'] }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Style code (SKU)</b></small></label>
-                        <input type="text" class="form-control" value="209885" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ $consignmentRequestDetails['sku'] }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Colorway</b></small></label>
-                        <input type="text" class="form-control" value="Blue/White/Red" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ $consignmentRequestDetails['colorway'] }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Size</b></small></label>
-                        <input type="text" class="form-control" value="45" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ $consignmentRequestDetails['size'] }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Sex</b></small></label>
-                        <input type="text" class="form-control" value="Unisex" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ $consignmentRequestDetails['sex'] }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Condition</b></small></label>
-                        <input type="text" class="form-control" value="Brand new" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ $consignmentRequestDetails['condition'] }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Quantity</b></small></label>
-                        <input type="text" class="form-control" value="10" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ $consignmentRequestDetails['quantity'] }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Purchase price</b></small></label>
-                        <input type="text" class="form-control" value="5,000" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ $consignmentRequestDetails['purchase_price'] }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Selling price</b></small></label>
-                        <input type="text" class="form-control" value="3,000" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ $consignmentRequestDetails['selling_price'] }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Commission</b></small></label>
-                        <input type="text" class="form-control" value="10%" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ number_format($consignmentRequestDetails['consignor_commission'],0) }}%" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Pullout date</b></small></label>
-                        <input type="text" class="form-control" value="December 25, 2025" @readonly(true)>
+                        <input type="text" class="form-control" value="{{  \Carbon\Carbon::parse($consignmentRequestDetails['pullout_date'])->toFormattedDateString() }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><small><b>Status</b></small></label>
-                        <input type="text" class="form-control" value="Pending" @readonly(true)>
+                        <input type="text" class="form-control" value="{{ $consignmentRequestDetails['status'] }}" @readonly(true)>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for=""><small><b>Product description</b></small></label>
-                        <textarea class="form-control" @readonly(true)>lorem ipsum</textarea>
+                        <textarea class="form-control" @readonly(true)>{{ $consignmentRequestDetails['product_description'] ? $consignmentRequestDetails['product_description'] : "No product description" }}</textarea>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for=""><small><b>Consignor's note</b></small></label>
-                        <textarea class="form-control" @readonly(true)>lorem ipsum</textarea>
+                        <textarea class="form-control" @readonly(true)>{{ $consignmentRequestDetails['note'] ? $consignmentRequestDetails['note'] : "No note" }}</textarea>
                     </div>
                 </div>
             </div>
@@ -130,11 +178,11 @@
                 <div class="col-md-12">
                     <div class="d-flex justify-content-center mb-2">
                         <!-- Clickable profile picture -->
-                        <img src="{{ asset('images/users/default-avatar.png') }}" alt="Profile Picture" class="img-thumbnail border-radius-100 img-clickable">
+                        <img src="{{ $consignorDetails['picture'] }}" alt="Profile Picture" class="img-thumbnail border-radius-100 img-clickable" style="height: 200px; width: 200px;">
                     </div>
-                    <h5 class="text-center h5 mb-0" id="adminProfileName">Marco Gador</h5>
+                    <h5 class="text-center h5 mb-0" id="adminProfileName">{{ $consignorDetails['name'] }}</h5>
                     <p class="text-center text-muted font-14" id="adminProfileEmail">
-                        mgador53@gmail.com
+                        {{ $consignorDetails['email'] }}
                     </p>
                 </div>
             </div>
@@ -142,11 +190,21 @@
     </div>
 </div>
 
+<form id="accept-form" action="{{ route('admin.consignment.accept-consignment-request', $consignmentRequestDetails['id']) }}" method="POST" style="display:none;">
+    @csrf
+    @method('POST')
+</form>
+
+<form id="reject-form" action="{{ route('admin.consignment.reject-consignment-request', $consignmentRequestDetails['id']) }}" method="POST" style="display:none;">
+    @csrf
+    @method('POST')
+</form>
+
 <div class="d-flex mb-20">
-    <button class="btn btn-success mr-2">
+    <button onclick="confirmAction('accept')" class="btn btn-success mr-2">
         <i class="fa fa-check-circle"></i> Accept
     </button>
-    <button class="btn btn-danger">
+    <button onclick="confirmAction('reject')" class="btn btn-danger">
         <i class="fa fa-times-circle"></i> Reject
     </button>
 </div>
@@ -163,18 +221,23 @@
 </div>
 
 @endsection
-
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-    const clickableImages = document.querySelectorAll('.img-clickable');
+    function confirmAction(action) {
+        let formId = action === 'accept' ? '#accept-form' : '#reject-form';
+        let actionText = action === 'accept' ? 'Accept' : 'Reject';
 
-    clickableImages.forEach(img => {
-        img.addEventListener('click', function() {
-            modalImage.src = this.src;
-            $(modal).modal('show'); // Use jQuery to show the Bootstrap modal
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `This action cannot be undone. Do you want to ${actionText} this consignment request?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Yes, ${actionText.toLowerCase()} it!`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.querySelector(formId).submit();
+            }
         });
-    });
-});
-</script>
+    }
+    </script>
