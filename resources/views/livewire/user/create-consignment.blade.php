@@ -80,8 +80,8 @@
                         <label for=""><b>Condition </b> </label>
                         <select class="form-control" wire:model="condition">
                             <option value="Brand new">Brand new</option>
-                            <option value="Used">Used</option>
-                            <option value="Slightly used">Slightly used</option>
+                            <option value="Used" @disabled(true)>Used</option>
+                            <option value="Slightly used" @disabled(true)>Slightly used</option>
                         </select>
                         @error('condition')
                         <span class="text-danger"><small>{{ $message }}</small></span>

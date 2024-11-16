@@ -39,6 +39,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="input-group mb-0">
@@ -46,6 +47,17 @@
                 </div>
             </div>
         </div>
+
+        <div class="font-16 weight-600 pt-10 pb-10 text-center" data-color="#707373" style="color: rgb(112, 115, 115);">
+            OR
+        </div>
+
+        <div class="input-group mb-0" style="margin-top: -15px;">
+            <a href="{{ route('google-auth') }}" class="btn btn-danger btn-block my-3">
+                <i class="bi bi-google"></i> Sign in with Google
+            </a>
+        </div>
+
     </form>
 </div>
 @endsection

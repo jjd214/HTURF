@@ -5,7 +5,12 @@
             {{-- <div class="pd-20 card-box height-100-p"> --}}
                 <div class="profile-photo">
                     <a href="javascript:;" onclick="event.preventDefault();document.getElementById('userProfilePictureFile').click();" class="edit-avatar"><i class="fa fa-pencil"></i></a>
-                    <img src="{{ $user->picture }}" alt="" class="avatar-photo" id="userProfilePicture">
+                    <img
+                        src="{{ Auth::guard('user')->user()->picture }}"
+                        alt="Profile Picture"
+                        class="avatar-photo"
+                        id="userProfilePicture"
+                        style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
                     <input type="file" name="userProfilePictureFile" id="userProfilePictureFile" class="d-none" style="opacity: 0;">
                 </div>
                 <h5 class="text-center h5 mb-0">{{ $user->name }}</h5>

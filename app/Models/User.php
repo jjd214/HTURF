@@ -27,6 +27,7 @@ class User extends Authenticatable
         'verified',
         'password',
         'picture',
+        'google_id'
     ];
 
     public function consignment()
@@ -46,10 +47,22 @@ class User extends Authenticatable
 
     public function getPictureAttribute($value)
     {
-        if ($value) {
-            return asset('/images/users/consignors/' . $value);
-        } else {
-            return asset('/images/users/default-avatar.png');
+        if (filter_var($value, FILTER_VALIDATE_URL)) {
+            // If the picture is a valid URL, return it directly
+            return $value;
         }
+
+        // Otherwise, return the local path or a default avatar
+        return asset('/images/users/consignors/' . ($value ?: 'default-avatar.png'));
     }
+
+
+    // public function getPictureAttribute($value)
+    // {
+    //     if ($value) {
+    //         return asset('/images/users/consignors/' . $value);
+    //     } else {
+    //         return asset('/images/users/default-avatar.png');
+    //     }
+    // }
 }
