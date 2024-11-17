@@ -11,11 +11,17 @@ class GoogleAuthController extends Controller
 {
     public function redirect()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')
+            ->with(['prompt' => 'select_account'])
+            ->redirect();
     }
 
-    public function callbackGoogle()
+    public function callbackGoogle(Request $request)
     {
+        if (!$request->has('code')) {
+            return redirect('/consignor/login')->with('info', 'Authentication was canceled. Please try again.');
+        }
+
         $google_user = Socialite::driver('google')->user();
 
         if (!$google_user) {
