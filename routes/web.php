@@ -23,7 +23,7 @@ Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('goo
 Route::get('/auth/google/call-back', [GoogleAuthController::class, 'callbackGoogle']);
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::middleware(['guest:admin', 'PreventBackHistory', 'restrict.multiple.logins'])->group(function () {
+    Route::middleware(['guest:admin', 'PreventBackHistory', 'RestrictMultipleLogins'])->group(function () {
         Route::view('/login', 'back.pages.admin.auth.login')->name('login');
         Route::view('/forgot-password', 'back.pages.admin.auth.forgot')->name('forgot-password');
         Route::post('/login_handler', [AdminController::class, 'loginHandler'])->name('login_handler');
@@ -32,7 +32,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/reset-password-handler', [AdminController::class, 'resetPasswordHandler'])->name('reset-password-handler');
     });
 
-    Route::middleware(['auth:admin', 'PreventBackHistory', 'restrict.multiple.logins'])->group(function () {
+    Route::middleware(['auth:admin', 'PreventBackHistory', 'RestrictMultipleLogins'])->group(function () {
         Route::controller(AdminController::class)->group(function () {
             Route::post('logout_handler', 'logoutHandler')->name('logout_handler');
             Route::get('/dashboard', 'adminDashboard')->name('dashboard');
@@ -87,7 +87,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 Route::prefix('consignor')->name('consignor.')->group(function () {
-    Route::middleware(['guest:user', 'PreventBackHistory', 'restrict.multiple.logins'])->group(function () {
+    Route::middleware(['guest:user', 'PreventBackHistory', 'RestrictMultipleLogins'])->group(function () {
         Route::controller(UserController::class)->group(function () {
             Route::get('/login', 'login')->name('login');
             Route::post('/login-handler', 'loginHandler')->name('login-handler');
@@ -102,7 +102,7 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
         });
     });
 
-    Route::middleware(['auth:user', 'PreventBackHistory', 'restrict.multiple.logins'])->group(function () {
+    Route::middleware(['auth:user', 'PreventBackHistory', 'RestrictMultipleLogins'])->group(function () {
         Route::controller(UserController::class)->group(function () {
             Route::get('/home', 'home')->name('home');
             Route::post('/logout', 'logoutHandler')->name('logout-handler');

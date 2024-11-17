@@ -65,6 +65,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'PreventBackHistory' => \App\Http\Middleware\PreventBackHistory::class,
-        'restrict.multiple.logins' => \App\Http\Middleware\RestrictMultipleLogins::class,
+        'RestrictMultipleLogins' => \App\Http\Middleware\RestrictMultipleLogins::class,
     ];
 }
