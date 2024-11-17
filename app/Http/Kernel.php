@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'PreventBackHistory' => \App\Http\Middleware\PreventBackHistory::class
+        'PreventBackHistory' => \App\Http\Middleware\PreventBackHistory::class,
+        'restrict.multiple.logins' => \App\Http\Middleware\RestrictMultipleLogins::class,
     ];
 }

@@ -27,9 +27,11 @@
                             <li class="nav-item">
                                 <a wire:click.prevent='selectTab("personal_details")' class="nav-link {{ $tab == 'personal_details' ? 'active' : '' }}" data-toggle="tab" href="#personal_details" role="tab">Personal details</a>
                             </li>
-                            <li class="nav-item">
-                                <a wire:click.prevent='selectTab("update_password")' class="nav-link {{ $tab == 'update_password' ? 'active' : '' }}" data-toggle="tab" href="#update_password" role="tab">Update password</a>
-                            </li>
+                            @if ( $user->verified )
+                                <li class="nav-item">
+                                    <a wire:click.prevent='selectTab("update_password")' class="nav-link {{ $tab == 'update_password' ? 'active' : '' }}" data-toggle="tab" href="#update_password" role="tab">Update password</a>
+                                </li>
+                            @endif
                         </ul>
                         <div class="tab-content">
                             <!-- Timeline Tab start -->
@@ -46,6 +48,7 @@
                                                     @enderror
                                                 </div>
                                             </div>
+                                            @if ( $user->verified )
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Username</label>
@@ -55,6 +58,7 @@
                                                     @enderror
                                                 </div>
                                             </div>
+                                            @endif
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Email</label>
