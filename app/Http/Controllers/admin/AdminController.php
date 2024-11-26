@@ -14,26 +14,45 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use App\Models\GeneralSetting;
+use App\Services\AdminDataAnalysisServices;
 
 class AdminController extends Controller
 {
-    public function adminDashboard()
-    {
-        $data = [
-            'pageTitle' => 'Dashboard',
-        ];
+    protected $dataAnalysisService;
 
-        return view('back.pages.admin.dashboard', $data);
+    public function __construct(AdminDataAnalysisServices $adminDataAnalysisServices)
+    {
+        $this->dataAnalysisService = $adminDataAnalysisServices;
     }
 
     public function adminHome()
     {
+        $totalExpenses = $this->dataAnalysisService->getTotalExpenses();
+        $totalExpectedRevenue = $this->dataAnalysisService->getTotalExpectedRevenue();
+        $totalRevenue = $this->dataAnalysisService->getTotalRevenue();
+        $totalCommissionFee = $this->dataAnalysisService->getTotalCommissionFee();
+        $totalConsignors = $this->dataAnalysisService->getTotalConsignors();
+        $totalPendingConsignmentRequest = $this->dataAnalysisService->getTotalPendingConsignmentRequest();
+        $totalPendingPayments = $this->dataAnalysisService->getTotalPendingPayments();
+        $totalInventoryItems = $this->dataAnalysisService->getInventoryTotalItems();
+        $bestSellingProducts = $this->dataAnalysisService->getBestSellingProducts();
+
         $data = [
             'pageTitle' => 'Home',
+            'totalExpenses' => $totalExpenses,
+            'totalExpectedRevenue' => $totalExpectedRevenue,
+            'totalRevenue' => $totalRevenue,
+            'totalCommissionFee' => $totalCommissionFee,
+            'totalConsignors' => $totalConsignors,
+            'totalPendingConsignmentRequest' => $totalPendingConsignmentRequest,
+            'totalPendingPayments' => $totalPendingPayments,
+            'totalInventoryItems' => $totalInventoryItems,
+            'bestSellingProducts' => $bestSellingProducts
         ];
 
         return view('back.pages.admin.home', $data);
     }
+
 
     public function profileView(Request $request)
     {

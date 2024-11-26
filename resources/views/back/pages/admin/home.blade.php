@@ -1,6 +1,17 @@
 @extends('back.layout.pages-layout')
 @section('pageTitle', isset($pageTitle) ? $pageTitle : 'Page Title Here')
 @section('content')
+<style>
+    .icon-circle {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 20px;
+    }
+</style>
 <div class="page-header">
     <div class="row">
         <div class="col-md-6 col-sm-12">
@@ -36,9 +47,9 @@
         <div class="card-box height-100-p widget-style3">
             <div class="d-flex flex-wrap">
                 <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">75</div>
-                    <div class="font-14 text-secondary weight-500">
-                        Total revenue
+                    <div class="weight-700 font-24 text-dark">₱ {{ number_format($totalRevenue, 0) }}</div>
+                    <div class="font-17 text-dark weight-500">
+                        <small>Total revenue</small>
                     </div>
                 </div>
                 <div class="widget-icon">
@@ -53,9 +64,9 @@
         <div class="card-box height-100-p widget-style3">
             <div class="d-flex flex-wrap">
                 <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">124,551</div>
-                    <div class="font-14 text-secondary weight-500">
-                        Total expected revenue
+                    <div class="weight-700 font-24 text-dark">₱ {{ number_format($totalExpectedRevenue, 0) }}</div>
+                    <div class="font-17 text-dark weight-500">
+                        <small>Total expected revenue</small>
                     </div>
                 </div>
                 <div class="widget-icon">
@@ -70,9 +81,9 @@
         <div class="card-box height-100-p widget-style3">
             <div class="d-flex flex-wrap">
                 <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">400+</div>
-                    <div class="font-14 text-secondary weight-500">
-                        Total expenses
+                    <div class="weight-700 font-24 text-dark">₱ {{ number_format($totalExpenses, 0) }}</div>
+                    <div class="font-17 text-dark weight-500">
+                        <small>Total expenses</small>
                     </div>
                 </div>
                 <div class="widget-icon">
@@ -87,8 +98,8 @@
         <div class="card-box height-100-p widget-style3">
             <div class="d-flex flex-wrap">
                 <div class="widget-data">
-                    <div class="weight-700 font-24 text-dark">$50,000</div>
-                    <div class="font-14 text-secondary weight-500">Total commission fee</div>
+                    <div class="weight-700 font-24 text-dark">₱ {{ number_format($totalCommissionFee, 0) }}</div>
+                    <div class="font-17 text-dark weight-500"><small>Total commission fee</small></div>
                 </div>
                 <div class="widget-icon">
                     <div class="icon" data-color="#09cc06" style="color: rgb(9, 204, 6);">
@@ -101,140 +112,136 @@
 </div>
 
 
+<!-- Metrics Section -->
+<div class="row">
+    <!-- Total Consignors -->
+    <div class="col-xl-4 col-lg-6 mb-4">
+        <div class="card-box shadow-sm border-0">
+            <div class="card-body d-flex align-items-center">
+                <div class="icon-circle" style="background-color: #007bff; color: white; padding: 15px; border-radius: 50%; margin-right: 15px;">
+                    <i class="fa fa-users fa-lg"></i>
+                </div>
+                <div>
+                    <h6 class="font-weight-bold mb-1">Total Consignors</h6>
+                    <h4 class="font-weight-bold">{{ $totalConsignors }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="card-box mb-30">
-    <h2 class="h4 pd-20">Best Selling Products</h2>
-    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table class="data-table table nowrap dataTable no-footer dtr-inline collapsed" id="DataTables_Table_0" role="grid" style="width: 1084px;">
-        <thead>
-            <tr role="row"><th class="table-plus datatable-nosort sorting_asc" rowspan="1" colspan="1" style="width: 124px;" aria-label="Product">Product</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 219px;" aria-label="Name: activate to sort column ascending">Name</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 95px; display: none;" aria-label="Color: activate to sort column ascending">Color</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 81px; display: none;" aria-label="Size: activate to sort column ascending">Size</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 92px; display: none;" aria-label="Price: activate to sort column ascending">Price</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 73px; display: none;" aria-label="Oty: activate to sort column ascending">Oty</th><th class="datatable-nosort sorting_disabled" rowspan="1" colspan="1" style="width: 96px; display: none;" aria-label="Action">Action</th></tr>
-        </thead>
-        <tbody>
+    <!-- Pending Consignment Requests -->
+    <div class="col-xl-4 col-lg-6 mb-4">
+        <div class="card-box shadow-sm border-0">
+            <div class="card-body d-flex align-items-center">
+                <div class="icon-circle" style="background-color: #f39c12; color: white; padding: 15px; border-radius: 50%; margin-right: 15px;">
+                    <i class="fa fa-hourglass-half fa-lg"></i>
+                </div>
+                <div>
+                    <h6 class="font-weight-bold mb-1">Pending Requests</h6>
+                    <h4 class="font-weight-bold">{{ $totalPendingConsignmentRequest }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-
-
-
-        <tr role="row" class="odd">
-                <td class="table-plus sorting_1" tabindex="0">
-                    <img src="vendors/images/product-1.jpg" width="70" height="70" alt="">
-                </td>
-                <td>
-                    <h5 class="font-16">Shirt</h5>
-                    by John Doe
-                </td>
-                <td style="display: none;">Black</td>
-                <td style="display: none;">M</td>
-                <td style="display: none;">$1000</td>
-                <td style="display: none;">1</td>
-                <td style="display: none;">
-                    <div class="dropdown">
-                        <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-                            <i class="dw dw-more"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-                            <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                            <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-                        </div>
-                    </div>
-                </td>
-            </tr><tr role="row" class="even">
-                <td class="table-plus sorting_1" tabindex="0">
-                    <img src="vendors/images/product-2.jpg" width="70" height="70" alt="">
-                </td>
-                <td>
-                    <h5 class="font-16">Boots</h5>
-                    by Lea R. Frith
-                </td>
-                <td style="display: none;">brown</td>
-                <td style="display: none;">9UK</td>
-                <td style="display: none;">$900</td>
-                <td style="display: none;">1</td>
-                <td style="display: none;">
-                    <div class="dropdown">
-                        <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-                            <i class="dw dw-more"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-                            <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                            <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-                        </div>
-                    </div>
-                </td>
-            </tr><tr role="row" class="odd">
-                <td class="table-plus sorting_1" tabindex="0">
-                    <img src="vendors/images/product-3.jpg" width="70" height="70" alt="">
-                </td>
-                <td>
-                    <h5 class="font-16">Hat</h5>
-                    by Erik L. Richards
-                </td>
-                <td style="display: none;">Orange</td>
-                <td style="display: none;">M</td>
-                <td style="display: none;">$100</td>
-                <td style="display: none;">4</td>
-                <td style="display: none;">
-                    <div class="dropdown">
-                        <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-                            <i class="dw dw-more"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-                            <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                            <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-                        </div>
-                    </div>
-                </td>
-            </tr><tr role="row" class="even">
-                <td class="table-plus sorting_1" tabindex="0">
-                    <img src="vendors/images/product-4.jpg" width="70" height="70" alt="">
-                </td>
-                <td>
-                    <h5 class="font-16">Long Dress</h5>
-                    by Renee I. Hansen
-                </td>
-                <td style="display: none;">Gray</td>
-                <td style="display: none;">L</td>
-                <td style="display: none;">$1000</td>
-                <td style="display: none;">1</td>
-                <td style="display: none;">
-                    <div class="dropdown">
-                        <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-                            <i class="dw dw-more"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-                            <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                            <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-                        </div>
-                    </div>
-                </td>
-            </tr><tr role="row" class="odd">
-                <td class="table-plus sorting_1" tabindex="0">
-                    <img src="vendors/images/product-5.jpg" width="70" height="70" alt="">
-                </td>
-                <td>
-                    <h5 class="font-16">Blazer</h5>
-                    by Vicki M. Coleman
-                </td>
-                <td style="display: none;">Blue</td>
-                <td style="display: none;">M</td>
-                <td style="display: none;">$1000</td>
-                <td style="display: none;">1</td>
-                <td style="display: none;">
-                    <div class="dropdown">
-                        <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-                            <i class="dw dw-more"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <a class="dropdown-item" href="#"><i class="dw dw-eye"></i> View</a>
-                            <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a>
-                            <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a>
-                        </div>
-                    </div>
-                </td>
-            </tr></tbody>
-    </table></div></div><div class="row"><div class="col-sm-12 col-md-5"></div><div class="col-sm-12 col-md-7"></div></div></div>
+    <!-- Pending Payments -->
+    <div class="col-xl-4 col-lg-6 mb-4">
+        <div class="card-box shadow-sm border-0">
+            <div class="card-body d-flex align-items-center">
+                <div class="icon-circle" style="background-color: #e74c3c; color: white; padding: 15px; border-radius: 50%; margin-right: 15px;">
+                    <i class="fa fa-money fa-lg"></i>
+                </div>
+                <div>
+                    <h6 class="font-weight-bold mb-1">Pending Payments</h6>
+                    <h4 class="font-weight-bold">{{ $totalPendingPayments }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="row">
+    <!-- Inventory Section -->
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
+        <div class="card-box pd-30 pt-10 height-100-p">
+            <h2 class="mb-30 h4">Inventory</h2>
+            <div class="browser-visits">
+                <ul class="list-unstyled">
+                    <!-- Store Items with fa-cube -->
+                    <li class="d-flex align-items-center mb-3">
+                        <div class="icon mr-3">
+                            <i class="fas fa-cube text-dark fa-2x"></i>
+                        </div>
+                        <div class="browser-name flex-grow-1">Store Items</div>
+                        <div class="visit">
+                            <span class="badge badge-pill badge-dark">{{ $totalInventoryItems['storeItems'] }}</span>
+                        </div>
+                    </li>
+                    <!-- Consign Items with fa-handshake -->
+                    <li class="d-flex align-items-center mb-3">
+                        <div class="icon mr-3">
+                            <i class="fas fa-handshake text-dark fa-2x"></i>
+                        </div>
+                        <div class="browser-name flex-grow-1">Consign Items</div>
+                        <div class="visit">
+                            <span class="badge badge-pill badge-dark">{{ $totalInventoryItems['consignItems'] }}</span>
+                        </div>
+                    </li>
+                    <!-- Selling Items with fa-shopping-cart -->
+                    <li class="d-flex align-items-center mb-3">
+                        <div class="icon mr-3">
+                            <i class="fas fa-shopping-cart text-dark fa-2x"></i>
+                        </div>
+                        <div class="browser-name flex-grow-1">Selling Items</div>
+                        <div class="visit">
+                            <span class="badge badge-pill badge-dark">{{ $totalInventoryItems['sellingItems'] }}</span>
+                        </div>
+                    </li>
+                    <!-- Refund with fa-undo -->
+                    <li class="d-flex align-items-center">
+                        <div class="icon mr-3">
+                            <i class="fas fa-undo text-dark fa-2x"></i>
+                        </div>
+                        <div class="browser-name flex-grow-1">Refund</div>
+                        <div class="visit">
+                            <span class="badge badge-pill badge-dark">{{ $totalInventoryItems['refundItems'] }}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Best Selling Products Section -->
+    <div class="col-lg-8 col-md-6 col-sm-12 mb-30">
+        <div class="card-box pd-30 pt-10 height-100-p">
+            <h2 class="mb-30 h4">Best Selling Products</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Sku</th>
+                            <th>Sold</th>
+                            <th class="text-nowrap">Total sales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($bestSellingProducts as $product)
+                        <tr>
+                            <td>{{ $product->name }}</td>
+                            <td>{{ $product->sku }}</td>
+                            <td>{{ $product->total_quantity_sold }}</td>
+                            <td>{{ number_format($product->total_sales, 0) }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 @endsection
