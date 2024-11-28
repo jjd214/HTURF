@@ -18,50 +18,11 @@ use App\Services\AdminDataAnalysisServices;
 
 class AdminController extends Controller
 {
-    protected $dataAnalysisService;
-
-    public function __construct(AdminDataAnalysisServices $adminDataAnalysisServices)
-    {
-        $this->dataAnalysisService = $adminDataAnalysisServices;
-    }
 
     public function adminHome()
     {
-        $totalExpenses = $this->dataAnalysisService->getTotalExpenses();
-        $totalExpectedRevenue = $this->dataAnalysisService->getTotalExpectedRevenue();
-        $totalRevenue = $this->dataAnalysisService->getTotalRevenue();
-        $totalCommissionFee = $this->dataAnalysisService->getTotalCommissionFee();
-        $totalConsignors = $this->dataAnalysisService->getTotalConsignors();
-        $totalPendingConsignmentRequest = $this->dataAnalysisService->getTotalPendingConsignmentRequest();
-        $totalPendingPayments = $this->dataAnalysisService->getTotalPendingPayments();
-        $totalInventoryItems = $this->dataAnalysisService->getInventoryTotalItems();
-        $bestSellingProducts = $this->dataAnalysisService->getBestSellingProducts();
-
-        $currentYear = Carbon::now()->year;
-        $yearMonthOptions = [];
-
-        for ($i = $currentYear; $i >= $currentYear - 5; $i--) { // Last 5 years
-            for ($month = 1; $month <= 12; $month++) {
-                $yearMonthOptions[] = [
-                    'value' => $i . '-' . str_pad($month, 2, '0', STR_PAD_LEFT),
-                    'text' => Carbon::createFromDate($i, $month, 1)->format('F Y'),
-                ];
-            }
-        }
-
         $data = [
             'pageTitle' => 'Home',
-            'totalExpenses' => $totalExpenses,
-            'totalExpectedRevenue' => $totalExpectedRevenue,
-            'totalRevenue' => $totalRevenue,
-            'totalCommissionFee' => $totalCommissionFee,
-            'totalConsignors' => $totalConsignors,
-            'totalPendingConsignmentRequest' => $totalPendingConsignmentRequest,
-            'totalPendingPayments' => $totalPendingPayments,
-            'totalInventoryItems' => $totalInventoryItems,
-            'bestSellingProducts' => $bestSellingProducts,
-            'yearMonthOptions' => $yearMonthOptions,
-
         ];
 
         return view('back.pages.admin.home', $data);
