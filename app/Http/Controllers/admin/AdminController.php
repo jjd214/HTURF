@@ -37,6 +37,18 @@ class AdminController extends Controller
         $totalInventoryItems = $this->dataAnalysisService->getInventoryTotalItems();
         $bestSellingProducts = $this->dataAnalysisService->getBestSellingProducts();
 
+        $currentYear = Carbon::now()->year;
+        $yearMonthOptions = [];
+
+        for ($i = $currentYear; $i >= $currentYear - 5; $i--) { // Last 5 years
+            for ($month = 1; $month <= 12; $month++) {
+                $yearMonthOptions[] = [
+                    'value' => $i . '-' . str_pad($month, 2, '0', STR_PAD_LEFT),
+                    'text' => Carbon::createFromDate($i, $month, 1)->format('F Y'),
+                ];
+            }
+        }
+
         $data = [
             'pageTitle' => 'Home',
             'totalExpenses' => $totalExpenses,
@@ -47,7 +59,9 @@ class AdminController extends Controller
             'totalPendingConsignmentRequest' => $totalPendingConsignmentRequest,
             'totalPendingPayments' => $totalPendingPayments,
             'totalInventoryItems' => $totalInventoryItems,
-            'bestSellingProducts' => $bestSellingProducts
+            'bestSellingProducts' => $bestSellingProducts,
+            'yearMonthOptions' => $yearMonthOptions,
+
         ];
 
         return view('back.pages.admin.home', $data);

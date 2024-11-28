@@ -27,17 +27,14 @@
                 </ol>
             </nav>
         </div>
-        <div class="col-md-6 col-sm-12 text-right">
-            <div class="dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                    January 2018
-                </a>
-                <div class="dropdown-menu dropdown-menu-right" style="">
-                    <a class="dropdown-item" href="#">Export List</a>
-                    <a class="dropdown-item" href="#">Policies</a>
-                    <a class="dropdown-item" href="#">View Assets</a>
-                </div>
-            </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3 col-sm-12 text-right">
+            <select id="yearMonthFilter" class="custom-select form-control w-100" style="margin: 0;">
+                <option value="" selected disabled>Select Year and Month</option>
+                @foreach ($yearMonthOptions as $option)
+                    <option value="{{ $option['value'] }}">{{ $option['text'] }}</option>
+                @endforeach
+            </select>
         </div>
     </div>
 </div>
@@ -217,13 +214,13 @@
         <div class="card-box pd-30 pt-10 height-100-p">
             <h2 class="mb-30 h4">Best Selling Products</h2>
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" >
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Sku</th>
-                            <th>Sold</th>
-                            <th class="text-nowrap">Total sales</th>
+                            <th style="width: 40%;"><b>Name</b></th>
+                            <th style="width: 30%"><b>Sku</b></th>
+                            <th style="width: 10%;"><b>Sold</b></th>
+                            <th class="text-nowrap" style="width: 30%;"><b>Total sales</b></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -232,7 +229,7 @@
                             <td>{{ $product->name }}</td>
                             <td>{{ $product->sku }}</td>
                             <td>{{ $product->total_quantity_sold }}</td>
-                            <td>{{ number_format($product->total_sales, 0) }}</td>
+                            <td>₱ {{ number_format($product->total_sales, 0) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
