@@ -208,9 +208,31 @@
                             @endforelse
                         </tbody>
                     </table>
+                    <div class="d-flex align-items-center gap-2">
+                        @if ($bestSellingProducts->onFirstPage())
+                            <button class="btn btn-secondary btn-sm mr-2" disabled>
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                        @else
+                            <button class="btn btn-primary btn-sm mr-2" wire:click="previousPage" wire:loading.attr="disabled">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                        @endif
+
+                        @if ($bestSellingProducts->hasMorePages())
+                            <button class="btn btn-primary btn-sm" wire:click="nextPage" wire:loading.attr="disabled">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        @else
+                            <button class="btn btn-secondary btn-sm" disabled>
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        @endif
+                    </div>
+
+
                 </div>
             </div>
         </div>
-
     </div>
 </div>

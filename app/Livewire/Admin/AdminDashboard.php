@@ -4,9 +4,15 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use App\Services\AdminDataAnalysisServices;
+use Livewire\WithPagination;
+use Livewire\Attributes\Url;
 
 class AdminDashboard extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
+    #[Url()]
     public $filterBestSellingProducts;
     protected $dataAnalysisService;
 
@@ -45,7 +51,7 @@ class AdminDashboard extends Component
         $totalPendingConsignmentRequest = $this->dataAnalysisService->getTotalPendingConsignmentRequest();
         $totalPendingPayments = $this->dataAnalysisService->getTotalPendingPayments();
         $totalInventoryItems = $this->dataAnalysisService->getInventoryTotalItems();
-        $bestSellingProducts = $this->dataAnalysisService->getBestSellingProducts($this->filterBestSellingProducts);
+        $bestSellingProducts = $this->getPaginatedBestSellingProducts();
 
         return view('livewire.admin.admin-dashboard', [
             'pageTitle' => 'Home',
@@ -60,5 +66,12 @@ class AdminDashboard extends Component
             'bestSellingProducts' => $bestSellingProducts,
             'lastFiveYearsDates' => $this->getLastFiveYearsDates(),
         ]);
+    }
+
+    public function getPaginatedBestSellingProducts()
+    {
+        $query = $this->dataAnalysisService->getBestSellingProducts($this->filterBestSellingProducts);
+
+        return $query->paginate(5);
     }
 }

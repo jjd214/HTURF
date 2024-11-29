@@ -72,9 +72,7 @@ class AdminDataAnalysisServices
         }
 
         return $query->groupBy('inventories.id', 'inventories.name', 'inventories.sku')
-            ->orderByDesc('total_sales')
-            ->limit(5)
-            ->get();
+            ->orderByDesc('total_sales');
     }
 
     public function getInventoryTotalItems()
