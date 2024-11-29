@@ -56,24 +56,25 @@ class AdminDataAnalysisServices
     {
         $query = TransactionItem::leftJoin('inventories', 'transaction_items.inventory_id', '=', 'inventories.id')
             ->leftJoin('transactions', 'transaction_items.code', '=', 'transactions.transaction_code')
+            ->where('inventories.consignment_id', NULL)
             ->select(
-                'inventories.id',
-                'inventories.name',
-                'inventories.sku',
-                DB::raw('SUM(transaction_items.qty * inventories.selling_price) as total_sales'),
+                'transaction_items.inventory_id',
+                DB::raw('COALESCE(inventories.name, "Deleted Product") as name'),
+                DB::raw('COALESCE(inventories.sku, "Unknown SKU") as sku'),
+                DB::raw('SUM(transaction_items.qty * COALESCE(inventories.selling_price, 0)) as total_sales'),
                 DB::raw('SUM(transaction_items.qty) as total_quantity_sold')
             );
 
-        // Apply the date filter if a month and year are provided
         if (!empty($monthAndYear)) {
-            [$month, $year] = explode(' ', $monthAndYear); // Split into month and year
+            [$month, $year] = explode(' ', $monthAndYear);
             $query->whereMonth('transactions.created_at', '=', date('m', strtotime($month)))
                 ->whereYear('transactions.created_at', '=', $year);
         }
 
-        return $query->groupBy('inventories.id', 'inventories.name', 'inventories.sku')
+        return $query->groupBy('transaction_items.inventory_id', 'inventories.name', 'inventories.sku')
             ->orderByDesc('total_sales');
     }
+
 
     public function getInventoryTotalItems()
     {

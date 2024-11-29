@@ -40,6 +40,7 @@ class Payments extends Component
         $query = PaymentModel::leftJoin('inventories', 'payments.inventory_id', '=', 'inventories.id')
             ->leftJoin('consignments', 'inventories.consignment_id', '=', 'consignments.id')
             ->leftJoin('users', 'consignments.consignor_id', '=', 'users.id')
+            ->where('inventories.consignment_id', '!=', NULL)
             ->select(
                 'payments.*',
                 'inventories.name as inventory_name',
