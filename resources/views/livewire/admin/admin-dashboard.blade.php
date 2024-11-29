@@ -170,9 +170,21 @@
         <!-- Best Selling Products Section -->
         <div class="col-lg-8 col-md-6 col-sm-12 mb-30">
             <div class="card-box pd-30 pt-10 height-100-p">
-                <h2 class="mb-30 h4">Best Selling Products</h2>
+                <div class="d-flex justify-content-between align-items-center mb-30">
+                    <h2 class="h4 mb-0">Best Selling Products</h2>
+                    <select
+                        class="custom-select form-control"
+                        style="width: 150px;"
+                        id="dateFilter"
+                        wire:model.live="filterBestSellingProducts">
+                        <option value="">Select Month</option>
+                        @foreach ($lastFiveYearsDates as $date)
+                            <option value="{{ $date }}">{{ $date }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="table-responsive">
-                    <table class="table table-striped" >
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th style="width: 40%;"><b>Name</b></th>
@@ -182,18 +194,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($bestSellingProducts as $product)
+                            @forelse ($bestSellingProducts as $product)
                             <tr>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->sku }}</td>
                                 <td>{{ $product->total_quantity_sold }}</td>
                                 <td>₱ {{ number_format($product->total_sales, 0) }}</td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center">{{ __('No sales found.') }}</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+
     </div>
 </div>

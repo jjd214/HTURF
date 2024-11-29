@@ -5,14 +5,34 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use App\Services\AdminDataAnalysisServices;
 
-
 class AdminDashboard extends Component
 {
+    public $filterBestSellingProducts;
     protected $dataAnalysisService;
 
+    // Inject the service into the mount method
     public function mount(AdminDataAnalysisServices $adminDataAnalysisServices)
     {
         $this->dataAnalysisService = $adminDataAnalysisServices;
+    }
+
+    // Rehydrate the service on every request
+    public function hydrate()
+    {
+        $this->dataAnalysisService = app(AdminDataAnalysisServices::class);
+    }
+
+    public function getLastFiveYearsDates()
+    {
+        $dates = [];
+        $currentDate = now();
+
+        for ($i = 0; $i < 60; $i++) {
+            $dates[] = $currentDate->format('F Y');
+            $currentDate->subMonth();
+        }
+
+        return $dates;
     }
 
     public function render()
@@ -25,9 +45,9 @@ class AdminDashboard extends Component
         $totalPendingConsignmentRequest = $this->dataAnalysisService->getTotalPendingConsignmentRequest();
         $totalPendingPayments = $this->dataAnalysisService->getTotalPendingPayments();
         $totalInventoryItems = $this->dataAnalysisService->getInventoryTotalItems();
-        $bestSellingProducts = $this->dataAnalysisService->getBestSellingProducts();
+        $bestSellingProducts = $this->dataAnalysisService->getBestSellingProducts($this->filterBestSellingProducts);
 
-        $data = [
+        return view('livewire.admin.admin-dashboard', [
             'pageTitle' => 'Home',
             'totalExpenses' => $totalExpenses,
             'totalExpectedRevenue' => $totalExpectedRevenue,
@@ -37,9 +57,8 @@ class AdminDashboard extends Component
             'totalPendingConsignmentRequest' => $totalPendingConsignmentRequest,
             'totalPendingPayments' => $totalPendingPayments,
             'totalInventoryItems' => $totalInventoryItems,
-            'bestSellingProducts' => $bestSellingProducts
-        ];
-
-        return view('livewire.admin.admin-dashboard', $data);
+            'bestSellingProducts' => $bestSellingProducts,
+            'lastFiveYearsDates' => $this->getLastFiveYearsDates(),
+        ]);
     }
 }

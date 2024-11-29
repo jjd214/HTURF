@@ -52,25 +52,30 @@ class AdminDataAnalysisServices
         return Payment::where('status', 'Pending')->count();
     }
 
-    public function getBestSellingProducts()
+    public function getBestSellingProducts($monthAndYear)
     {
-        $best_selling_products = TransactionItem::leftJoin('inventories', 'transaction_items.inventory_id', '=', 'inventories.id')
+        $query = TransactionItem::leftJoin('inventories', 'transaction_items.inventory_id', '=', 'inventories.id')
+            ->leftJoin('transactions', 'transaction_items.code', '=', 'transactions.transaction_code')
             ->select(
                 'inventories.id',
                 'inventories.name',
                 'inventories.sku',
-                DB::raw('SUM(transaction_items.qty * inventories.selling_price) as total_sales'),  // Total sales calculation
-                DB::raw('SUM(transaction_items.qty) as total_quantity_sold')  // Total quantity sold calculation
-            )
-            ->groupBy('inventories.id', 'inventories.name', 'inventories.sku')
-            ->orderByDesc('total_sales')  // Order by total sales
+                DB::raw('SUM(transaction_items.qty * inventories.selling_price) as total_sales'),
+                DB::raw('SUM(transaction_items.qty) as total_quantity_sold')
+            );
+
+        // Apply the date filter if a month and year are provided
+        if (!empty($monthAndYear)) {
+            [$month, $year] = explode(' ', $monthAndYear); // Split into month and year
+            $query->whereMonth('transactions.created_at', '=', date('m', strtotime($month)))
+                ->whereYear('transactions.created_at', '=', $year);
+        }
+
+        return $query->groupBy('inventories.id', 'inventories.name', 'inventories.sku')
+            ->orderByDesc('total_sales')
             ->limit(5)
             ->get();
-
-        return $best_selling_products;
     }
-
-
 
     public function getInventoryTotalItems()
     {
