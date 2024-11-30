@@ -41,11 +41,34 @@ class AdminController extends Controller
             ->map(fn($row) => ['month' => $row->month, 'total_sales' => $row->total_sales])
             ->toArray();
 
+        // Fetch total expenses for each month in the selected year
+        $monthlyExpensesAnalytics = DB::table('inventories')
+            ->selectRaw('MONTH(created_at) as month, SUM(purchase_price * qty) as total_expenses')
+            ->whereYear('created_at', $selectedYear)
+            ->whereNull('consignment_id')
+            ->groupByRaw('MONTH(created_at)')
+            ->orderBy('month', 'asc')
+            ->get()
+            ->map(fn($row) => ['month' => $row->month, 'total_expenses' => $row->total_expenses])
+            ->toArray();
+
+        $totalRevenue = DB::table('transactions')
+            ->whereYear('created_at', $selectedYear)
+            ->sum('total_amount');
+
+        $expectedRevenue = DB::table('inventories')
+            ->whereYear('created_at', $selectedYear)
+            ->whereNull('consignment_id')
+            ->sum('selling_price');
+
         $data = [
             'pageTitle' => 'Home',
             'monthlySalesAnalytics' => $monthlySalesAnalytics,
             'availableYears' => $availableYears,
-            'selectedYear' => $selectedYear
+            'selectedYear' => $selectedYear,
+            'monthlyExpensesAnalytics' => $monthlyExpensesAnalytics,
+            'totalRevenue' => $totalRevenue,
+            'expectedRevenue' => $expectedRevenue
         ];
 
         return view('back.pages.admin.home', $data);
