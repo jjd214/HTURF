@@ -21,59 +21,58 @@ class AdminController extends Controller
 
     public function adminHome(Request $request)
     {
-        // Get the selected year or default to the current year
-        $selectedYear = $request->input('year', now()->year);
+        $selectedSalesYear = $request->input('sales_year', now()->year); // Default to current year
+        $selectedExpensesYear = $request->input('expenses_year', now()->year); // Default to current year
+        $selectedRevenueYear = $request->input('revenue_year', now()->year);
 
-        // Fetch years with transactions (for the dropdown)
-        $availableYears = DB::table('transactions')
-            ->selectRaw('DISTINCT YEAR(created_at) as year')
-            ->orderBy('year', 'desc')
-            ->pluck('year')
-            ->toArray();
-
-        // Fetch total sales for each month in the selected year
-        $monthlySalesAnalytics = DB::table('transactions')
+        // Monthly Sales Data
+        $monthlySales = DB::table('transactions')
             ->selectRaw('MONTH(created_at) as month, SUM(total_amount) as total_sales')
-            ->whereYear('created_at', $selectedYear)
+            ->whereYear('created_at', $selectedSalesYear)
             ->groupByRaw('MONTH(created_at)')
-            ->orderBy('month', 'asc')
-            ->get()
-            ->map(fn($row) => ['month' => $row->month, 'total_sales' => $row->total_sales])
-            ->toArray();
+            ->orderBy('month')
+            ->get();
 
-        // Fetch total expenses for each month in the selected year
-        $monthlyExpensesAnalytics = DB::table('inventories')
-            ->selectRaw('MONTH(created_at) as month, SUM(purchase_price * qty) as total_expenses')
-            ->whereYear('created_at', $selectedYear)
-            ->whereNull('consignment_id')
+        $salesData = array_fill(1, 12, 0); // Initialize sales data for all 12 months
+        foreach ($monthlySales as $sale) {
+            $salesData[$sale->month] = $sale->total_sales;
+        }
+
+        // Monthly Expenses Data
+        $monthlyExpenses = DB::table('inventories')
+            ->selectRaw('MONTH(created_at) as month, SUM(qty * purchase_price) as total_expenses')
+            ->whereYear('created_at', $selectedExpensesYear)
             ->groupByRaw('MONTH(created_at)')
-            ->orderBy('month', 'asc')
-            ->get()
-            ->map(fn($row) => ['month' => $row->month, 'total_expenses' => $row->total_expenses])
-            ->toArray();
+            ->orderBy('month')
+            ->get();
+
+        $expensesData = array_fill(1, 12, 0); // Initialize expenses data for all 12 months
+        foreach ($monthlyExpenses as $expense) {
+            $expensesData[$expense->month] = $expense->total_expenses;
+        }
 
         $totalRevenue = DB::table('transactions')
-            ->whereYear('created_at', $selectedYear)
+            ->whereYear('created_at', $selectedRevenueYear)
             ->sum('total_amount');
 
         $expectedRevenue = DB::table('inventories')
-            ->whereYear('created_at', $selectedYear)
+            ->whereYear('created_at', $selectedRevenueYear)
             ->whereNull('consignment_id')
-            ->sum('selling_price');
+            ->sum(DB::raw('qty * selling_price'));
 
         $data = [
             'pageTitle' => 'Home',
-            'monthlySalesAnalytics' => $monthlySalesAnalytics,
-            'availableYears' => $availableYears,
-            'selectedYear' => $selectedYear,
-            'monthlyExpensesAnalytics' => $monthlyExpensesAnalytics,
+            'salesData' => $salesData,
+            'expensesData' => $expensesData,
+            'selectedSalesYear' => $selectedSalesYear,
+            'selectedExpensesYear' => $selectedExpensesYear,
+            'selectedRevenueYear' => $selectedRevenueYear,
             'totalRevenue' => $totalRevenue,
             'expectedRevenue' => $expectedRevenue
         ];
 
         return view('back.pages.admin.home', $data);
     }
-
 
     public function profileView(Request $request)
     {

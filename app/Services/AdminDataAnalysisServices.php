@@ -16,12 +16,14 @@ class AdminDataAnalysisServices
 {
     public function getTotalExpenses()
     {
-        return Inventory::whereNull('consignment_id')->sum('purchase_price');
+        return Inventory::whereNull('consignment_id')
+            ->sum(DB::raw('purchase_price * qty'));
     }
 
     public function getTotalExpectedRevenue()
     {
-        return Inventory::whereNull('consignment_id')->sum('selling_price');
+        return Inventory::whereNull('consignment_id')
+            ->sum(DB::raw('selling_price * qty'));
     }
 
     public function getTotalRevenue()
