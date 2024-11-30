@@ -474,7 +474,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="" class="dropdown-toggle no-arrow ">
+							<a href="{{ route('admin.chat.all-chats') }}" class="dropdown-toggle no-arrow {{ Route::is('admin.chat.all-chats') ? 'active' : '' }}">
 								<span class="micon bi bi-chat-right-dots"></span
 								><span class="mtext">Chat</span>
 							</a>

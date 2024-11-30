@@ -83,6 +83,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 Route::post('/complete-payment-handler', 'completePaymentHandler')->name('complete-payment-handler');
             });
         });
+
+        Route::prefix('chat')->name('chat.')->group(function () {
+            Route::view('/all', 'back.pages.admin.chat')->name('all-chats');
+        });
     });
 });
 
