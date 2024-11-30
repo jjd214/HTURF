@@ -56,6 +56,7 @@
 		<meta name="twitter:image" content="/images/site/{{ get_settings()->site_image }}" /> --}}
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="/back/vendors/styles/style.css" />
         <link rel="stylesheet" type="text/css" href="/back/vendors/styles/toaster.css" />

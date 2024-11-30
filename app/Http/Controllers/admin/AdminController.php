@@ -19,10 +19,33 @@ use App\Services\AdminDataAnalysisServices;
 class AdminController extends Controller
 {
 
-    public function adminHome()
+    public function adminHome(Request $request)
     {
+        // Get the selected year or default to the current year
+        $selectedYear = $request->input('year', now()->year);
+
+        // Fetch years with transactions (for the dropdown)
+        $availableYears = DB::table('transactions')
+            ->selectRaw('DISTINCT YEAR(created_at) as year')
+            ->orderBy('year', 'desc')
+            ->pluck('year')
+            ->toArray();
+
+        // Fetch total sales for each month in the selected year
+        $monthlySalesAnalytics = DB::table('transactions')
+            ->selectRaw('MONTH(created_at) as month, SUM(total_amount) as total_sales')
+            ->whereYear('created_at', $selectedYear)
+            ->groupByRaw('MONTH(created_at)')
+            ->orderBy('month', 'asc')
+            ->get()
+            ->map(fn($row) => ['month' => $row->month, 'total_sales' => $row->total_sales])
+            ->toArray();
+
         $data = [
             'pageTitle' => 'Home',
+            'monthlySalesAnalytics' => $monthlySalesAnalytics,
+            'availableYears' => $availableYears,
+            'selectedYear' => $selectedYear
         ];
 
         return view('back.pages.admin.home', $data);

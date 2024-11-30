@@ -18,6 +18,9 @@ class AdminDashboard extends Component
     #[Url()]
     public $selectedDay = 'today';
 
+    public $monthlySalesAnalytics = [];
+
+
     protected $dataAnalysisService;
 
     // Inject the service into the mount method
