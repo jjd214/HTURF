@@ -21,7 +21,7 @@ class AdminDataAnalysisServices
 
     public function getTotalExpectedRevenue()
     {
-        return Inventory::sum('selling_price');
+        return Inventory::whereNull('consignment_id')->sum('selling_price');
     }
 
     public function getTotalRevenue()
