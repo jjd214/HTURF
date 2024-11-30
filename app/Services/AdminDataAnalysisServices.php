@@ -75,7 +75,6 @@ class AdminDataAnalysisServices
             ->orderByDesc('total_sales');
     }
 
-
     public function getInventoryTotalItems()
     {
         $totalItems = array(
@@ -86,5 +85,43 @@ class AdminDataAnalysisServices
         );
 
         return $totalItems;
+    }
+
+    public function totalSales($selectedDay)
+    {
+        $totalSales = 0;
+        $totalItemsSold = 0;
+
+        switch ($selectedDay) {
+            case 'today':
+                $transactions = Transaction::whereDate('created_at', now()->toDateString());
+                break;
+
+            case 'week':
+                $transactions = Transaction::whereBetween('created_at', [
+                    now()->startOfWeek()->toDateTimeString(),
+                    now()->endOfWeek()->toDateTimeString()
+                ]);
+                break;
+
+            case 'month':
+                $transactions = Transaction::whereMonth('created_at', now()->month)
+                    ->whereYear('created_at', now()->year);
+                break;
+
+            default:
+                $transactions = null;
+                break;
+        }
+
+        if ($transactions) {
+            $totalSales = $transactions->sum('total_amount');
+            $totalItemsSold = $transactions->sum('quantity_sold');
+        }
+
+        return [
+            'totalSales' => $totalSales,
+            'totalItemsSold' => $totalItemsSold,
+        ];
     }
 }

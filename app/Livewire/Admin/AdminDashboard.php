@@ -14,12 +14,17 @@ class AdminDashboard extends Component
 
     #[Url()]
     public $filterBestSellingProducts;
+
+    #[Url()]
+    public $selectedDay = 'today';
+
     protected $dataAnalysisService;
 
     // Inject the service into the mount method
     public function mount(AdminDataAnalysisServices $adminDataAnalysisServices)
     {
         $this->dataAnalysisService = $adminDataAnalysisServices;
+        $this->selectedDay = 'today';
     }
 
     // Rehydrate the service on every request
@@ -37,7 +42,6 @@ class AdminDashboard extends Component
             $dates[] = $currentDate->format('F Y');
             $currentDate->subMonth();
         }
-
         return $dates;
     }
 
@@ -52,6 +56,7 @@ class AdminDashboard extends Component
         $totalPendingPayments = $this->dataAnalysisService->getTotalPendingPayments();
         $totalInventoryItems = $this->dataAnalysisService->getInventoryTotalItems();
         $bestSellingProducts = $this->getPaginatedBestSellingProducts();
+        $totals = $this->dataAnalysisService->totalSales($this->selectedDay);
 
         return view('livewire.admin.admin-dashboard', [
             'pageTitle' => 'Home',
@@ -65,6 +70,8 @@ class AdminDashboard extends Component
             'totalInventoryItems' => $totalInventoryItems,
             'bestSellingProducts' => $bestSellingProducts,
             'lastFiveYearsDates' => $this->getLastFiveYearsDates(),
+            'totalSales' => $totals['totalSales'],
+            'totalItemsSold' => $totals['totalItemsSold'],
         ]);
     }
 

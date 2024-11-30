@@ -118,7 +118,7 @@
     <div class="row">
         <!-- Inventory Section -->
         <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
-            <div class="card-box pd-30 pt-10 height-100-p">
+            <div class="card-box pd-30 pt-10 height-50-p" style="height: 280px;">
                 <h2 class="mb-30 h4">Inventory</h2>
                 <div class="browser-visits">
                     <ul class="list-unstyled">
@@ -164,6 +164,19 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+            <div class="card-box pd-30 pt-10 height-50-p" style="height: 185px; margin-top: 20px;">
+                <div class="d-flex justify-content-between align-items-center mb-30">
+                    <h2 class="h4 mb-0">Sales</h2>
+                        <select class="custom-select form-control" style="width: 150px;" wire:model.live="selectedDay">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                </div>
+                <h1 class="h2 text-center" style="margin-top: -20px;" wire:poll.keep-alive><b>₱ {{ number_format($totalSales, 0) }}</b></h1>
+                <h2 class="h4 mb-0">Items Sold</h2>
+                <h1 class="h4 text-center"><b>{{ $totalItemsSold }}</b></h1>
             </div>
         </div>
 
