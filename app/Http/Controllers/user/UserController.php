@@ -130,7 +130,7 @@ class UserController extends Controller
             ], [
                 'login_id.required' => 'Email or username is required',
                 'login_id.email' => 'Invalid email address',
-                'login_id.exists' => 'Email do not exist',
+                'login_id.exists' => 'Email does not exist',
                 'password.required' => 'Password is required'
             ]);
         } else {
@@ -139,23 +139,28 @@ class UserController extends Controller
                 'password' => 'required|min:5|max:45'
             ], [
                 'login_id.required' => 'Email or username is required',
-                'login_id.exists' => 'Username do not exist',
+                'login_id.exists' => 'Username does not exist',
                 'password.required' => 'Password is required'
             ]);
         }
 
-        $creds = array(
+        $creds = [
             $fieldType => $request->login_id,
             'password' => $request->password
-        );
+        ];
 
         if (Auth::guard('user')->attempt($creds)) {
-            if (!auth('user')->user()->verified) {
+            $user = auth('user')->user();
+
+            if (!$user->verified) {
                 auth('user')->logout();
                 return redirect()->route('consignor.login')->with('fail', 'Your account is not yet verified. Check your email and click the link we had sent in order to verify your email for consignor account.');
-            } else {
-                return redirect()->route('consignor.home');
             }
+
+            // Update online status
+            $user->update(['is_online' => true]);
+
+            return redirect()->route('consignor.home');
         } else {
             session()->flash('fail', 'Incorrect credentials');
             return redirect()->route('consignor.login');
@@ -164,9 +169,17 @@ class UserController extends Controller
 
     public function logoutHandler(Request $request)
     {
+        $user = Auth::guard('user')->user();
+
+        if ($user) {
+            $user->update(['is_online' => false]);
+        }
+
         Auth::guard('user')->logout();
+
         return redirect()->route('consignor.login')->with('fail', 'You are logged out!');
     }
+
 
     public function forgotPassword(Request $request)
     {
