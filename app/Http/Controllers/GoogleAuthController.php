@@ -29,7 +29,6 @@ class GoogleAuthController extends Controller
         }
 
         $user = User::where('email', $google_user->getEmail())->first();
-
         if (!$user) {
             $user = User::create([
                 'name' => $google_user->getName(),
@@ -46,6 +45,9 @@ class GoogleAuthController extends Controller
 
         // Ensure the correct guard is used
         Auth::guard('user')->login($user);
+
+        $user->is_online = true;
+        $user->save();
 
         // Redirect to the intended route
         return redirect()->intended(route('consignor.home'));

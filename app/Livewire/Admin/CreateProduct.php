@@ -52,7 +52,7 @@ class CreateProduct extends Component
             'description' => $validatedData['description'],
             'purchase_price' => $validatedData['purchase_price'],
             'selling_price' => $validatedData['selling_price'],
-            'picture' => $validatedData['pictures'],
+            'picture' => $validatedData['pictures'] ?? '',
             'visibility' => $validatedData['visibility']
         ]);
         $this->reset();

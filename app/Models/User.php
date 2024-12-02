@@ -46,6 +46,13 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    // In User model
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class, 'users_id');
+    }
+
+
     public function getPictureAttribute($value)
     {
         if (filter_var($value, FILTER_VALIDATE_URL)) {
