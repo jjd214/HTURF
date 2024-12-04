@@ -6,10 +6,12 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
 use Livewire\Component;
+use Livewire\Attributes\Url;
 use App\Models\Admin;
 
 class Chat extends Component
 {
+    #[Url()]
     public $search_contact = '';
     public $selectedUser;
     public $conversation;
