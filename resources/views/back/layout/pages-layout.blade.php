@@ -402,6 +402,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('consignor.consignment.all-consignments') }}"
+                                class="dropdown-toggle no-arrow {{ Route::is('consignor.consignment.all-consignments') ? 'active' : '' }}">
+                                <span class="micon bi bi-box-seam"></span><span class="mtext">My Inventory</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('consignor.consignment.add-consignment') }}"
                                 class="dropdown-toggle no-arrow {{ Route::is('consignor.consignment.add-consignment') ? 'active' : '' }}">
                                 <span class="micon bi bi-file-earmark-arrow-up"></span>
