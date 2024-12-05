@@ -23,46 +23,51 @@
         <table class="table table-hover striped" wire:poll.keep-alive>
             <thead>
                 <tr>
-                    <th>Item</th>
-                    <th>Sku</th>
-                    <th>Product</th>
-                    <th>Condition</th>
-                    <th>Consignor name</th>
-                    <th>status</th>
-                    <th>Priority</th>
+                    <th><b>Item</b></th>
+                    <th><b>Sku</b></th>
+                    <th><b>Product</b></th>
+                    <th><b>Condition</b></th>
+                    <th><b>Consignor name</b></th>
+                    <th><b>status</b></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($rows as $item)
-                <tr wire:key={{ $item->id }} style="cursor: pointer;" wire:click.prevent="requestDetails({{ $item->id }})">
-                    @php
-                        $picture = json_decode($item->image, true);
-                        $firstPicture = $picture && count($picture) > 0 ? $picture[0] : null;
-                    @endphp
-                    <td>
-                        @if ($firstPicture === null)
-                            <img src="{{ asset('storage/images/default-img.png') }}" width="70" class="img-thumbnail" alt="Default Image">
-                        @else
-                        <div class="position-relative">
-                            <img src="{{ asset('storage/images/requests/'.$firstPicture) }}" width="70" class="img-thumbnail" alt="{{ $item->name }}" style="height: 70px !important;">
+                @forelse ($rows as $item)
+                    <tr wire:key={{ $item->id }} style="cursor: pointer;"
+                        wire:click.prevent="requestDetails({{ $item->id }})">
+                        @php
+                            $picture = json_decode($item->image, true);
+                            $firstPicture = $picture && count($picture) > 0 ? $picture[0] : null;
+                        @endphp
+                        <td>
+                            @if ($firstPicture === null)
+                                <img src="{{ asset('storage/images/default-img.png') }}" width="70"
+                                    class="img-thumbnail" alt="Default Image">
+                            @else
+                                <div class="position-relative">
+                                    <img src="{{ asset('storage/images/requests/' . $firstPicture) }}" width="70"
+                                        class="img-thumbnail" alt="{{ $item->name }}"
+                                        style="height: 70px !important;">
 
-                        </div>
-                        @endif
-                    </td>
-                    <td>{{ $item->sku }}</td>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->condition }}</td>
-                    <td>{{ $item->consignorName }}</td>
-                    <td>
-                        <span class="badge {{ $item->status == 'Pending' ? 'badge-info' : ($item->status == 'Approved' ? 'badge-success' : 'badge-danger') }}">
-                            {{ $item->status }}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="badge badge-success">High priority</span>
-                    </td>
-                </tr>
-                @endforeach
+                                </div>
+                            @endif
+                        </td>
+                        <td>{{ $item->sku }}</td>
+                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->condition }}</td>
+                        <td>{{ $item->consignorName }}</td>
+                        <td>
+                            <span
+                                class="badge {{ $item->status == 'Pending' ? 'badge-info' : ($item->status == 'Approved' ? 'badge-success' : 'badge-danger') }}">
+                                {{ $item->status }}
+                            </span>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center">{{ __('No consignment request found.') }}</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

@@ -19,6 +19,7 @@ class CreateConsign extends Component
         'brand' => 'required',
         'sku' => 'required',
         'color' => 'required',
+        'sex' => 'required',
         'size' => 'required|min:0',
         'qty' => 'required|integer|min:0',
         'description' => 'nullable',
@@ -78,6 +79,7 @@ class CreateConsign extends Component
         $inventory->brand = $validatedData['brand'];
         $inventory->sku = $validatedData['sku'];
         $inventory->color = $validatedData['color'];
+        $inventory->sex = $validatedData['sex'];
         $inventory->size = $validatedData['size'];
         $inventory->description = $validatedData['description'];
         $inventory->picture = $validatedData['pictures'] ?? '';
