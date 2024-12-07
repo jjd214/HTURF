@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\PaymentController;
 use App\Http\Controllers\admin\RefundController;
 use App\Http\Controllers\admin\TransactionController;
 use App\Http\Controllers\admin\ConsignmentController as adminConsignmentController;
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\user\ConsignmentController as userConsignmentController;
@@ -18,6 +19,10 @@ Route::get('/', function () {
 // test routes
 Route::view('/example-page', 'example-page');
 Route::view('/example-auth', 'example-auth');
+
+Route::controller(FrontendController::class)->group(function () {
+    Route::get('/', 'homePage')->name('home-page');
+});
 
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('google-auth');
 Route::get('/auth/google/call-back', [GoogleAuthController::class, 'callbackGoogle']);
