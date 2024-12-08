@@ -126,14 +126,23 @@ class EditConsign extends Component
         }
     }
 
-
     public function removePicture($picture)
     {
-        // Retrieve the product
+        // Retrieve the product based on consignment_id
         $product = InventoryModel::where('consignment_id', $this->consignment_id)->first();
+
+        if (!$product) {
+            // If no product is found, exit the function
+            return;
+        }
 
         // Decode the JSON array from the `picture` column
         $imagePaths = json_decode($product->picture, true);
+
+        // Ensure $imagePaths is a valid array
+        if (!is_array($imagePaths)) {
+            $imagePaths = [];
+        }
 
         // Find the index of the picture to be removed and unset it
         if (($key = array_search($picture, $imagePaths)) !== false) {
@@ -153,6 +162,7 @@ class EditConsign extends Component
         // Update the local `pictures` array to reflect the changes
         $this->pictures = $imagePaths;
     }
+
 
     public function render()
     {

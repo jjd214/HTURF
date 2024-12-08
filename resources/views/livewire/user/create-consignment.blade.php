@@ -62,7 +62,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><b>Sex </b> </label>
-                        <input type="text" class="form-control" placeholder="Enter sex" wire:model="sex">
+                        <select wire:model="sex" class="custom-select form-control">
+                            <option value="">{{ __('-- Select option --') }}</option>
+                            <option value="Unisex">Unisex</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        {{-- <input type="text" class="form-control" placeholder="Enter sex" wire:model="sex"> --}}
                         @error('sex')
                             <span class="text-danger"><small>{{ $message }}</small></span>
                         @enderror
@@ -80,7 +86,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><b>Condition </b> </label>
-                        <select class="form-control" wire:model="condition">
+                        <select class="custom-select form-control" wire:model="condition">
                             <option value="Brand new">Brand new</option>
                             <option value="Used" @disabled(true)>Used</option>
                             <option value="Slightly used" @disabled(true)>Slightly used</option>

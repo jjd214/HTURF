@@ -35,7 +35,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    @forelse ($products as $product)
+                        <tr>
+                            <td>Test</td>
+                            <td>{{ $product->sku }}</td>
+                            <td>{{ $product->name }}</td>
+                            <td>{{ $product->size }}</td>
+                            <td>{{ $product->qty }}</td>
+                            <td>Selling</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center">{{ __('No products found.') }}</td>
+                        </tr>
+                    @endforelse
+                    {{-- <tr>
                         <td>Example Item</td>
                         <td>123456</td>
                         <td>Product Name</td>
@@ -58,7 +72,7 @@
                         <td>Medium</td>
                         <td>10</td>
                         <td>Available</td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>

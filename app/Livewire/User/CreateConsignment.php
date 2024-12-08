@@ -63,7 +63,7 @@ class CreateConsignment extends Component
         $consignment->selling_price = $validatedData['selling_price'];
         $consignment->consignor_commission = $validatedData['consignor_commission'];
         $consignment->pullout_date = $validatedData['pullout_date'];
-        $consignment->image = $validatedData['images'];
+        $consignment->image = $validatedData['images'] ?? '';
         $consignment->note = $validatedData['note'];
 
         $this->reset();

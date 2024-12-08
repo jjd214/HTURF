@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Consignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\ConsignmentRequest;
+use App\Models\Inventory;
 use App\Models\User;
 
 
@@ -51,11 +53,36 @@ class ConsignmentController extends Controller
 
     public function acceptConsignmentRequest(Request $request, $id)
     {
-        ConsignmentRequest::where('id', $id)->update([
-            'status' => 'Approved'
+        $product = ConsignmentRequest::where('id', $id)->first();
+
+        $consignment = Consignment::create([
+            'consignor_id' => $product->consignor_id,
+            'commission_percentage' => $product->consignor_commission,
+            'start_date' => now(),
+            'expiry_date' => $product->pullout_date,
         ]);
+
+        Inventory::create([
+            'consignment_id' => $consignment->id,
+            'name' => $product->name,
+            'brand' => $product->brand,
+            'sku' => $product->sku,
+            'size' => $product->size,
+            'color' => $product->colorway,
+            'sex' => $product->sex,
+            'qty' => $product->quantity,
+            'description' => $product->description,
+            'purchase_price' => $product->purchase_price,
+            'selling_price' => $product->selling_price,
+            'picture' => null,
+            'visibility' => 'public',
+            'status' => 1,
+        ]);
+
+        $product->delete();
+
         session()->flash('success', 'Consignment request approved. 👌🏻');
-        return redirect()->back();
+        return redirect()->route('admin.consignment.all-request');
     }
 
     public function rejectConsignmentRequest(Request $request, $id)

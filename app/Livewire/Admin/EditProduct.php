@@ -100,7 +100,6 @@ class EditProduct extends Component
         }
     }
 
-
     public function removePicture($picture)
     {
         // Retrieve the product
@@ -108,6 +107,11 @@ class EditProduct extends Component
 
         // Decode the JSON array from the `picture` column
         $imagePaths = json_decode($product->picture, true);
+
+        // Ensure $imagePaths is a valid array
+        if (!is_array($imagePaths)) {
+            $imagePaths = [];
+        }
 
         // Find the index of the picture to be removed and unset it
         if (($key = array_search($picture, $imagePaths)) !== false) {
@@ -127,6 +131,34 @@ class EditProduct extends Component
         // Update the local `pictures` array to reflect the changes
         $this->pictures = $imagePaths;
     }
+
+
+    // public function removePicture($picture)
+    // {
+    //     // Retrieve the product
+    //     $product = InventoryModel::find($this->product_id);
+
+    //     // Decode the JSON array from the `picture` column
+    //     $imagePaths = json_decode($product->picture, true);
+
+    //     // Find the index of the picture to be removed and unset it
+    //     if (($key = array_search($picture, $imagePaths)) !== false) {
+    //         unset($imagePaths[$key]);
+
+    //         // Delete the image file from storage if it exists
+    //         $filePath = 'images/products/' . $picture;
+    //         if (Storage::disk('public')->exists($filePath)) {
+    //             Storage::disk('public')->delete($filePath);
+    //         }
+    //     }
+
+    //     // Update the product's `picture` column with the modified array
+    //     $product->picture = json_encode(array_values($imagePaths)); // Re-index the array
+    //     $product->save();
+
+    //     // Update the local `pictures` array to reflect the changes
+    //     $this->pictures = $imagePaths;
+    // }
 
     public function render()
     {
