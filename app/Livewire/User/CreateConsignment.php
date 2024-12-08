@@ -12,7 +12,7 @@ class CreateConsignment extends Component
 {
     use WithFileUploads;
 
-    public $consignor_id, $name, $brand, $sku, $colorway, $size, $description, $sex, $quantity, $condition, $purchase_price, $selling_price, $consignor_commission, $pullout_date, $images = [], $note;
+    public $consignor_id, $name, $brand, $sku, $colorway, $size, $description, $sex, $quantity, $condition = 'Brand new', $purchase_price, $selling_price, $consignor_commission, $pullout_date, $images = [], $note;
 
     public function createConsignment()
     {
@@ -25,7 +25,7 @@ class CreateConsignment extends Component
             'description' => 'nullable',
             'sex' => 'required',
             'quantity' => 'required|integer|min:0',
-            'condition' => 'required',
+            'condition' => 'nullable',
             'purchase_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
             'consignor_commission' => 'required|numeric|min:0',

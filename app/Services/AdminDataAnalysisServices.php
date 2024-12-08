@@ -83,7 +83,7 @@ class AdminDataAnalysisServices
             'storeItems' => Inventory::where('consignment_id', null)->count(),
             'consignItems' => Inventory::where('consignment_id', '!=', null)->count(),
             'sellingItems' => Inventory::where('visibility', '!=', 'private')->count(),
-            'refundItems' => Refund::all()->count()
+            'refundItems' => Refund::where('status', 'Refunded')->count()
         );
 
         return $totalItems;

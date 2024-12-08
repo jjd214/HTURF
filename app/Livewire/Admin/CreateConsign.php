@@ -107,7 +107,7 @@ class CreateConsign extends Component
     public function render()
     {
         return view('livewire.admin.create-consign', [
-            'rows' => User::orderBy('email', 'ASC')->get()
+            'rows' => User::orderBy('email', 'ASC')->where('verified', 1)->get()
         ]);
     }
 }

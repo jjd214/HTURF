@@ -16,7 +16,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// test routes
+// test routesx`
 Route::view('/example-page', 'example-page');
 Route::view('/example-auth', 'example-auth');
 
