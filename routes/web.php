@@ -123,6 +123,7 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
             Route::controller(userConsignmentController::class)->group(function () {
                 Route::get('/add', 'createConsignment')->name('add-consignment');
                 Route::get('/all', 'index')->name('all-consignments');
+                Route::get('/{id}', 'showConsignmentStatusDetails')->name('show-consignment-status-details');
             });
         });
     });

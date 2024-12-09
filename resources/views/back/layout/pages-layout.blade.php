@@ -50,6 +50,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/extra-assets/ijaboCropTool/ijaboCropTool.min.css">
+    <style>
+        /* Styling for the table */
+        .styled-table tbody tr td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .styled-table tbody tr:last-child td {
+            border-bottom: none;
+            /* Remove the border for the last row */
+        }
+    </style>
     @livewireStyles
     @stack('stylesheets')
 </head>
