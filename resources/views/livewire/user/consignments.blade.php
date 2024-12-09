@@ -1,5 +1,5 @@
 <div>
-    <div class="card-box mb-20 pd-10">
+    <div class="card-box mb-20 pd-20">
         <h2 class="h3 mb-4">Pending consignments</h2>
 
         <!-- Responsive Table -->
@@ -53,6 +53,7 @@
                     @endforelse
                 </tbody>
             </table>
+            <hr>
         </div>
 
         <!-- Pagination and Per Page Control -->
@@ -61,11 +62,11 @@
 
             </div>
             <div class="col-md-9 text-right">
-                {{-- {{ $product->links() }} --}}
+                {{ $products->links() }}
             </div>
         </div>
     </div>
-    <div class="card-box mb-20 pd-10">
+    <div class="card-box mb-20 pd-20">
         <div class="row">
             <!-- Search and Filter -->
             <div class="col-md-3 mb-10">
