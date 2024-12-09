@@ -82,8 +82,8 @@
             <div class="col-md-3 mb-10">
                 <select class="custom-select form-control" wire:model.live="visibility">
                     <option value="">All</option>
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
+                    <option value="public">Selling</option>
+                    <option value="private">Not selling</option>
                 </select>
             </div>
         </div>
@@ -102,44 +102,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($products as $product)
-                        <tr>
-                            <td>Test</td>
-                            <td>{{ $product->sku }}</td>
-                            <td>{{ $product->name }}</td>
-                            <td>{{ $product->size }}</td>
-                            <td>{{ $product->quantity }}</td>
-                            <td>Selling</td>
+                    @forelse ($inventories as $item)
+                        <tr wire:key="{{ $item->id }}" style="cursor: pointer;">
+                            @php
+                                $pictures = json_decode($item['picture'], true);
+                                $firstPicture = $pictures && count($pictures) > 0 ? $pictures[0] : null;
+                            @endphp
+                            <td>
+                                @if ($firstPicture == null)
+                                    <img src="{{ asset('storage/images/default-img.png') }}" width="70"
+                                        style="height: 70px !important;" height="70" alt="Default Image"
+                                        class="img-thumbnail">
+                                @elseif (Storage::exists('public/images/consignments/' . $firstPicture))
+                                    <img src="{{ asset('storage/images/consignments/' . $firstPicture) }}"
+                                        width="70" style="height: 70px !important;" alt="{{ $firstPicture }}"
+                                        class="img-thumbnail">
+                                @endif
+                            </td>
+                            <td>{{ $item->sku }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->size }}</td>
+                            <td>{{ $item->qty }}</td>
+                            <td>
+                                <span
+                                    class="badge {{ $item->visibility === 'public' ? 'badge-success' : 'badge-primary' }}">
+                                    {{ $item->visibility === 'public' ? 'Selling' : 'Not selling' }}
+                                </span>
+                            </td>
                         </tr>
                     @empty
                         <tr>
                             <td colspan="6" class="text-center">{{ __('No products found.') }}</td>
                         </tr>
                     @endforelse
-                    {{-- <tr>
-                        <td>Example Item</td>
-                        <td>123456</td>
-                        <td>Product Name</td>
-                        <td>Medium</td>
-                        <td>10</td>
-                        <td>Available</td>
-                    </tr>
-                    <tr>
-                        <td>Example Item</td>
-                        <td>123456</td>
-                        <td>Product Name</td>
-                        <td>Medium</td>
-                        <td>10</td>
-                        <td>Available</td>
-                    </tr>
-                    <tr>
-                        <td>Example Item</td>
-                        <td>123456</td>
-                        <td>Product Name</td>
-                        <td>Medium</td>
-                        <td>10</td>
-                        <td>Available</td>
-                    </tr> --}}
                 </tbody>
             </table>
         </div>
@@ -156,7 +151,7 @@
                 </select>
             </div>
             <div class="col-md-9 text-right">
-
+                {{ $inventories->links() }}
             </div>
         </div>
     </div>
