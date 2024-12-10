@@ -142,5 +142,34 @@
                 </div>
             </div>
         </div>
+        @if ($product->status === 'Rejected')
+            <button class="btn btn-danger" id="cancel-button">Delete</button>
+        @else
+            <form id="cancelRequestForm"
+                action="{{ route('consignor.consignment.destroy-consignment-request', $product->id) }}" method="post">
+                @csrf
+            </form>
+            <button class="btn btn-info" id="cancel-button">Cancel request</button>
+        @endif
     </div>
+
+    <script>
+        document.getElementById('cancel-button').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to cancel this request!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form
+                    document.getElementById('cancelRequestForm').submit();
+                }
+            });
+        });
+    </script>
 @endsection

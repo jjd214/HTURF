@@ -125,6 +125,7 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
                 Route::get('/all', 'index')->name('all-consignments');
                 Route::get('/{id}', 'showConsignmentStatusDetails')->name('show-consignment-status-details');
                 Route::get('/{id}/view', 'showConsignmentDetails')->name('show-consignment_details');
+                Route::post('/{id}/destroy', 'destroyConsignmentRequest')->name('destroy-consignment-request');
             });
         });
     });
