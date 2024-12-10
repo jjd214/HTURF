@@ -103,7 +103,8 @@
                 </thead>
                 <tbody>
                     @forelse ($inventories as $item)
-                        <tr wire:key="{{ $item->id }}" style="cursor: pointer;">
+                        <tr wire:key="{{ $item->id }}" wire:click.prevent="viewConsignment({{ $item->id }})"
+                            style="cursor: pointer;">
                             @php
                                 $pictures = json_decode($item['picture'], true);
                                 $firstPicture = $pictures && count($pictures) > 0 ? $pictures[0] : null;

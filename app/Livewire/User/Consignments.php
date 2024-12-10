@@ -22,6 +22,11 @@ class Consignments extends Component
     #[Url()]
     public $per_page = 10;
 
+    public function viewConsignment($id)
+    {
+        return redirect()->route('consignor.consignment.show-consignment_details', ['id' => $id]);
+    }
+
     public function viewConsignmentStatus($id)
     {
         return redirect()->route('consignor.consignment.show-consignment-status-details', ['id' => $id]);

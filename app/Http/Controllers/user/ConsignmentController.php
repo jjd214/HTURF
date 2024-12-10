@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use App\Models\Consignment;
 use App\Models\ConsignmentRequest;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 
 class ConsignmentController extends Controller
@@ -29,5 +30,15 @@ class ConsignmentController extends Controller
     {
         $product = ConsignmentRequest::where('id', $id)->first();
         return view('back.pages.user.consignment-status-details', compact('product'));
+    }
+
+    public function showConsignmentDetails($id)
+    {
+        $product = Inventory::leftJoin('consignments', 'inventories.consignment_id', '=', 'consignments.id')
+            ->select('inventories.*', 'consignments.*')
+            ->where('inventories.consignment_id', $id)
+            ->first();
+
+        return view('back.pages.user.consignment-details', compact('product'));
     }
 }
