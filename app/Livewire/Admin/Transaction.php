@@ -15,6 +15,7 @@ class Transaction extends Component
     #[Url(history: true)]
     public $search;
 
+    #[Url('status')]
     public $status;
 
     #[Url()]

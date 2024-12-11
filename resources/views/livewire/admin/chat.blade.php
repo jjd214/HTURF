@@ -11,7 +11,7 @@
                         style="max-height: 400px; overflow-y: auto;">
                         <ul>
                             @forelse ($users as $user)
-                                <li wire:key="{{ $user->id }}" wire:click="selectUser({{ $user->id }})"
+                                <li wire:key="{{ $user->userId }}" wire:click="selectUser({{ $user->userId }})"
                                     class="cursor-pointer">
                                     <a href="#">
                                         <img src="{{ $user->picture }}" alt="{{ $user->name }}"

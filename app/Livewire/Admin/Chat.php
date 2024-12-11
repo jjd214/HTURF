@@ -56,11 +56,14 @@ class Chat extends Component
             'admin_id' => $this->sender_id,
         ]);
 
-        $conversation->messages()->create([
+        $msg = $conversation->messages()->create([
             'sender_id' => $this->sender_id,
             'receiver_id' => $this->receiver_id,
             'message' => $this->message,
         ]);
+
+        Conversation::where('id', $msg->conversation_id)->update(['updated_at' => now()]);
+
 
         $this->message = '';
         $this->loadConversation();
@@ -68,22 +71,11 @@ class Chat extends Component
 
     public function render()
     {
-        $users = User::query()
-            ->with(['conversations' => function ($query) {
-                $query->with('messages')
-                    ->orderByDesc(
-                        Message::select('created_at')
-                            ->whereColumn('conversations.id', 'messages.conversation_id')
-                            ->latest()
-                            ->limit(1)
-                    );
-            }])
-            ->when($this->search_contact, function ($query) {
-                $query->where('name', 'like', "%{$this->search_contact}%")
-                    ->orWhere('username', 'like', "%{$this->search_contact}%");
-            })
+        $users = Conversation::leftJoin('users', 'conversations.users_id', '=', 'users.id')
+            ->where('admin_id', auth('admin')->id())
+            ->select('users.*', 'users.id AS userId', 'conversations.*')
+            ->orderBy('conversations.updated_at', 'desc')
             ->get();
-
 
         return view('livewire.admin.chat', [
             'users' => $users,

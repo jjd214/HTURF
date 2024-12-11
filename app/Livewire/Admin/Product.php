@@ -21,7 +21,7 @@ class Product extends Component
     #[Url(history: true)]
     public $search = '';
 
-    #[Url(history: true)]
+    #[Url('status', history: true)]
     public $visibility = '';
 
     #[Url(history: true)]

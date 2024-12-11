@@ -33,7 +33,7 @@ class CreateSales extends Component
     public $search = ''; // Search input
     #[Url()]
     public $filter = ''; // Filter for consignment/store
-    #[Url(history: true)]
+    #[Url('filter', history: true)]
     public $genderFilter = ''; // Filter for gender
 
     public function mount()
