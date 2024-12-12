@@ -25,6 +25,15 @@ class Chat extends Component
     {
         $this->admin = Admin::findOrFail(auth('admin')->id());
         $this->sender_id = auth('admin')->id();
+        $firstUser = User::leftJoin('conversations', 'users.id', '=', 'conversations.users_id')
+            ->where('conversations.admin_id', $this->sender_id)
+            ->select('users.*', 'users.id AS userId', 'conversations.*')
+            ->orderBy('conversations.updated_at', 'desc')
+            ->first();
+
+        if ($firstUser) {
+            $this->selectUser($firstUser->userId);
+        }
     }
 
     public function selectUser($userId)
@@ -64,15 +73,14 @@ class Chat extends Component
 
         Conversation::where('id', $msg->conversation_id)->update(['updated_at' => now()]);
 
-
         $this->message = '';
         $this->loadConversation();
     }
 
     public function render()
     {
-        $users = Conversation::leftJoin('users', 'conversations.users_id', '=', 'users.id')
-            ->where('admin_id', auth('admin')->id())
+        $users = User::leftJoin('conversations', 'users.id', '=', 'conversations.users_id')
+            ->where('conversations.admin_id', auth('admin')->id())
             ->select('users.*', 'users.id AS userId', 'conversations.*')
             ->orderBy('conversations.updated_at', 'desc')
             ->get();
