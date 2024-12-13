@@ -113,6 +113,7 @@ class AdminController extends Controller
         );
 
         if (Auth::guard('admin')->attempt($creds)) {
+            Admin::findOrFail(auth('admin')->id())->update(['is_online' => true]);
             return redirect()->route('admin.home');
         } else {
             session()->flash('fail', 'Incorrect credentials');
@@ -122,6 +123,7 @@ class AdminController extends Controller
 
     public function logoutHandler(Request $request)
     {
+        Admin::findOrFail(auth('admin')->id())->update(['is_online' => false]);
         Auth::guard('admin')->logout();
         session()->flash('fail', 'You are logged out');
         return redirect()->route('admin.login');

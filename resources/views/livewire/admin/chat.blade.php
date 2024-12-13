@@ -75,10 +75,10 @@
                                 @if ($conversation)
                                     <ul>
                                         @foreach ($conversation_messages as $message)
-                                            <li class="clearfix admin_chat">
+                                            <li class="clearfix {{ $message->sender_id != '1' ? '' : 'admin_chat' }} ">
                                                 <span class="chat-img">
-                                                    <img src="{{ $admin->picture }}" alt=""
-                                                        class="mCS_img_loaded">
+                                                    <img src="{{ $message->sender_id != '1' ? $selectedUser->picture : $admin->picture }}"
+                                                        alt="" class="mCS_img_loaded">
                                                 </span>
                                                 <div class="chat-body">
                                                     <p>{{ $message->message }}</p>
