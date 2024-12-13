@@ -64,13 +64,15 @@ class Chat extends Component
             ]
         );
 
-        $convo->messages()->create(
+        $msg = $convo->messages()->create(
             [
                 'sender_id' => $this->sender_id,
                 'receiver_id' => $this->receiver_id,
                 'message' => $this->chat_message
             ]
         );
+
+        Conversation::where('id', $msg->conversation_id)->update(['updated_at' => now()]);
 
         $this->chat_message = '';
         $this->conversations($this->receiver_id);
