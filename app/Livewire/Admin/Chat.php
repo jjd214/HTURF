@@ -11,82 +11,82 @@ use App\Models\Admin;
 
 class Chat extends Component
 {
-    #[Url()]
-    public $search_contact = '';
-    public $selectedUser;
-    public $conversation;
-    public $message = '';
-    public $sender_id, $receiver_id;
-    public $conversation_messages = [];
 
+    public $userProfileHeader = '';
+    public $messages = [];
     public $admin;
+
+    public $sender_id, $receiver_id, $chat_message;
 
     public function mount()
     {
         $this->admin = Admin::findOrFail(auth('admin')->id());
         $this->sender_id = auth('admin')->id();
-        $firstUser = User::leftJoin('conversations', 'users.id', '=', 'conversations.users_id')
-            ->where('conversations.admin_id', $this->sender_id)
+
+        $defaultSelectedUser =  User::leftJoin('conversations', 'users.id', '=', 'conversations.users_id')
             ->select('users.*', 'users.id AS userId', 'conversations.*')
             ->orderBy('conversations.updated_at', 'desc')
             ->first();
 
-        if ($firstUser) {
-            $this->selectUser($firstUser->userId);
+        if ($defaultSelectedUser) {
+            $this->selectedUser($defaultSelectedUser->userId);
         }
     }
 
-    public function selectUser($userId)
+    public function selectedUser($user_id)
     {
-        $this->selectedUser = User::findOrFail($userId);
-        $this->receiver_id = $userId;
-        $this->loadConversation();
+        $this->userProfileHeader = User::findOrFail($user_id);
+        $this->receiver_id = $user_id;
+        $this->conversations($user_id);
     }
 
-    public function loadConversation()
+    public function conversations($userId)
     {
-        $conversation = Conversation::where('users_id', $this->receiver_id)
-            ->where('admin_id', $this->sender_id)
+        $conversation = Conversation::where('admin_id', $this->sender_id)
+            ->where('users_id', $userId)
             ->first();
 
         if ($conversation) {
-            $this->conversation = $conversation;
-            $this->conversation_messages = $conversation->messages()->get();
+            $this->messages = $conversation->messages()->get();
         } else {
-            $this->conversation = null;
-            $this->conversation_messages = [];
+            $this->messages = [];
         }
     }
 
     public function sendMessage()
     {
-        $conversation = Conversation::firstOrCreate([
-            'users_id' => $this->receiver_id,
-            'admin_id' => $this->sender_id,
-        ]);
+        if ($this->chat_message == '') return;
 
-        $msg = $conversation->messages()->create([
-            'sender_id' => $this->sender_id,
-            'receiver_id' => $this->receiver_id,
-            'message' => $this->message,
-        ]);
+        $convo = Conversation::firstOrCreate(
+            [
+                'admin_id' => $this->sender_id,
+                'users_id' => $this->receiver_id
+            ]
+        );
 
-        Conversation::where('id', $msg->conversation_id)->update(['updated_at' => now()]);
+        $convo->messages()->create(
+            [
+                'sender_id' => $this->sender_id,
+                'receiver_id' => $this->receiver_id,
+                'message' => $this->chat_message
+            ]
+        );
 
-        $this->message = '';
-        $this->loadConversation();
+        $this->chat_message = '';
+        $this->conversations($this->receiver_id);
     }
 
     public function render()
     {
         $users = User::leftJoin('conversations', 'users.id', '=', 'conversations.users_id')
-            ->where('conversations.admin_id', auth('admin')->id())
             ->select('users.*', 'users.id AS userId', 'conversations.*')
             ->orderBy('conversations.updated_at', 'desc')
             ->get();
 
+        // $users = User::all();
         return view('livewire.admin.chat', [
             'users' => $users,
+            'messages' => $this->messages
         ]);
     }
 }

@@ -9,25 +9,22 @@
                     </div>
                     <div class="notification-list chat-notification-list customscroll"
                         style="max-height: 400px; overflow-y: auto;">
-                        <ul>
-                            @forelse ($users as $user)
-                                <li wire:key="{{ $user->userId }}" wire:click="selectUser({{ $user->userId }})"
-                                    class="cursor-pointer">
+                        @forelse ($users as $user)
+                            <ul>
+                                <li wire:click.prevent="selectedUser({{ $user->userId }})">
                                     <a href="#">
                                         <img src="{{ $user->picture }}" alt="{{ $user->name }}"
                                             class="mCS_img_loaded">
                                         <h3 class="clearfix">{{ $user->name }}</h3>
                                         <p>
-                                            <i
-                                                class="fa fa-circle {{ $user->is_online ? 'text-light-green' : 'text-muted' }}"></i>
-                                            {{ $user->is_online ? 'online' : 'offline' }}
+                                            <i class="fa fa-circle text-light-green"></i> online
                                         </p>
                                     </a>
                                 </li>
-                            @empty
-                                <h1 class="h4 text-muted text-center">{{ __('No contacts.') }}</h1>
-                            @endforelse
-                        </ul>
+                            </ul>
+                        @empty
+                            {{ __('No contacts.') }}
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -36,19 +33,16 @@
                     <div class="chat-detail">
                         <div class="chat-profile-header clearfix">
                             <div class="left">
-                                @if ($selectedUser)
+                                @if ($userProfileHeader)
                                     <div class="clearfix">
                                         <div class="chat-profile-photo">
-                                            <img src="{{ $selectedUser->picture }}" alt="{{ $selectedUser->name }}">
+                                            <img src="{{ $userProfileHeader->picture }}"
+                                                alt="{{ $userProfileHeader->name }}">
                                         </div>
                                         <div class="chat-profile-name">
-                                            <h3>{{ $selectedUser->name }}</h3>
-                                            <span>{{ $selectedUser->email ?? '' }}</span>
+                                            <h3>{{ $userProfileHeader->name }}</h3>
+                                            <span>{{ $userProfileHeader->email }}</span>
                                         </div>
-                                    </div>
-                                @else
-                                    <div class="text-center">
-                                        <p>Select a user to start chatting</p>
                                     </div>
                                 @endif
                             </div>
@@ -68,69 +62,37 @@
                         </div>
                         <div class="chat-box">
                             <div class="chat-desc customscroll" style="max-height: 500px; overflow-y: auto;">
-                                <div wire:loading wire:target="selectUser">
-                                    <p>Loading chat...</p>
-                                </div>
-                                {{--  Has conversation --}}
-                                @if ($conversation)
+                                @forelse ($messages as $message)
                                     <ul>
-                                        @foreach ($conversation_messages as $message)
-                                            <li class="clearfix {{ $message->sender_id != '1' ? '' : 'admin_chat' }} ">
-                                                <span class="chat-img">
-                                                    <img src="{{ $message->sender_id != '1' ? $selectedUser->picture : $admin->picture }}"
-                                                        alt="" class="mCS_img_loaded">
-                                                </span>
-                                                <div class="chat-body">
-                                                    <p>{{ $message->message }}</p>
-                                                    <div class="chat_time">{{ $message->created_at }}</div>
+                                        <li
+                                            class="clearfix {{ $message->sender_id == $admin->id ? 'admin_chat' : '' }} ">
+                                            <span class="chat-img">
+                                                <img src="{{ $message->sender_id == $admin->id ? $admin->picture : $userProfileHeader->picture }}"
+                                                    alt="{{ $admin->name }}" class="mCS_img_loaded">
+                                            </span>
+                                            <div class="chat-body clearfix">
+                                                <p>{{ $message->message }}</p>
+                                                <div class="chat_time">
+                                                    {{ \Carbon\Carbon::parse($message->created_at)->diffForHumans() }}
                                                 </div>
-                                            </li>
-                                        @endforeach
+                                            </div>
+                                        </li>
                                     </ul>
-                                @else
-                                    {{-- No conversation --}}
-                                    @if ($selectedUser)
+                                @empty
+                                    @if ($userProfileHeader)
                                         <div class="d-flex flex-column align-items-center justify-content-center">
                                             <div class="chat-profile-photo mb-3">
-                                                <img src="{{ $selectedUser->picture }}"
-                                                    alt="{{ $selectedUser->name }}" class="rounded-circle"
+                                                <img src="{{ $userProfileHeader->picture }}"
+                                                    alt="{{ $userProfileHeader->name }}" class="rounded-circle"
                                                     style="height: 70px; width: 70px; margin-top: 20px;">
                                             </div>
                                             <div class="chat-profile-name text-center">
-                                                <p>{{ $selectedUser->name }}</p>
+                                                <p>{{ $userProfileHeader->name }}</p>
                                                 <span class="text-muted"><small>Consignor</small></span>
                                             </div>
                                         </div>
                                     @endif
-                                @endif
-                                {{-- <ul>
-                                            <li class="clearfix admin_chat">
-                                                <span class="chat-img">
-                                                    <img src="vendors/images/chat-img2.jpg" alt=""
-                                                        class="mCS_img_loaded">
-                                                </span>
-                                                <div class="chat-body clearfix">
-                                                    <p>Maybe you already have additional info?</p>
-                                                    <div class="chat_time">09:40PM</div>
-                                                </div>
-                                            </li>
-                                            <li class="clearfix">
-													<span class="chat-img">
-														<img src="vendors/images/chat-img1.jpg" alt="" class="mCS_img_loaded">
-													</span>
-													<div class="chat-body clearfix">
-														<p>
-															We are just writing up the user stories now so
-															will have requirements for you next week. We are
-															just writing up the user stories now so will have
-															requirements for you next week.
-														</p>
-														<div class="chat_time">09:40PM</div>
-													</div>
-												</li>
-                                        </ul> --}}
-
-
+                                @endforelse
                             </div>
 
                             <div class="chat-footer">
@@ -138,9 +100,7 @@
                                     <a href="#"><i class="fa fa-paperclip"></i></a>
                                 </div>
                                 <div class="chat_text_area">
-                                    <input type="hidden" wire:model.defer='sender_id'>
-                                    <input type="hidden" wire:model.defer='receiver_id'>
-                                    <textarea placeholder="Type your message…" wire:model='message'></textarea>
+                                    <textarea placeholder="Type your message…" wire:model='chat_message'></textarea>
                                 </div>
                                 <div class="chat_send">
                                     <button class="btn btn-link" type="submit">
