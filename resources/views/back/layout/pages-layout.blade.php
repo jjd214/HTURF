@@ -426,7 +426,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="invoice.html" class="dropdown-toggle no-arrow">
+                            <a href="{{ route('consignor.chat.all-chats') }}"
+                                class="dropdown-toggle no-arrow {{ Route::is('consignor.chat.all-chats') ? 'active' : '' }}">
                                 <span class="micon bi bi-chat-right-dots"></span><span class="mtext">Chat</span>
                             </a>
                         </li>

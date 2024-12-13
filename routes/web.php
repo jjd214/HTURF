@@ -128,5 +128,9 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
                 Route::post('/{id}/destroy', 'destroyConsignmentRequest')->name('destroy-consignment-request');
             });
         });
+
+        Route::prefix('chat')->name('chat.')->group(function () {
+            Route::view('/all', 'back.pages.user.chat')->name('all-chats');
+        });
     });
 });
