@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="chat-box">
+                        <div class="chat-box" wire:poll.keep-alive>
                             <div class="chat-desc customscroll" style="max-height: 500px; overflow-y: auto;">
                                 @forelse ($messages as $message)
                                     <ul>

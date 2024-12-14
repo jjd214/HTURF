@@ -7,10 +7,11 @@ use App\Models\User;
 use App\Models\Message;
 use App\Models\Conversation;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class Chat extends Component
 {
-
+    // protected $listeners = ['loadMessage' => 'loadNewMessage'];
     public $adminProfileHeader = '';
     public $messages = [];
     public $user;
@@ -37,6 +38,12 @@ class Chat extends Component
         $this->adminProfileHeader = Admin::findOrFail($admin_id);
         $this->receiver_id = $admin_id;
         $this->conversations($admin_id);
+    }
+
+    #[On('load-message')]
+    public function updateConversation($id)
+    {
+        $this->conversations($id);
     }
 
     public function conversations($adminId)
