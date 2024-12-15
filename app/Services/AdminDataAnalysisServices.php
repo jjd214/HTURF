@@ -26,9 +26,16 @@ class AdminDataAnalysisServices
             ->sum(DB::raw('selling_price * qty'));
     }
 
+
     public function getTotalRevenue()
     {
-        return Transaction::sum('total_amount');
+        $totalRev = Transaction::leftJoin('transaction_items', 'transactions.transaction_code', '=', 'transaction_items.code')
+            ->leftJoin('inventories', 'transaction_items.inventory_id', '=', 'inventories.id')
+            ->whereNull('inventories.consignment_id') // Simplified syntax for checking NULL
+            ->select(DB::raw('SUM(transaction_items.original_price * transaction_items.qty) as total_amount'))
+            ->value('total_amount'); // Retrieve the summed value directly
+
+        return $totalRev;
     }
 
     public function getTotalCommissionFee()
