@@ -11,7 +11,8 @@
                         style="max-height: 400px; overflow-y: auto;">
                         @forelse ($users as $user)
                             <ul>
-                                <li wire:click.prevent="selectedUser({{ $user->userId }})">
+                                <li wire:click.prevent="selectedUser({{ $user->userId }})"
+                                    class="{{ $receiver_id === $user->userId ? 'active' : '' }}">
                                     <a href="#">
                                         <img src="{{ $user->picture }}" alt="{{ $user->name }}"
                                             class="mCS_img_loaded">
