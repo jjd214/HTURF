@@ -11,7 +11,8 @@
                         style="max-height: 400px; overflow-y: auto;">
                         @forelse ($admins as $admin)
                             <ul>
-                                <li wire:click.prevent="selectedAdmin({{ $admin->id }})">
+                                <li wire:click.prevent="selectedAdmin({{ $admin->id }})"
+                                    class="{{ $receiver_id === $admin->id ? 'active' : '' }}">
                                     <a href="#">
                                         <img src="{{ $admin->picture }}" alt="{{ $admin->name }}"
                                             class="mCS_img_loaded">
