@@ -60,12 +60,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="chat-box" wire:poll.keep-alive>
-                            <div class="chat-desc customscroll" style="max-height: 500px; overflow-y: auto;">
+                        <div class="chat-box">
+                            <div class="chat-desc customscroll" style="max-height: 500px; overflow-y: auto;"
+                                wire:poll="selectedAdmin({{ $admin->id }})">
                                 @forelse ($messages as $message)
                                     <ul>
                                         <li
-                                            class="clearfix {{ $message->sender_id == $user->id ? 'admin_chat' : '' }} ">
+                                            class="clearfix {{ $message->sender_id == $user->id ? 'admin_chat' : '' }}">
                                             <span class="chat-img">
                                                 <img src="{{ $message->sender_id == $user->id ? $user->picture : $adminProfileHeader->picture }}"
                                                     alt="{{ $user->name }}" class="mCS_img_loaded">

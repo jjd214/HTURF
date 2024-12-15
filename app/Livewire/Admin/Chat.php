@@ -75,8 +75,15 @@ class Chat extends Component
         Conversation::where('id', $msg->conversation_id)->update(['updated_at' => now()]);
 
         $this->chat_message = '';
-        $this->dispatch('load-message', id: $this->sender_id);
+        // $this->dispatch('load-message', id: $this->sender_id);
         $this->conversations($this->receiver_id);
+    }
+
+    public function refreshMessage()
+    {
+        if ($this->receiver_id) {
+            $this->conversations($this->receiver_id);
+        }
     }
 
     public function render()

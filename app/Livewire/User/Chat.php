@@ -43,7 +43,7 @@ class Chat extends Component
     #[On('load-message')]
     public function updateConversation($id)
     {
-        $this->conversations($id);
+        $this->selectedAdmin($id);
     }
 
     public function conversations($adminId)
