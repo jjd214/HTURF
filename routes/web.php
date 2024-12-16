@@ -38,6 +38,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware(['auth:admin', 'PreventBackHistory', 'RestrictMultipleLogins'])->group(function () {
+
+        Route::view('/logs', 'back.pages.admin.logs')->name('logs');
+
         Route::controller(AdminController::class)->group(function () {
             Route::post('logout_handler', 'logoutHandler')->name('logout_handler');
             Route::get('/dashboard', 'adminDashboard')->name('dashboard');

@@ -399,7 +399,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/admin/log-viewer" class="dropdown-toggle no-arrow">
+                            <a href="{{ route('admin.logs') }}"
+                                class="dropdown-toggle no-arrow {{ Route::is('admin.logs') ? 'active' : '' }}">
                                 <span class="micon bi bi-clipboard-data"></span>
                                 <span class="mtext">Logs</span>
                             </a>
