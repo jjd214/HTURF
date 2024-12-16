@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
+use App\Models\Admin;
+use App\Models\User;
 
 class Authenticate extends Middleware
 {
@@ -15,11 +17,13 @@ class Authenticate extends Middleware
         // return $request->expectsJson() ? null : route('login');
         if (!$request->expectsJson()) {
             if ($request->routeIs('admin.*')) {
+                if (auth('admin')->check()) Admin::findOrFail(auth('user')->id())->update(['is_online' => false]);
                 session()->flash('fail', 'You must login first');
                 return route('admin.login');
             }
 
             if ($request->routeIs('consignor.*')) {
+                if (auth('user')->check()) User::findOrFail(auth('user')->id())->update(['is_online' => false]);
                 session()->flash('fail', 'You must login first');
                 return route('consignor.login');
             }

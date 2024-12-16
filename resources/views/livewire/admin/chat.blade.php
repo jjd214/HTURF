@@ -18,7 +18,9 @@
                                             class="mCS_img_loaded">
                                         <h3 class="clearfix">{{ $user->name }}</h3>
                                         <p>
-                                            <i class="fa fa-circle text-light-green"></i> online
+                                            <i
+                                                class="fa fa-circle {{ $user->is_online ? 'text-light-green' : 'text-light-red text-muted' }} text-light-green"></i>
+                                            {{ $user->is_online ? 'online' : 'offline' }}
                                         </p>
                                     </a>
                                 </li>
@@ -62,7 +64,7 @@
                             </div>
                         </div>
                         <div class="chat-box">
-                            <div class="chat-desc customscroll" style="max-height: 500px; overflow-y: auto;"
+                            <div class="chat-desc " style="max-height: 500px; overflow-y: auto;"
                                 wire:poll="refreshMessage">
                                 @forelse ($messages as $message)
                                     <ul>
