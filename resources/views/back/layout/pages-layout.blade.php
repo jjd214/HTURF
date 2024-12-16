@@ -398,12 +398,12 @@
                                 <span class="micon bi bi-gear"></span><span class="mtext">Settings</span>
                             </a>
                         </li>
-                        {{-- <li>
-                            <a href="" class="dropdown-toggle no-arrow {{ Route::is('admin.logs') ? 'active' : '' }}">
+                        <li>
+                            <a href="/admin/log-viewer" class="dropdown-toggle no-arrow">
                                 <span class="micon bi bi-clipboard-data"></span>
                                 <span class="mtext">Logs</span>
                             </a>
-                        </li> --}}
+                        </li>
                     @endif
                     @if (Route::is('consignor.*'))
                         <li>

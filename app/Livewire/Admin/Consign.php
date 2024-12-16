@@ -8,6 +8,7 @@ use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\Consignment;
 use App\Models\Inventory as InventoryModel;
+use Illuminate\Support\Facades\Log;
 
 class Consign extends Component
 {
@@ -59,6 +60,36 @@ class Consign extends Component
         if ($file !== null && Storage::exists($path . $file)) {
             Storage::delete($path . $file);
         }
+
+        $consignment = Consignment::findOrFail($id);
+        Log::info(
+            "Consignment deleted successfully",
+            [
+                'time_stamp' => now()->format('F j, Y g:i A'),
+                'consignment_details' => [
+                    'consignment_id' => $consignment->id,
+                    'commission_percentage' => $consignment->commission_percentage,
+                    'start_date' => $consignment->start_date,
+                    'expiry_date' => $consignment->expiry_date,
+                ],
+                'product_details' => [
+                    'consignment_id' => $id,
+                    'product_id' => $data->id,
+                    'product_name' => $data->name,
+                    'product_sku' => $data->sku,
+                    'product_brand' => $data->brand,
+                    'product_color' => $data->color,
+                    'product_size' => $data->size,
+                    'product_description' => $data->description,
+                    'product_visibility' => $data->visibility,
+                    'product_sex' => $data->sex,
+                    'product_purchase_price' => $data->purchase_price,
+                    'product_selling_price' => $data->selling_price,
+                    'product_qty' => $data->qty,
+                    'product_picture' => $data->picture,
+                ]
+            ]
+        );
 
         $data->delete();
     }

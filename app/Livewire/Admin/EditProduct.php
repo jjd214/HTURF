@@ -7,6 +7,7 @@ use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Inventory as InventoryModel;
+use Illuminate\Support\Facades\Log;
 
 class EditProduct extends Component
 {
@@ -87,6 +88,24 @@ class EditProduct extends Component
         $this->temporary_pictures = null;
 
         $product->save();
+        Log::info('Product updated successfully', [
+            'timestamp' => now()->format('F j, Y g:i A'),
+            'product_id' => $product->id,
+            'updated_details' => [
+                'name' => $product->name,
+                'brand' => $product->brand,
+                'sku' => $product->sku,
+                'color' => $product->color,
+                'size' => $product->size,
+                'description' => $product->description,
+                'visibility' => $product->visibility,
+                'sex' => $product->sex,
+                'purchase_price' => $product->purchase_price,
+                'selling_price' => $product->selling_price,
+                'quantity' => $product->qty,
+                'pictures' => $product->picture
+            ]
+        ]);
         $this->hideForm();
         $this->dispatch('toast', type: 'success', message: 'Product updated successfully.');
     }

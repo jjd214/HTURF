@@ -7,6 +7,8 @@ use Livewire\WithFileUploads;
 use App\Models\Inventory as InventoryModel;
 use App\Models\Consignment;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
+
 
 class CreateConsign extends Component
 {
@@ -90,6 +92,33 @@ class CreateConsign extends Component
 
         $inventory->consignment()->associate($consignment);
         $inventory->save();
+
+        Log::info(
+            "Consignment added successfully",
+            [
+                'time_stamp' => now()->format('F j, Y g:i A'),
+                'consignment_details' => [
+                    'consignment_id' => $consignment->id,
+                    'commission_percentage' => $consignment->commission_percentage,
+                    'start_date' => $consignment->start_date,
+                    'expiry_date' => $consignment->expiry_date,
+                    'consignor_name' => $consignor->name,
+                    'consignor_email' => $consignor->email,
+                ],
+                'product_details' => [
+                    'inventory_id' => $inventory->id,
+                    'name' => $inventory->name,
+                    'brand' => $inventory->brand,
+                    'sku' => $inventory->sku,
+                    'color' => $inventory->color,
+                    'size' => $inventory->size,
+                    'quantity' => $inventory->qty,
+                    'purchase_price' => $inventory->purchase_price,
+                    'selling_price' => $inventory->selling_price,
+                    'visibility' => $inventory->visibility,
+                ]
+            ]
+        );
 
         $this->reset();
         $this->dispatch('toast', type: 'success', message: 'Consignment added successfully.');

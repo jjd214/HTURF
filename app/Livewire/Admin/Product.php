@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\Inventory as InventoryModel;
+use Illuminate\Support\Facades\Log;
 
 class Product extends Component
 {
@@ -53,15 +54,47 @@ class Product extends Component
     public function deleteProductHandler($id)
     {
         $data = InventoryModel::find($id);
+
+        if (!$data) {
+            Log::warning("Attempted to delete a product that does not exist.", [
+                'timestamp' => now()->format('F j, Y g:i A'),
+                'product_id' => $id
+            ]);
+            return;
+        }
+
         $file = $data->picture;
         $path = 'public/images/products/';
 
+        // Delete the product image if it exists
         if ($file !== null && Storage::exists($path . $file)) {
             Storage::delete($path . $file);
         }
 
+        // Log product deletion details
+        Log::info('Product deleted successfully', [
+            'timestamp' => now()->format('F j, Y g:i A'),
+            'product_id' => $data->id,
+            'deleted_details' => [
+                'name' => $data->name,
+                'brand' => $data->brand,
+                'sku' => $data->sku,
+                'color' => $data->color,
+                'size' => $data->size,
+                'description' => $data->description,
+                'visibility' => $data->visibility,
+                'sex' => $data->sex,
+                'purchase_price' => $data->purchase_price,
+                'selling_price' => $data->selling_price,
+                'quantity' => $data->qty,
+                'pictures' => $data->picture
+            ]
+        ]);
+
+        // Delete the product
         $data->delete();
     }
+
 
     public function render()
     {

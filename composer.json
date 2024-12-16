@@ -15,6 +15,7 @@
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.5",
+        "opcodesio/log-viewer": "^3.12",
         "phpmailer/phpmailer": "^6.9"
     },
     "require-dev": {

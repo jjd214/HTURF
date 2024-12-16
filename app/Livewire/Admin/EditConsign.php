@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Inventory as InventoryModel;
 use App\Models\User;
 use App\Models\Consignment;
+use Illuminate\Support\Facades\Log;
 
 class EditConsign extends Component
 {
@@ -113,6 +114,34 @@ class EditConsign extends Component
 
         $product->save();
         $consignment->save();
+
+        Log::info(
+            "Consignment updated successfully",
+            [
+                'time_stamp' => now()->format('F j, Y g:i A'),
+                'consignment_details' => [
+                    'consignment_id' => $consignment->id,
+                    'commission_percentage' => $consignment->commission_percentage,
+                    'start_date' => $consignment->start_date,
+                    'expiry_date' => $consignment->expiry_date,
+                ],
+                'product_details' => [
+                    'product_id' => $product->id,
+                    'name' => $product->name,
+                    'brand' => $product->brand,
+                    'sku' => $product->sku,
+                    'color' => $product->color,
+                    'size' => $product->size,
+                    'description' => $product->description,
+                    'visibility' => $product->visibility,
+                    'sex' => $product->sex,
+                    'purchase_price' => $product->purchase_price,
+                    'selling_price' => $product->selling_price,
+                    'qty' => $product->qty,
+                ]
+            ]
+        );
+
         $this->hideForm();
         $this->dispatch('toast', type: 'success', message: 'Consignment updated successfully.');
     }

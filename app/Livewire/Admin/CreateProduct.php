@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Inventory as InventoryModel;
+use Illuminate\Support\Facades\Log;
 
 class CreateProduct extends Component
 {
@@ -41,9 +42,7 @@ class CreateProduct extends Component
             $validatedData['pictures'] = json_encode($imagePaths);
         }
 
-        // dd($validatedData['pictures']);
-
-        InventoryModel::create([
+        $product = InventoryModel::create([
             'name' => $validatedData['name'],
             'brand' => $validatedData['brand'],
             'sku' => $validatedData['sku'],
@@ -58,7 +57,22 @@ class CreateProduct extends Component
             'visibility' => $validatedData['visibility']
         ]);
         $this->reset();
-
+        Log::info("Product added successfully", [
+            'timestamp' => now()->format('F j, Y g:i A'),
+            'product' => [
+                'name' => $product->name,
+                'brand' => $product->brand,
+                'sku' => $product->sku,
+                'size' => $product->size,
+                'color' => $product->color,
+                'sex' => $product->sex,
+                'quantity' => $product->qty,
+                'purchase_price' => $product->purchase_price,
+                'selling_price' => $product->selling_price,
+                'visibility' => $product->visibility,
+                'images' => $product->picture
+            ]
+        ]);
         $this->dispatch('toast', type: 'success', message: 'Product added successfully.');
     }
 

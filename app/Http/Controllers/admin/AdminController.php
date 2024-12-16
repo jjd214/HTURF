@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use App\Models\GeneralSetting;
 use App\Services\AdminDataAnalysisServices;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -113,6 +114,7 @@ class AdminController extends Controller
         );
 
         if (Auth::guard('admin')->attempt($creds)) {
+            Log::info("Logged in at " . now()->format('F j, Y g:i A'));
             Admin::findOrFail(auth('admin')->id())->update(['is_online' => true]);
             return redirect()->route('admin.home');
         } else {
@@ -123,6 +125,7 @@ class AdminController extends Controller
 
     public function logoutHandler(Request $request)
     {
+        Log::info("Logged out at " . now()->format('F j, Y g:i A'));
         Admin::findOrFail(auth('admin')->id())->update(['is_online' => false]);
         Auth::guard('admin')->logout();
         session()->flash('fail', 'You are logged out');
