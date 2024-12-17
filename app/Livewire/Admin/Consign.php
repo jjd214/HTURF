@@ -57,8 +57,15 @@ class Consign extends Component
         $file = $data->picture;
         $path = 'public/images/consignments/';
 
-        if ($file !== null && Storage::exists($path . $file)) {
-            Storage::delete($path . $file);
+        $pictures = json_decode($data->picture, true); // true ensures it's an array
+
+        // Delete each image if it exists
+        if (is_array($pictures)) {
+            foreach ($pictures as $file) {
+                if ($file !== null && Storage::exists($path . $file)) {
+                    Storage::delete($path . $file);
+                }
+            }
         }
 
         $consignment = Consignment::findOrFail($id);

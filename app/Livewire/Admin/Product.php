@@ -63,12 +63,19 @@ class Product extends Component
             return;
         }
 
-        $file = $data->picture;
+        // Define the storage path
         $path = 'public/images/products/';
 
-        // Delete the product image if it exists
-        if ($file !== null && Storage::exists($path . $file)) {
-            Storage::delete($path . $file);
+        // Decode the JSON `picture` field (assuming it's a JSON array)
+        $pictures = json_decode($data->picture, true); // true ensures it's an array
+
+        // Delete each image if it exists
+        if (is_array($pictures)) {
+            foreach ($pictures as $file) {
+                if ($file !== null && Storage::exists($path . $file)) {
+                    Storage::delete($path . $file);
+                }
+            }
         }
 
         // Log product deletion details
@@ -91,9 +98,10 @@ class Product extends Component
             ]
         ]);
 
-        // Delete the product
+        // Delete the product record
         $data->delete();
     }
+
 
 
     public function render()
