@@ -139,7 +139,7 @@
                 </tbody>
             </table>
         </div>
-
+        <hr>
         <!-- Pagination and Per Page Control -->
         <div class="row mt-20">
             <div class="col-md-3">
