@@ -29,7 +29,7 @@
                                     class="nav-link {{ $tab == 'personal_details' ? 'active' : '' }}" data-toggle="tab"
                                     href="#personal_details" role="tab">Personal details</a>
                             </li>
-                            @if ($user->verified)
+                            @if ($user->verified && $user->google_id == null)
                                 <li class="nav-item">
                                     <a wire:click.prevent='selectTab("update_password")'
                                         class="nav-link {{ $tab == 'update_password' ? 'active' : '' }}"
@@ -54,7 +54,7 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            @if ($user->verified)
+                                            @if ($user->verified && $user->google_id == null)
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="">Username</label>
