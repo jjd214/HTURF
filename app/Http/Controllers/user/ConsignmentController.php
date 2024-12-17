@@ -4,6 +4,7 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use App\Models\Consignment;
+use Illuminate\Support\Facades\Storage;
 use App\Models\ConsignmentRequest;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
@@ -38,7 +39,6 @@ class ConsignmentController extends Controller
             ->select('inventories.*', 'consignments.*')
             ->where('inventories.consignment_id', $id)
             ->first();
-
         return view('back.pages.user.consignment-details', compact('product'));
     }
 
@@ -53,6 +53,20 @@ class ConsignmentController extends Controller
         if (!$product) {
             return redirect()->route('back.pages.user.all-consignments')
                 ->with('error', 'Consignment request not found or unauthorized.');
+        }
+
+        $file = $product->image;
+        $path = 'public/images/requests/';
+
+        $pictures = json_decode($product->image, true); // true ensures it's an array
+
+        // Delete each image if it exists
+        if (is_array($pictures)) {
+            foreach ($pictures as $file) {
+                if ($file !== null && Storage::exists($path . $file)) {
+                    Storage::delete($path . $file);
+                }
+            }
         }
 
         // Perform deletion

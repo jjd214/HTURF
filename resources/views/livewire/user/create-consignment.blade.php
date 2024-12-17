@@ -50,17 +50,6 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for=""><b>Product description</b> </label>
-                        <input type="text" class="form-control"
-                            placeholder="Enter short product description (Optional)" wire:model="description">
-                        @error('description')
-                            <span class="text-danger"><small>{{ $message }}</small></span>
-                        @enderror
-                    </div>
-                </div>
-                <hr>
-                <div class="col-md-4">
-                    <div class="form-group">
                         <label for=""><b>Sex </b> </label>
                         <select wire:model="sex" class="custom-select form-control">
                             <option value="">{{ __('-- Select option --') }}</option>
@@ -74,7 +63,8 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-4">
+                <hr>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for=""><b>Quantity </b> </label>
                         <input type="number" class="form-control" placeholder="Enter quantity" wire:model="quantity">
@@ -83,7 +73,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for=""><b>Condition </b> </label>
                         <select class="custom-select form-control" wire:model="condition">
@@ -121,6 +111,7 @@
                         <label for=""><b>Consignor commission % </b> </label>
                         <input type="text" class="form-control" placeholder="Enter consignor commission"
                             wire:model="consignor_commission">
+                        <span class="text-info ml-2"><small><b>10% minimum</b></small></span>
                         @error('consignor_commission')
                             <span class="text-danger"><small>{{ $message }}</small></span>
                         @enderror
@@ -132,6 +123,17 @@
                         <input type="date" class="form-control" placeholder="Enter pullout date"
                             wire:model="pullout_date">
                         @error('pullout_date')
+                            <span class="text-danger"><small>{{ $message }}</small></span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for=""><b>Product description</b> </label>
+                        <textarea wire:model="description" class="form-control" placeholder="Enter product description (Optional)"></textarea>
+                        {{-- <input type="text" class="form-control"
+                            placeholder="Enter short product description (Optional)" wire:model="description"> --}}
+                        @error('description')
                             <span class="text-danger"><small>{{ $message }}</small></span>
                         @enderror
                     </div>

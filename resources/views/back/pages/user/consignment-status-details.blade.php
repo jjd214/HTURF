@@ -59,24 +59,18 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for=""><b>Product description</b> </label>
-                    <input type="text" class="form-control" value="{{ $product->description }}" readonly>
-                </div>
-            </div>
-            <hr>
-            <div class="col-md-4">
-                <div class="form-group">
                     <label for=""><b>Sex</b> </label>
                     <input type="text" class="form-control" value="{{ $product->sex }}" readonly>
                 </div>
             </div>
-            <div class="col-md-4">
+            <hr>
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for=""><b>Quantity </b> </label>
                     <input type="number" class="form-control" value="{{ $product->quantity }}" readonly>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for=""><b>Condition </b> </label>
                     <input type="text" class="form-control" value="{{ $product->condition }}" readonly>
@@ -99,7 +93,8 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for=""><b>Consignor commission % </b> </label>
-                    <input type="text" class="form-control" value="{{ $product->consignor_commission }}" readonly>
+                    <input type="text" class="form-control"
+                        value="{{ number_format($product->consignor_commission, 0) }}" readonly>
 
                 </div>
             </div>
@@ -107,6 +102,13 @@
                 <div class="form-group">
                     <label for=""><b>Pullout date </b> </label>
                     <input type="text" class="form-control" value="{{ $product->pullout_date }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for=""><b>Product description</b> </label>
+                    <textarea class="form-control" placeholder="No description" readonly>{{ $product->description }}</textarea>
+                    {{-- <input type="text" class="form-control" value="{{ $product->description }}" readonly> --}}
                 </div>
             </div>
         </div>
@@ -138,7 +140,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for=""><b>Note </b> </label>
-                    <textarea class="form-control" value="{{ $product->note }}" readonly></textarea>
+                    <textarea class="form-control" value="No notes" readonly>{{ $product->note }}</textarea>
                 </div>
             </div>
         </div>

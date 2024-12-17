@@ -2,16 +2,16 @@
     <div class="row">
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-30">
             <div class="card-box pd-20 fixed-height-card overflow-hidden">
-            {{-- <div class="pd-20 card-box height-100-p"> --}}
+                {{-- <div class="pd-20 card-box height-100-p"> --}}
                 <div class="profile-photo">
-                    <a href="javascript:;" onclick="event.preventDefault();document.getElementById('userProfilePictureFile').click();" class="edit-avatar"><i class="fa fa-pencil"></i></a>
-                    <img
-                        src="{{ Auth::guard('user')->user()->picture }}"
-                        alt="Profile Picture"
-                        class="avatar-photo"
+                    <a href="javascript:;"
+                        onclick="event.preventDefault();document.getElementById('userProfilePictureFile').click();"
+                        class="edit-avatar"><i class="fa fa-pencil"></i></a>
+                    <img src="{{ Auth::guard('user')->user()->picture }}" alt="Profile Picture" class="avatar-photo"
                         id="userProfilePicture"
                         style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
-                    <input type="file" name="userProfilePictureFile" id="userProfilePictureFile" class="d-none" style="opacity: 0;">
+                    <input type="file" name="userProfilePictureFile" id="userProfilePictureFile" class="d-none"
+                        style="opacity: 0;">
                 </div>
                 <h5 class="text-center h5 mb-0">{{ $user->name }}</h5>
                 <p class="text-center text-muted font-14">
@@ -25,55 +25,64 @@
                     <div class="tab height-100-p">
                         <ul class="nav nav-tabs customtab" role="tablist">
                             <li class="nav-item">
-                                <a wire:click.prevent='selectTab("personal_details")' class="nav-link {{ $tab == 'personal_details' ? 'active' : '' }}" data-toggle="tab" href="#personal_details" role="tab">Personal details</a>
+                                <a wire:click.prevent='selectTab("personal_details")'
+                                    class="nav-link {{ $tab == 'personal_details' ? 'active' : '' }}" data-toggle="tab"
+                                    href="#personal_details" role="tab">Personal details</a>
                             </li>
-                            @if ( $user->verified )
+                            @if ($user->verified)
                                 <li class="nav-item">
-                                    <a wire:click.prevent='selectTab("update_password")' class="nav-link {{ $tab == 'update_password' ? 'active' : '' }}" data-toggle="tab" href="#update_password" role="tab">Update password</a>
+                                    <a wire:click.prevent='selectTab("update_password")'
+                                        class="nav-link {{ $tab == 'update_password' ? 'active' : '' }}"
+                                        data-toggle="tab" href="#update_password" role="tab">Update password</a>
                                 </li>
                             @endif
                         </ul>
                         <div class="tab-content">
                             <!-- Timeline Tab start -->
-                            <div class="tab-pane fade {{ $tab == 'personal_details' ? 'active show' : '' }}" id="personal_details" role="tabpanel">
+                            <div class="tab-pane fade {{ $tab == 'personal_details' ? 'active show' : '' }}"
+                                id="personal_details" role="tabpanel">
                                 <div class="pd-20">
                                     <form wire:submit='updateUserPersonalDetails()'>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Full name</label>
-                                                    <input type="text" class="form-control" placeholder="Enter full name" wire:model.live='name'>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Enter full name" wire:model.live='name'>
                                                     @error('name')
-                                                    <span class="text-danger">{{ $message }}</span>
+                                                        <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            @if ( $user->verified )
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="">Username</label>
-                                                    <input type="text" class="form-control" placeholder="Enter username" wire:model.live='username'>
-                                                    @error('username')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                    @enderror
+                                            @if ($user->verified)
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="">Username</label>
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Enter username" wire:model.live='username'>
+                                                        @error('username')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
                                                 </div>
-                                            </div>
                                             @endif
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Email</label>
-                                                    <input type="email" class="form-control" placeholder="Enter email" wire:model.live='email' @readonly(true)>
+                                                    <input type="email" class="form-control" placeholder="Enter email"
+                                                        wire:model.live='email' @readonly(true)>
                                                     @error('email')
-                                                    <span class="text-danger">{{ $message }}</span>
+                                                        <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Phone</label>
-                                                    <input type="number" class="form-control" placeholder="Enter phone number" wire:model.live='phone'>
+                                                    <input type="number" class="form-control"
+                                                        placeholder="Enter phone number" wire:model.live='phone'>
                                                     @error('phone')
-                                                    <span class="text-danger">{{ $message }}</span>
+                                                        <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -82,7 +91,7 @@
                                                     <label for="">Addresss</label>
                                                     <textarea class="form-control" placeholder="Enter your address" wire:model.live='address'></textarea>
                                                     @error('address')
-                                                    <span class="text-danger">{{ $message }}</span>
+                                                        <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -93,7 +102,8 @@
                             </div>
                             <!-- Timeline Tab End -->
                             <!-- Tasks Tab start -->
-                            <div class="tab-pane fade {{ $tab == 'update_password' ? 'active show' : '' }}" id="update_password" role="tabpanel">
+                            <div class="tab-pane fade {{ $tab == 'update_password' ? 'active show' : '' }}"
+                                id="update_password" role="tabpanel">
                                 <div class="pd-20 profile-task-wrap">
                                     <form wire:submit.prevent="updatePassword">
                                         @csrf
@@ -101,33 +111,40 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="">Current password</label>
-                                                    <input type="password" class="form-control" wire:model.defer="current_password" placeholder="Enter current password">
+                                                    <input type="password" class="form-control"
+                                                        wire:model.defer="current_password"
+                                                        placeholder="Enter current password">
                                                     @error('current_password')
-                                                    <span class="text-danger">{{ $message }}</span>
+                                                        <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="">New password</label>
-                                                    <input type="password" class="form-control" placeholder="Enter new password" wire:model.defer="new_password">
+                                                    <input type="password" class="form-control"
+                                                        placeholder="Enter new password"
+                                                        wire:model.defer="new_password">
                                                     @error('new_password')
-                                                    <span class="text-danger"> {{ $message }} </span>
+                                                        <span class="text-danger"> {{ $message }} </span>
                                                     @enderror
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="">Confirm new password</label>
-                                                    <input type="password" class="form-control" placeholder="Confirm new password" wire:model.defer="new_password_confirmation">
+                                                    <input type="password" class="form-control"
+                                                        placeholder="Confirm new password"
+                                                        wire:model.defer="new_password_confirmation">
                                                     @error('new_password_confirmation')
-                                                    <span class="text-danger"> {{ $message }} </span>
+                                                        <span class="text-danger"> {{ $message }} </span>
                                                     @enderror
                                                 </div>
                                             </div>
                                         </div>
                                         <button wire:loading.attr="disabled" type="submit" class="btn btn-primary">
-                                            <div wire:loading.delay class="spinner-border spinner-border-sm" role="status" >
+                                            <div wire:loading.delay class="spinner-border spinner-border-sm"
+                                                role="status">
                                                 <span class="visually-hidden"></span>
                                             </div>
                                             Update password

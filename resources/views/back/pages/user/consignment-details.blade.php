@@ -59,24 +59,18 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for=""><b>Product description</b> </label>
-                    <input type="text" class="form-control" value="{{ $product->description }}" readonly>
-                </div>
-            </div>
-            <hr>
-            <div class="col-md-4">
-                <div class="form-group">
                     <label for=""><b>Sex</b> </label>
                     <input type="text" class="form-control" value="{{ $product->sex }}" readonly>
                 </div>
             </div>
-            <div class="col-md-4">
+            <hr>
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for=""><b>Available stock quantity </b> </label>
                     <input type="number" class="form-control" value="{{ $product->qty }}" readonly>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for=""><b>Condition </b> </label>
                     <input type="text" class="form-control" value="{{ __('Brand new') }}" readonly>
@@ -108,6 +102,13 @@
                 <div class="form-group">
                     <label for=""><b>Pullout date </b> </label>
                     <input type="text" class="form-control" value="{{ $product->expiry_date }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for=""><b>Product description</b> </label>
+                    <textarea class="form-control" readonly>{{ $product->description }}</textarea>
+                    {{-- <input type="text" class="form-control" value="{{ $product->description }}" readonly> --}}
                 </div>
             </div>
         </div>
