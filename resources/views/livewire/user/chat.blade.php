@@ -64,7 +64,8 @@
                             </div>
                         </div>
                         <div class="chat-box">
-                            <div class="chat-desc " style="max-height: 500px; overflow-y: auto;"
+                            <div class="chat-desc "
+                                style="max-height: 500px; overflow-y: auto; display: flex; flex-direction: column-reverse;"
                                 wire:poll="selectedAdmin({{ $admin->id }})">
                                 @forelse ($messages as $message)
                                     <ul>

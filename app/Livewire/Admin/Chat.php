@@ -47,7 +47,7 @@ class Chat extends Component
             ->first();
 
         if ($conversation) {
-            $this->messages = $conversation->messages()->get();
+            $this->messages = $conversation->messages()->orderBy('id', 'desc')->get();
         } else {
             $this->messages = [];
         }
