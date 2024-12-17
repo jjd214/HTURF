@@ -427,6 +427,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="{{ route('consignor.payment.all-payments') }}"
+                                class="dropdown-toggle no-arrow {{ Route::is('consignor.payment.all-payments') ? 'active' : '' }}">
+                                <span class="micon bi bi-cash-coin"></span><span class="mtext">Payments</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('consignor.chat.all-chats') }}"
                                 class="dropdown-toggle no-arrow {{ Route::is('consignor.chat.all-chats') ? 'active' : '' }}">
                                 <span class="micon bi bi-chat-right-dots"></span><span class="mtext">Chat</span>

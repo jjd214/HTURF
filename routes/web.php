@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\admin\AdminController;
-use App\Http\Controllers\admin\PaymentController;
+use App\Http\Controllers\admin\PaymentController as adminPaymentController;
 use App\Http\Controllers\admin\RefundController;
 use App\Http\Controllers\admin\TransactionController;
 use App\Http\Controllers\admin\ConsignmentController as adminConsignmentController;
@@ -11,6 +11,8 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\user\ConsignmentController as userConsignmentController;
+use App\Http\Controllers\user\PaymentController as userPaymentController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -84,7 +86,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         Route::prefix('payment')->name('payment.')->group(function () {
-            Route::controller(PaymentController::class)->group(function () {
+            Route::controller(adminPaymentController::class)->group(function () {
                 Route::get('/all', 'index')->name('all-payments');
                 Route::get('/details/{payment_code}', 'showPaymentDetails')->name('details');
                 Route::post('/send-payment-details', 'sendPaymentDetails')->name('send-payment-details');
@@ -129,6 +131,12 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
                 Route::get('/{id}', 'showConsignmentStatusDetails')->name('show-consignment-status-details');
                 Route::get('/{id}/view', 'showConsignmentDetails')->name('show-consignment_details');
                 Route::post('/{id}/destroy', 'destroyConsignmentRequest')->name('destroy-consignment-request');
+            });
+        });
+
+        Route::prefix('payment')->name('payment.')->group(function () {
+            Route::controller(userPaymentController::class)->group(function () {
+                Route::get('/all', 'index')->name('all-payments');
             });
         });
 
