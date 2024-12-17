@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\GeneralSetting;
 use App\Models\SocialNetwork;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Log;
 
 class AdminSettings extends Component
 {
@@ -63,6 +64,16 @@ class AdminSettings extends Component
         $update = $settings->save();
 
         if ($update) {
+            Log::info("General settings updated successfully.", [
+                'time_stamp' => now()->format('F j, Y g:i A'),
+                'general settings details' => [
+                    'site_name' => $this->site_name,
+                    'site_email' => $this->site_email,
+                    'site_phone' => $this->site_phone,
+                    'site_meta_keywords' => $this->site_meta_keywords,
+                    'site_meta_description' => $this->site_meta_description
+                ]
+            ]);
             $this->dispatch('toast', type: 'success', message: "General settings have been successfully updated.");
         } else {
             $this->dispatch('toast', type: 'danger', message: "Something went wrong.");
@@ -82,6 +93,17 @@ class AdminSettings extends Component
         $update = $social_network->save();
 
         if ($update) {
+            Log::info("Social network updated successfully", [
+                'time_stamp' => now()->format('F j, Y g:i A'),
+                'social network details' => [
+                    'facebook_url' => $this->facebook_url,
+                    'instagram_url' => $this->instagram_url,
+                    'twitter_url' => $this->twitter_url,
+                    'tiktok_url' => $this->tiktok_url,
+                    'shoppee_url' => $this->shoppee_url,
+                    'lazada_url' => $this->lazada_url
+                ]
+            ]);
             $this->dispatch('toast', type: 'success', message: "Social network settings have been successfully updated.");
         } else {
             $this->dispatch('toast', type: 'danger', message: "Something went wrong.");

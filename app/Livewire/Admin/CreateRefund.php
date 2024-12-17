@@ -7,6 +7,7 @@ use App\Models\Refund;
 use Livewire\Component;
 use App\Models\TransactionItem;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Log;
 
 class CreateRefund extends Component
 {
@@ -64,7 +65,6 @@ class CreateRefund extends Component
         }
     }
 
-
     public function store()
     {
         $this->validate();
@@ -116,10 +116,17 @@ class CreateRefund extends Component
         ];
     }
 
-
     public function refund()
     {
         foreach ($this->temporary_cart as $item) {
+            // Log the start of the refund process for an item
+            Log::info('Processing refund', [
+                'transaction_code' => $item['transaction_code'],
+                'inventory_id' => $item['item_id'],
+                'quantity' => $item['quantity'],
+                'reason_for_refund' => $this->reasonForRefund,
+            ]);
+
             // Create the refund record
             Refund::create([
                 'transaction_code' => $item['transaction_code'],
@@ -132,39 +139,122 @@ class CreateRefund extends Component
                 'status' => 'Refunded',
             ]);
 
+            Log::info('Refund record created', [
+                'transaction_code' => $item['transaction_code'],
+                'inventory_id' => $item['item_id'],
+                'total_price' => $item['price'] * $item['quantity'],
+            ]);
+
             // Fetch the transaction item for updating its quantity
             $transactionItem = TransactionItem::where('inventory_id', $item['item_id'])
                 ->where('code', $item['transaction_code'])
                 ->first();
 
             if ($transactionItem) {
-                // Reduce the transaction item's quantity by the refunded amount
+                // Log the update to the transaction item
+                $previousQty = $transactionItem->qty;
                 $transactionItem->qty -= $item['quantity'];
+
                 if ($transactionItem->qty <= 0) {
-                    $transactionItem->delete(); // Delete if the quantity is zero
+                    Log::info('Transaction item quantity is zero, deleting item', [
+                        'transaction_code' => $item['transaction_code'],
+                        'inventory_id' => $item['item_id'],
+                        'previous_qty' => $previousQty,
+                    ]);
+                    $transactionItem->delete();
                 } else {
                     $transactionItem->save();
+                    Log::info('Transaction item updated', [
+                        'transaction_code' => $item['transaction_code'],
+                        'inventory_id' => $item['item_id'],
+                        'previous_qty' => $previousQty,
+                        'updated_qty' => $transactionItem->qty,
+                    ]);
                 }
             }
 
+            // Update the transaction record
             $transaction = Transaction::where('transaction_code', $item['transaction_code'])->first();
 
             if ($transaction) {
+                $previousQuantitySold = $transaction->quantity_sold;
+                $previousTotalAmount = $transaction->total_amount;
+
                 $transaction->quantity_sold -= $item['quantity'];
                 $transaction->total_amount -= $item['price'];
+
                 if ($transaction->quantity_sold <= 0) {
+                    Log::info('Transaction has no items left, deleting transaction', [
+                        'transaction_code' => $item['transaction_code'],
+                    ]);
                     $transaction->delete();
                 } else {
                     $transaction->save();
+                    Log::info('Transaction updated', [
+                        'transaction_code' => $item['transaction_code'],
+                        'previous_quantity_sold' => $previousQuantitySold,
+                        'updated_quantity_sold' => $transaction->quantity_sold,
+                        'previous_total_amount' => $previousTotalAmount,
+                        'updated_total_amount' => $transaction->total_amount,
+                    ]);
                 }
             }
         }
+
+        Log::info('Refund process completed successfully for all items', [
+            'total_items_refunded' => count($this->temporary_cart),
+        ]);
 
         $this->clearItems();
         $this->dispatch('toast', type: 'success', message: 'Refund processed successfully');
     }
 
+    // public function refund()
+    // {
+    //     foreach ($this->temporary_cart as $item) {
+    //         // Create the refund record
+    //         Refund::create([
+    //             'transaction_code' => $item['transaction_code'],
+    //             'inventory_id' => $item['item_id'],
+    //             'size' => $item['size'],
+    //             'quantity' => $item['quantity'],
+    //             'total_price' => $item['price'] * $item['quantity'],
+    //             'reason_for_refund' => $this->reasonForRefund,
+    //             'customer_name' => $item['customer_name'],
+    //             'status' => 'Refunded',
+    //         ]);
 
+    //         // Fetch the transaction item for updating its quantity
+    //         $transactionItem = TransactionItem::where('inventory_id', $item['item_id'])
+    //             ->where('code', $item['transaction_code'])
+    //             ->first();
+
+    //         if ($transactionItem) {
+    //             // Reduce the transaction item's quantity by the refunded amount
+    //             $transactionItem->qty -= $item['quantity'];
+    //             if ($transactionItem->qty <= 0) {
+    //                 $transactionItem->delete(); // Delete if the quantity is zero
+    //             } else {
+    //                 $transactionItem->save();
+    //             }
+    //         }
+
+    //         $transaction = Transaction::where('transaction_code', $item['transaction_code'])->first();
+
+    //         if ($transaction) {
+    //             $transaction->quantity_sold -= $item['quantity'];
+    //             $transaction->total_amount -= $item['price'];
+    //             if ($transaction->quantity_sold <= 0) {
+    //                 $transaction->delete();
+    //             } else {
+    //                 $transaction->save();
+    //             }
+    //         }
+    //     }
+
+    //     $this->clearItems();
+    //     $this->dispatch('toast', type: 'success', message: 'Refund processed successfully');
+    // }
 
     public function clearItems()
     {

@@ -7,6 +7,8 @@ use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\Refund as RefundModel;
 use App\Models\Inventory;
+use Illuminate\Support\Facades\Log;
+
 
 class Refund extends Component
 {
@@ -36,8 +38,17 @@ class Refund extends Component
     {
         if ($this->selectedRefund) {
             $inventory = Inventory::find($this->selectedInventory->id);
+            $previousQty = $inventory->qty;
+
             $inventory->qty += $this->selectedRefund->quantity;
             $inventory->save();
+
+            Log::info('Inventory restocked', [
+                'inventory_id' => $inventory->id,
+                'previous_qty' => $previousQty,
+                'added_qty' => $this->selectedRefund->quantity,
+                'updated_qty' => $inventory->qty,
+            ]);
 
             $this->selectedRefund->status = 'Restocked';
             $this->selectedRefund->save();
