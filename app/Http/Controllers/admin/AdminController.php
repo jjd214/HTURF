@@ -40,7 +40,7 @@ class AdminController extends Controller
         }
 
         // Monthly Expenses Data
-        $monthlyExpenses = DB::table('inventories')
+        $monthlyExpenses = DB::table('expenses')
             ->selectRaw('MONTH(created_at) as month, SUM(qty * purchase_price) as total_expenses')
             ->whereYear('created_at', $selectedExpensesYear)
             ->groupByRaw('MONTH(created_at)')

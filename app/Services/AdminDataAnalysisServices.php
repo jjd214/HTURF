@@ -7,6 +7,7 @@ use App\Models\Inventory;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\ConsignmentRequest;
+use App\Models\Expense;
 use App\Models\Payment;
 use App\Models\Refund;
 use App\Models\TransactionItem;
@@ -16,8 +17,7 @@ class AdminDataAnalysisServices
 {
     public function getTotalExpenses()
     {
-        return Inventory::whereNull('consignment_id')
-            ->sum(DB::raw('purchase_price * qty'));
+        return Expense::sum(DB::raw('purchase_price * qty'));
     }
 
     public function getTotalExpectedRevenue()

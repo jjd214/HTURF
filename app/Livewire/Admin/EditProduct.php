@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Expense;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
@@ -88,6 +89,9 @@ class EditProduct extends Component
         $this->temporary_pictures = null;
 
         $product->save();
+
+        $product->expenses()->update(['purchase_price' => $product->purchase_price, 'qty' => $product->qty]);
+
         Log::info('Product updated successfully', [
             'timestamp' => now()->format('F j, Y g:i A'),
             'product_id' => $product->id,

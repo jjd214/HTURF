@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Expense;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Inventory as InventoryModel;
@@ -56,6 +57,13 @@ class CreateProduct extends Component
             'picture' => $validatedData['pictures'] ?? '',
             'visibility' => $validatedData['visibility']
         ]);
+
+        Expense::create([
+            'inventory_id' => $product->id,
+            'purchase_price' => $product->purchase_price,
+            'qty' => $product->qty
+        ]);
+
         $this->reset();
         Log::info("Product added successfully", [
             'timestamp' => now()->format('F j, Y g:i A'),

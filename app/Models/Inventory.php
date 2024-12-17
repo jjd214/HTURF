@@ -30,6 +30,11 @@ class Inventory extends Model
         return $this->belongsTo(Consignment::class, 'consignment_id');
     }
 
+    public function expenses()
+    {
+        return $this->hasOne(Expense::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
