@@ -1,6 +1,6 @@
 <div>
     <div class="card-box mb-20 pd-20">
-        <h2 class="h3 mb-4">Pending consignments</h2>
+        <h2 class="h3 mb-4">Consignment requests ({{ $products->count() ?? 0 }})</h2>
 
         <!-- Responsive Table -->
         <div class="table-responsive">
