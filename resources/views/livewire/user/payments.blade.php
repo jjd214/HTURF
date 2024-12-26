@@ -53,5 +53,19 @@
                 </tbody>
             </table>
         </div>
+        <div class="row mt-20">
+            <div class="col-md-3">
+                <select class="custom-select form-control" wire:model.live="per_page">
+                    <option value="">Select Per Page</option>
+                    <option value="1">1</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+            <div class="col-md-9 text-right">
+                {{ $rows->links() }}
+            </div>
+        </div>
     </div>
 </div>
