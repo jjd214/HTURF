@@ -80,13 +80,15 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for=""><b>Purchase price </b> </label>
-                    <input type="text" class="form-control" value="{{ $product->purchase_price }}" readonly>
+                    <input type="text" class="form-control" value="{{ number_format($product->purchase_price, 0) }}"
+                        readonly>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for=""><b>Selling price </b> </label>
-                    <input type="text" class="form-control" value="{{ $product->selling_price }}" readonly>
+                    <input type="text" class="form-control" value="{{ number_format($product->selling_price, 0) }}"
+                        readonly>
 
                 </div>
             </div>

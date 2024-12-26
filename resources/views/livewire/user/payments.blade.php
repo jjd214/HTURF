@@ -36,10 +36,19 @@
                 </thead>
                 <tbody>
                     @forelse ($rows as $item)
-                        <tr style="cursor: pointer;"
-                            wire:click.prevent="viewPaymentDetails({{ $item['inventoryId'] }})">
-                            <td>{{ $item['payment_code'] }}</td>
-                            <td> <span class="badge badge-info">{{ $item['status'] }}</span></td>
+                        <tr style="cursor: pointer;" wire:click.prevent="showPaymentForm({{ $item['paymentId'] }})">
+                            <td><small><b>{{ $item['payment_code'] }}</b></small></td>
+                            <td>
+                                <span
+                                    class="badge
+                                    {{ $item['status'] == 'Pending'
+                                        ? 'badge-info'
+                                        : ($item['status'] == 'Notified'
+                                            ? 'badge-warning'
+                                            : 'badge-success') }}">
+                                    {{ $item['status'] }}
+                                </span>
+                            </td>
                             <td>{{ $item['date_of_payment'] ?? 'No schedule yet' }}</td>
                             <td>{{ $item['quantity'] }}</td>
                             <td>{{ $item['name'] }}</td>

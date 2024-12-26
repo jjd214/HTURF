@@ -95,7 +95,6 @@ class PaymentController extends Controller
         }
     }
 
-
     public function showPaymentDetails(Request $request, $payment_code)
     {
         $item_details = Payment::leftjoin('inventories', 'payments.inventory_id', '=', 'inventories.id')

@@ -137,6 +137,7 @@ Route::prefix('consignor')->name('consignor.')->group(function () {
         Route::prefix('payment')->name('payment.')->group(function () {
             Route::controller(userPaymentController::class)->group(function () {
                 Route::get('/all', 'index')->name('all-payments');
+                Route::get('/details/{payment_code}', 'showPaymentDetails')->name('details');
             });
         });
 
