@@ -42,7 +42,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for=""><b>Size</b> </label>
-                        <input type="number" class="form-control" placeholder="Enter size" wire:model="size">
+                        <input type="text" class="form-control" placeholder="Enter size" wire:model="size">
                         @error('size')
                             <span class="text-danger"><small>{{ $message }}</small></span>
                         @enderror
@@ -86,37 +86,44 @@
                         @enderror
                     </div>
                 </div>
+                <!-- Selling Price -->
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for=""><b>Purchase price </b> </label>
-                        <input type="text" class="form-control" placeholder="Enter purchase price"
-                            wire:model="purchase_price">
-                        @error('purchase_price')
-                            <span class="text-danger"><small>{{ $message }}</small></span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for=""><b>Selling price </b> </label>
-                        <input type="text" class="form-control" placeholder="Enter selling price"
-                            wire:model="selling_price">
+                        <label for=""><b>Selling price </b></label>
+                        <input type="number" id="sellingPrice" class="form-control" placeholder="Enter selling price"
+                            wire:model="selling_price" wire:input="calculatePayoutPrice">
+
                         @error('selling_price')
                             <span class="text-danger"><small>{{ $message }}</small></span>
                         @enderror
                     </div>
                 </div>
+
+                <!-- Consignor Commission -->
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for=""><b>Consignor commission % </b> </label>
-                        <input type="text" class="form-control" placeholder="Enter consignor commission"
-                            wire:model="consignor_commission" readonly>
+                        <label for=""><b>Consignor commission % </b></label>
+                        <input type="number" id="consignorCommission" class="form-control"
+                            placeholder="Enter consignor commission" value="10" readonly>
                         <span class="text-info ml-2"><small><b>10% minimum</b></small></span>
                         @error('consignor_commission')
                             <span class="text-danger"><small>{{ $message }}</small></span>
                         @enderror
                     </div>
                 </div>
+
+                <!-- Payout Price -->
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for=""><b>Payout price </b></label>
+                        <input type="text" id="payoutPrice" class="form-control"
+                            placeholder="Calculated payout price" wire:model="payout_price" readonly>
+                        @error('payout_price')
+                            <span class="text-danger"><small>{{ $message }}</small></span>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for=""><b>Pullout date </b> </label>

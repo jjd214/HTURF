@@ -12,7 +12,12 @@ class CreateConsignment extends Component
 {
     use WithFileUploads;
 
-    public $consignor_id, $name, $brand, $sku, $colorway, $size, $description, $sex, $quantity, $condition = 'Brand new', $purchase_price, $selling_price, $consignor_commission = 10, $pullout_date, $images = [], $note;
+    public $consignor_id, $name, $brand, $sku, $colorway, $size, $description, $sex, $quantity, $condition = 'Brand new', $payout_price, $selling_price, $consignor_commission = 10, $pullout_date, $images = [], $note;
+
+    public function calculatePayoutPrice()
+    {
+        $this->payout_price = $this->selling_price - (($this->selling_price * $this->consignor_commission) / 100);
+    }
 
     public function createConsignment()
     {
@@ -21,12 +26,12 @@ class CreateConsignment extends Component
             'brand' => 'required',
             'sku' => 'required',
             'colorway' => 'required',
-            'size' => 'required|min:0',
+            'size' => 'required|numeric',
             'description' => 'nullable',
             'sex' => 'required',
             'quantity' => 'required|integer|min:0',
             'condition' => 'nullable',
-            'purchase_price' => 'required|numeric|min:0',
+            'payout_price' => 'required|numeric|min:0',
             'selling_price' => 'required|numeric|min:0',
             'consignor_commission' => 'required|numeric|min:0',
             'pullout_date' => 'required|date',
@@ -59,7 +64,7 @@ class CreateConsignment extends Component
         $consignment->quantity = $validatedData['quantity'];
         $consignment->condition = $validatedData['condition'];
         $consignment->status = "Pending";
-        $consignment->purchase_price = $validatedData['purchase_price'];
+        $consignment->payout_price = $validatedData['payout_price'];
         $consignment->selling_price = $validatedData['selling_price'];
         $consignment->consignor_commission = $validatedData['consignor_commission'];
         $consignment->pullout_date = $validatedData['pullout_date'];
