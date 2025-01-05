@@ -14,7 +14,7 @@ class CreateConsign extends Component
 {
     use WithFileUploads;
 
-    public $name, $brand, $sku, $color, $size, $description, $pictures = [], $visibility, $sex, $purchase_price, $selling_price, $commission_percentage, $qty, $consignor_id, $consignor_name, $start_date, $expiry_date;
+    public $name, $brand, $sku, $color, $size, $description, $pictures = [], $visibility = 'public', $sex, $purchase_price, $selling_price, $commission_percentage = 10, $qty, $consignor_id, $consignor_name, $start_date, $expiry_date;
 
     protected $rules = [
         'name' => 'required',
@@ -22,7 +22,7 @@ class CreateConsign extends Component
         'sku' => 'required',
         'color' => 'required',
         'sex' => 'required',
-        'size' => 'required|min:0',
+        'size' => 'required|numeric',
         'qty' => 'required|integer|min:0',
         'description' => 'nullable',
         'pictures.*' => 'nullable|image',

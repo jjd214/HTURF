@@ -23,7 +23,7 @@ class EditProduct extends Component
         'brand' => 'required',
         'sku' => 'required',
         'color' => 'required',
-        'size' => 'required',
+        'size' => 'required|numeric',
         'qty' => 'required|integer',
         'description' => 'nullable',
         'purchase_price' => 'required|numeric',

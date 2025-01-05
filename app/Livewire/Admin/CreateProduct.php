@@ -12,7 +12,7 @@ class CreateProduct extends Component
 {
     use WithFileUploads;
 
-    public $name, $brand, $sku, $color, $size, $description, $pictures = [], $visibility, $sex, $purchase_price, $selling_price, $qty;
+    public $name, $brand, $sku, $color, $size, $description, $pictures = [], $visibility = 'public', $sex, $purchase_price, $selling_price, $qty;
 
     protected $rules = [
         'name' => 'required',
@@ -20,7 +20,7 @@ class CreateProduct extends Component
         'sku' => 'required',
         'color' => 'required',
         'sex' => 'required',
-        'size' => 'required|min:0',
+        'size' => 'required|numeric',
         'description' => 'nullable',
         'purchase_price' => 'required|numeric|min:0',
         'selling_price' => 'required|numeric|min:0',

@@ -19,14 +19,14 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for=""><b>Style code:</b></label>
+                        <label for=""><b>Sku:</b></label>
                         <input type="text" class="form-control" wire:model="sku" placeholder="Enter style code">
                         @error('sku')
                             <span class="text-danger"> {{ $message }} </span>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for=""><b>Color:</b></label>
+                        <label for=""><b>Colorway:</b></label>
                         <input type="text" class="form-control" wire:model="color" placeholder="Enter color">
                         @error('color')
                             <span class="text-danger"> {{ $message }} </span>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="form-group">
                         <label for=""><b>Size</b></label>
-                        <input type="number" class="form-control" wire:model="size" placeholder="Enter size">
+                        <input type="text" class="form-control" wire:model="size" placeholder="Enter size">
                         @error('size')
                             <span class="text-danger"> {{ $message }} </span>
                         @enderror
@@ -73,7 +73,7 @@
                 </div>
             </div>
             <div class="col-md-6 mb-20">
-                <div class="card-box min-height-100px pd-20" style="position: relative;">
+                {{-- <div class="card-box min-height-100px pd-20" style="position: relative;">
                     <div class="row pd-10">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -94,8 +94,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-box min-height-100px pd-20" style="margin-top: 20px;">
+                </div> --}}
+                <div class="card-box min-height-100px pd-20">
                     <div class="row pd-10">
                         <div class="col-md-12">
                             <label for=""><b>Sex</b></label>
@@ -139,7 +139,7 @@
                             <div class="form-group">
                                 <label for=""><b>Consign percentage:</b></label>
                                 <input type="number" wire:model="commission_percentage" class="form-control"
-                                    placeholder="Enter consign commission">
+                                    placeholder="Enter consign commission" readonly>
                                 @error('commission_percentage')
                                     <span class="text-danger"> {{ $message }} </span>
                                 @enderror

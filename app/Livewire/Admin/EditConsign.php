@@ -22,7 +22,7 @@ class EditConsign extends Component
         'brand' => 'required',
         'sku' => 'required',
         'color' => 'required',
-        'size' => 'required|min:0',
+        'size' => 'required|numeric',
         'qty' => 'required|integer|min:0',
         'description' => 'nullable',
         'pictures.*' => 'nullable',

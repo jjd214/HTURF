@@ -110,7 +110,7 @@
                     <div class="form-group">
                         <label for=""><b>Consignor commission % </b> </label>
                         <input type="text" class="form-control" placeholder="Enter consignor commission"
-                            wire:model="consignor_commission">
+                            wire:model="consignor_commission" readonly>
                         <span class="text-info ml-2"><small><b>10% minimum</b></small></span>
                         @error('consignor_commission')
                             <span class="text-danger"><small>{{ $message }}</small></span>
