@@ -115,32 +115,34 @@
                     <div class="row pd-10">
                         <div class="col-md-6 mb-10">
                             <div class="form-group">
-                                <label for=""><b>Purchase price:</b></label>
-                                <input type="number" wire:model="purchase_price" class="form-control"
-                                    placeholder="Enter purchase price" min="0">
-                                @error('purchase_price')
-                                    <span class="text-danger"> {{ $message }} </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-10">
-                            <div class="form-group">
                                 <label for=""><b>Selling price:</b></label>
-                                <input type="number" wire:model="selling_price" class="form-control"
-                                    placeholder="Enter selling price" min="0">
+                                <input type="number" id="sellingPrice" class="form-control"
+                                    placeholder="Enter selling price" wire:model="selling_price"
+                                    wire:input="calculatePayoutPrice">
                                 @error('selling_price')
                                     <span class="text-danger"> {{ $message }} </span>
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="row pd-10">
                         <div class="col-md-6 mb-10">
                             <div class="form-group">
                                 <label for=""><b>Consign percentage:</b></label>
                                 <input type="number" wire:model="commission_percentage" class="form-control"
                                     placeholder="Enter consign commission" readonly>
                                 @error('commission_percentage')
+                                    <span class="text-danger"> {{ $message }} </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pd-10">
+
+                        <div class="col-md-6 mb-10">
+                            <div class="form-group">
+                                <label for=""><b>Payout price:</b></label>
+                                <input type="number" wire:model="payout_price" class="form-control"
+                                    placeholder="Calculated payout price" min="0" readonly>
+                                @error('purchase_price')
                                     <span class="text-danger"> {{ $message }} </span>
                                 @enderror
                             </div>

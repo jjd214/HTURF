@@ -8,13 +8,13 @@ use App\Models\Inventory as InventoryModel;
 use App\Models\Consignment;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-
+use NumberFormatter;
 
 class CreateConsign extends Component
 {
     use WithFileUploads;
 
-    public $name, $brand, $sku, $color, $size, $description, $pictures = [], $visibility = 'public', $sex, $purchase_price, $selling_price, $commission_percentage = 10, $qty, $consignor_id, $consignor_name, $start_date, $expiry_date;
+    public $name, $brand, $sku, $color, $size, $description, $pictures = [], $visibility = 'public', $sex, $payout_price, $selling_price, $commission_percentage = 10, $qty, $consignor_id, $consignor_name, $start_date, $expiry_date;
 
     protected $rules = [
         'name' => 'required',
@@ -27,7 +27,7 @@ class CreateConsign extends Component
         'description' => 'nullable',
         'pictures.*' => 'nullable|image',
         'visibility' => 'required',
-        'purchase_price' => 'required|numeric|min:0',
+        'pay' => 'required|numeric|min:0',
         'selling_price' => 'required|numeric|min:0',
         'commission_percentage' => 'required|numeric|min:0',
         'qty' => 'required|integer|min:1',
@@ -35,6 +35,17 @@ class CreateConsign extends Component
         'start_date' => 'required|date',
         'expiry_date' => 'required|date|after:start_date'
     ];
+
+    public function calculatePayoutPrice()
+    {
+        // Ensure numeric values
+        $selling_price = (float) $this->selling_price;
+        $commission_percentage = (float) $this->commission_percentage;
+
+        // Perform the calculation
+        $this->payout_price = $selling_price - (($selling_price * $commission_percentage) / 100);
+    }
+
 
     public function updatedConsignorId($value)
     {
@@ -86,7 +97,7 @@ class CreateConsign extends Component
         $inventory->description = $validatedData['description'];
         $inventory->picture = $validatedData['pictures'] ?? '';
         $inventory->visibility = $validatedData['visibility'];
-        $inventory->purchase_price = $validatedData['purchase_price'];
+        $inventory->pay = $validatedData['pay'];
         $inventory->selling_price = $validatedData['selling_price'];
         $inventory->qty = $validatedData['qty'];
 
@@ -113,7 +124,7 @@ class CreateConsign extends Component
                     'color' => $inventory->color,
                     'size' => $inventory->size,
                     'quantity' => $inventory->qty,
-                    'purchase_price' => $inventory->purchase_price,
+                    'pay' => $inventory->pay,
                     'selling_price' => $inventory->selling_price,
                     'visibility' => $inventory->visibility,
                 ]

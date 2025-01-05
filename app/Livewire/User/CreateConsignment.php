@@ -7,7 +7,6 @@ use Livewire\WithFileUploads;
 use App\Models\User;
 use App\Models\ConsignmentRequest;
 
-
 class CreateConsignment extends Component
 {
     use WithFileUploads;
@@ -16,7 +15,9 @@ class CreateConsignment extends Component
 
     public function calculatePayoutPrice()
     {
-        $this->payout_price = $this->selling_price - (($this->selling_price * $this->consignor_commission) / 100);
+        $selling_price = (float) $this->selling_price;
+        $consignor_commission = (float) $this->consignor_commission;
+        $this->payout_price = $this->selling_price - (($selling_price * $consignor_commission) / 100);
     }
 
     public function createConsignment()
