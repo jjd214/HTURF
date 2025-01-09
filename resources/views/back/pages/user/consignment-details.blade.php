@@ -74,14 +74,17 @@
                 <div class="form-group">
                     <label for=""><b>Condition </b> </label>
                     <input type="text" class="form-control" value="{{ __('Brand new') }}" readonly>
-
                 </div>
             </div>
             <div class="col-md-3">
+                @php
+                    $payout_price =
+                        $product->selling_price - ($product->selling_price * $product->commission_percentage) / 100;
+                    $payout_price *= $product->qty;
+                @endphp
                 <div class="form-group">
-                    <label for=""><b>Purchase price </b> </label>
-                    <input type="text" class="form-control" value="{{ number_format($product->purchase_price, 0) }}"
-                        readonly>
+                    <label for=""><b>Payout price </b> </label>
+                    <input type="text" class="form-control" value="{{ number_format($payout_price, 0) }}" readonly>
                 </div>
             </div>
             <div class="col-md-3">
