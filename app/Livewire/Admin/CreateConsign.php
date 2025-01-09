@@ -27,7 +27,6 @@ class CreateConsign extends Component
         'description' => 'nullable',
         'pictures.*' => 'nullable|image',
         'visibility' => 'required',
-        'pay' => 'required|numeric|min:0',
         'selling_price' => 'required|numeric|min:0',
         'commission_percentage' => 'required|numeric|min:0',
         'qty' => 'required|integer|min:1',
@@ -39,11 +38,16 @@ class CreateConsign extends Component
     public function calculatePayoutPrice()
     {
         // Ensure numeric values
-        $selling_price = (float) $this->selling_price;
-        $commission_percentage = (float) $this->commission_percentage;
+        if ($this->selling_price != null || $this->payout_price != null) {
+            $selling_price = (float) $this->selling_price;
+            $commission_percentage = (float) $this->commission_percentage;
+            $quantity = $this->qty;
+            $this->payout_price = $selling_price - (($selling_price * $commission_percentage) / 100);
 
-        // Perform the calculation
-        $this->payout_price = $selling_price - (($selling_price * $commission_percentage) / 100);
+            if ($this->qty != null) {
+                $this->payout_price *= $quantity;
+            }
+        }
     }
 
 
@@ -97,7 +101,6 @@ class CreateConsign extends Component
         $inventory->description = $validatedData['description'];
         $inventory->picture = $validatedData['pictures'] ?? '';
         $inventory->visibility = $validatedData['visibility'];
-        $inventory->pay = $validatedData['pay'];
         $inventory->selling_price = $validatedData['selling_price'];
         $inventory->qty = $validatedData['qty'];
 
@@ -124,7 +127,6 @@ class CreateConsign extends Component
                     'color' => $inventory->color,
                     'size' => $inventory->size,
                     'quantity' => $inventory->qty,
-                    'pay' => $inventory->pay,
                     'selling_price' => $inventory->selling_price,
                     'visibility' => $inventory->visibility,
                 ]

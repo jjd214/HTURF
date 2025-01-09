@@ -150,7 +150,7 @@
                         <div class="col-md-6 mb-10">
                             <div class="form-group">
                                 <label for=""><b>Quantity:</b></label>
-                                <input type="number" wire:model="qty" class="form-control"
+                                <input type="number" wire:model="qty" class="form-control" wire:input="calculatePayoutPrice"
                                     placeholder="Enter quantity in stock">
                                 @error('qty')
                                     <span class="text-danger"> {{ $message }} </span>

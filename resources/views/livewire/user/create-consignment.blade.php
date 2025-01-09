@@ -67,7 +67,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for=""><b>Quantity </b> </label>
-                        <input type="number" class="form-control" placeholder="Enter quantity" wire:model="quantity">
+                        <input type="number" class="form-control" placeholder="Enter quantity" wire:model="quantity"
+                            wire:input="calculatePayoutPrice">
                         @error('quantity')
                             <span class="text-danger"><small>{{ $message }}</small></span>
                         @enderror

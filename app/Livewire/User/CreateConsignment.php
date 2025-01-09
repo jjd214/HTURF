@@ -15,9 +15,16 @@ class CreateConsignment extends Component
 
     public function calculatePayoutPrice()
     {
-        $selling_price = (float) $this->selling_price;
-        $consignor_commission = (float) $this->consignor_commission;
-        $this->payout_price = $this->selling_price - (($selling_price * $consignor_commission) / 100);
+        if ($this->selling_price != null || $this->payout_price != null) {
+            $selling_price = (float) $this->selling_price;
+            $consignor_commission = (float) $this->consignor_commission;
+            $quantity = $this->quantity;
+            $this->payout_price = $selling_price - (($selling_price * $consignor_commission) / 100);
+
+            if ($this->quantity != null) {
+                $this->payout_price *= $quantity;
+            }
+        }
     }
 
     public function createConsignment()
