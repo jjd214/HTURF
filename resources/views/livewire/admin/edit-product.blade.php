@@ -149,16 +149,22 @@
                     </div>
                 </div>
             </div>
-            @if ($pictures && !$temporary_pictures)
+            @if ($pictures != '[]' && !$temporary_pictures)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card-box pd-20 mb-20">
                             <div class="d-flex flex-wrap gap-4">
                                 @foreach ($pictures as $picture)
-                                    <img src="{{ Storage::url('images/products/' . trim($picture, '[]"')) }}"
-                                        class="img-thumbnail"
-                                        style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;"
-                                        wire:click.prevent="removePicture({{ json_encode(trim($picture, '[]"')) }})">
+                                    @if ($picture != '[]')
+                                        <img src="{{ Storage::url('images/products/' . trim($picture, '[]"')) }}"
+                                            class="img-thumbnail"
+                                            style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;"
+                                            wire:click.prevent="removePicture({{ json_encode(trim($picture, '[]"')) }})">
+                                    @else
+                                        <img src="{{ asset('storage/images/default-img.png') }}"
+                                            class="img-thumbnail"
+                                            style="width: 200px; height: 200px; object-fit: cover;">
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
