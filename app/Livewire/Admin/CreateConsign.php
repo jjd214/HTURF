@@ -99,7 +99,7 @@ class CreateConsign extends Component
         $inventory->sex = $validatedData['sex'];
         $inventory->size = $validatedData['size'];
         $inventory->description = $validatedData['description'];
-        $inventory->picture = $validatedData['pictures'] ?? '';
+        $inventory->picture = $validatedData['pictures'] ?? '[]';
         $inventory->visibility = $validatedData['visibility'];
         $inventory->selling_price = $validatedData['selling_price'];
         $inventory->qty = $validatedData['qty'];
