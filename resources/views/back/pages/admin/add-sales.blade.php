@@ -49,9 +49,10 @@
             });
         </script>
     @endif
+
     <div class="page-header">
         <div class="row">
-            <div class="col-md-6 col-sm-12">
+            <div class="col-md-6 col-sm-12 mb-3">
                 <div class="title">
                     <h4>Create sales</h4>
                 </div>
@@ -66,11 +67,12 @@
                     </ol>
                 </nav>
             </div>
-            <div class="col-md-6 col-sm-12 text-right">
+            <div class="col-md-6 col-sm-12 text-md-right text-sm-left">
                 <a href="{{ route('admin.sales.all-transactions') }}" class="btn btn-primary">View all transactions</a>
             </div>
         </div>
     </div>
+
 
     @livewire('admin.create-sales')
 

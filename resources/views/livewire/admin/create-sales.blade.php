@@ -1,21 +1,21 @@
 <div>
     <div class="card-box pd-20 mb-20">
         <div class="row mb-30">
-            <div class="col-sm-12 col-md-6">
-                <div class="search-container">
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                <div class="search-container d-flex align-items-center">
                     <i class="fa fa-search search-icon"></i>
                     <input type="text" class="form-control" wire:model.live.debounce.300ms="search"
                         placeholder="Search products">
                 </div>
             </div>
-            <div class="col-sm-12 col-md-3">
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
                 <select class="custom-select form-control" wire:model.live="filter">
                     <option value="">All</option>
                     <option value="0">Consignment</option>
                     <option value="1">Store</option>
                 </select>
             </div>
-            <div class="col-sm-12 col-md-3">
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
                 <select class="custom-select form-control" wire:model.live="genderFilter">
                     <option value="">Sex</option>
                     <option value="Unisex">Unisex</option>
@@ -234,22 +234,22 @@
     <div class="card-box pd-20 mb-20">
         <div>
             <div class="row">
-                <div class="col-4">
+                <div class="col-md-4 col-sm-12 mb-3">
                     <label for=""><b>Amount pay:</b></label>
                     <input type="number" class="form-control" wire:model="amountPay" wire:keyup="updateTotals">
                 </div>
-                <div class="col-4">
+                <div class="col-md-4 col-sm-12 mb-3">
                     <label for=""><b>Total amount of items:</b></label>
                     <input type="number" class="form-control" wire:model="totalAmount" readonly>
                 </div>
-                <div class="col-4">
-                    <label for=""><b>Total change: </b></label>
+                <div class="col-md-4 col-sm-12 mb-3">
+                    <label for=""><b>Total change:</b></label>
                     <input type="number" class="form-control" wire:model="change" readonly>
                 </div>
             </div>
 
             <div class="row mt-2">
-                <div class="col-4">
+                <div class="col-md-6 col-sm-12 mb-3">
                     <label for=""><small><b>Customer name:</b></small></label>
                     <input type="text" class="form-control" wire:model="customer_name"
                         placeholder="Enter customer name" required>
@@ -259,10 +259,13 @@
                 </div>
             </div>
 
-            <div class="row mt-2 pd-20">
-                <button class="btn btn-success mr-10" wire:click="checkout">Proceed to checkout</button>
-                <button class="btn btn-secondary" wire:click="clearCart">Clear Cart</button>
+            <div class="row mt-2">
+                <div class="col-12 d-flex flex-wrap">
+                    <button class="btn btn-success mr-2 mb-2" wire:click="checkout">Proceed to checkout</button>
+                    <button class="btn btn-secondary mb-2" wire:click="clearCart">Clear Cart</button>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
