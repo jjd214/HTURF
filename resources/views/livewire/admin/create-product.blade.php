@@ -8,35 +8,35 @@
                         <label for=""><b>Product name:</b></label>
                         <input type="text" class="form-control" wire:model="name" placeholder="Enter product name">
                         @error('name')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for=""><b>Brand name:</b></label>
                         <input type="text" class="form-control" wire:model="brand" placeholder="Enter brand name">
                         @error('brand')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for=""><b>Sku:</b></label>
                         <input type="text" class="form-control" wire:model="sku" placeholder="Enter style code">
                         @error('sku')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for=""><b>Colorway:</b></label>
                         <input type="text" class="form-control" wire:model="color" placeholder="Enter color">
                         @error('color')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for=""><b>Size</b></label>
                         <input type="text" class="form-control" wire:model="size" placeholder="Enter size">
                         @error('size')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small> {{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
@@ -44,7 +44,7 @@
                         <textarea wire:model="description" class="form-control" cols="30" rows="10"
                             placeholder="Enter product description (Optional)"></textarea>
                         @error('description')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }} </small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
@@ -53,7 +53,7 @@
                             accept="image/png, image/jpeg" id="picture-input">
                         <span class="pd-5"><small><b>Note:</b> You can select multiple images</small></span>
                         @error('pictures')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                         <div wire:loading wire:target="picture" class="spinner-grow spinner-grow-sm" role="status">
                             <span class="visually-hidden"></span>
@@ -101,7 +101,7 @@
                                 <option value="female">Female</option>
                             </select>
                             @error('sex')
-                                <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger"> <small>{{ $message }}</small></span>
                             @enderror
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                                 <input type="number" wire:model="purchase_price" class="form-control"
                                     placeholder="Enter purchase price" min="0">
                                 @error('purchase_price')
-                                    <span class="text-danger"> {{ $message }} </span>
+                                    <span class="text-danger"> <small>{{ $message }}</small> </span>
                                 @enderror
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                 <input type="number" wire:model="selling_price" class="form-control"
                                     placeholder="Enter selling price" min="0">
                                 @error('selling_price')
-                                    <span class="text-danger"> {{ $message }} </span>
+                                    <span class="text-danger"> <small>{{ $message }}</small> </span>
                                 @enderror
                             </div>
                         </div>
@@ -139,7 +139,7 @@
                                 <input type="number" wire:model="qty" class="form-control"
                                     placeholder="Enter quantity in stock">
                                 @error('qty')
-                                    <span class="text-danger"> {{ $message }} </span>
+                                    <span class="text-danger"> <small>{{ $message }}</small> </span>
                                 @enderror
                             </div>
                         </div>
