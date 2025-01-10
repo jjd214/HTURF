@@ -40,6 +40,7 @@ class Consignments extends Component
         $inventories = Inventory::leftJoin('consignments', 'inventories.consignment_id', '=', 'consignments.id')
             ->select('inventories.*', 'consignments.*')
             ->where('consignments.consignor_id', auth('user')->id())
+            ->where('inventories.qty', '!=', 0)
             ->when($this->search, function ($query) {
                 $query->where('inventories.name', 'like', '%' . $this->search . '%');
             })
