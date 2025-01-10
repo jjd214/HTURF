@@ -106,9 +106,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-box min-height-200px pd-20" style="margin-top: 20px; height: 528px;">
+                <div class="card-box min-height-200px pd-20" style="margin-top: 20px; height: auto;">
                     <div class="row pd-10">
-                        <div class="col-md-6 mb-10">
+                        <!-- Purchase Price -->
+                        <div class="col-12 col-sm-6 mb-10">
                             <div class="form-group">
                                 <label for=""><b>Purchase price:</b></label>
                                 <input type="number" wire:model="purchase_price" class="form-control"
@@ -118,7 +119,8 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-md-6 mb-10">
+                        <!-- Selling Price -->
+                        <div class="col-12 col-sm-6 mb-10">
                             <div class="form-group">
                                 <label for=""><b>Selling price:</b></label>
                                 <input type="number" wire:model="selling_price" class="form-control"
@@ -130,7 +132,8 @@
                         </div>
                     </div>
                     <div class="row pd-10">
-                        <div class="col-md-12 mb-10">
+                        <!-- Quantity in Stock -->
+                        <div class="col-12 mb-10">
                             <div class="form-group">
                                 <label for=""><b>Quantity in stock:</b></label>
                                 <input type="number" wire:model="qty" class="form-control"
@@ -146,12 +149,12 @@
         </div>
         @if ($pictures)
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-12">
                     <div class="card-box pd-20 mb-20">
-                        <div class="d-flex flex-wrap gap-4">
+                        <div class="d-flex flex-wrap gap-2">
                             @foreach ($pictures as $index => $picture)
                                 <img src="{{ $picture->temporaryUrl() }}" class="img-thumbnail"
-                                    style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;"
+                                    style="width: 150px; height: 150px; object-fit: cover;"
                                     wire:click.prevent="removePicture({{ $index }})">
                             @endforeach
                         </div>
@@ -159,9 +162,15 @@
                 </div>
             </div>
         @endif
-        <div class="d-flex mb-20">
-            <button class="btn btn-success mr-2">Add product</button>
-            {{-- <button class="btn btn-info" >Reset</button> --}}
+        <div class="row">
+            <div class="col-12 d-flex justify-content-start gap-2 mb-20">
+                <!-- Button for larger screens -->
+                <button class="btn btn-success d-none d-md-inline-block btn-md">Add Product</button>
+
+                <!-- Button for smaller screens -->
+                <button class="btn btn-success d-md-none w-100">Add Product</button>
+            </div>
+
         </div>
     </form>
 </div>
