@@ -15,7 +15,7 @@ class EditConsign extends Component
 {
     use WithFileUploads;
 
-    public $consignment_id, $name, $brand, $sku, $color, $size, $description, $temporary_pictures = [], $pictures = [], $visibility, $sex, $purchase_price, $selling_price, $commission_percentage, $qty, $consignor_account, $consignor_name, $start_date, $expiry_date;
+    public $consignment_id, $name, $brand, $sku, $color, $size, $description, $temporary_pictures = [], $pictures = [], $visibility, $sex, $payout_price, $selling_price, $commission_percentage, $qty, $consignor_account, $consignor_name, $start_date, $expiry_date;
 
     protected $rules = [
         'name' => 'required',
@@ -27,7 +27,6 @@ class EditConsign extends Component
         'description' => 'nullable',
         'pictures.*' => 'nullable',
         'visibility' => 'required',
-        'purchase_price' => 'required|numeric|min:0',
         'selling_price' => 'required|numeric|min:0',
         'commission_percentage' => 'required|numeric|min:0',
         'qty' => 'required|integer|min:1',
@@ -59,7 +58,6 @@ class EditConsign extends Component
         $this->pictures = explode(',', $product->picture);
         $this->visibility = $product->visibility;
         $this->sex = $product->sex;
-        $this->purchase_price = $product->purchase_price;
         $this->selling_price = $product->selling_price;
         $this->qty = $product->qty;
 
@@ -103,7 +101,6 @@ class EditConsign extends Component
         $product->description = $this->description;
         $product->visibility = $this->visibility;
         $product->sex = $this->sex;
-        $product->purchase_price = $this->purchase_price;
         $product->selling_price = $this->selling_price;
         $product->qty = $this->qty;
         $consignment->commission_percentage = $this->commission_percentage;
@@ -135,7 +132,6 @@ class EditConsign extends Component
                     'description' => $product->description,
                     'visibility' => $product->visibility,
                     'sex' => $product->sex,
-                    'purchase_price' => $product->purchase_price,
                     'selling_price' => $product->selling_price,
                     'qty' => $product->qty,
                 ]
@@ -152,6 +148,21 @@ class EditConsign extends Component
             unset($this->temporary_pictures[$pictureIndex]);
             // Re-index array to avoid gaps
             $this->temporary_pictures = array_values($this->temporary_pictures);
+        }
+    }
+
+    public function calculatePayoutPrice()
+    {
+        // Ensure numeric values
+        if ($this->selling_price != null || $this->payout_price != null) {
+            $selling_price = (float) $this->selling_price;
+            $commission_percentage = (float) $this->commission_percentage;
+            $quantity = $this->qty;
+            $this->payout_price = $selling_price - (($selling_price * $commission_percentage) / 100);
+
+            if ($this->qty != null) {
+                $this->payout_price *= $quantity;
+            }
         }
     }
 

@@ -112,43 +112,43 @@
                     </div>
                     <div class="card-box min-height-200px pd-20" style="margin-top: 20px;">
                         <div class="row pd-10">
+
                             <div class="col-md-6 mb-10">
                                 <div class="form-group">
-                                    <label for=""><b>Purchase price:</b></label>
-                                    <input type="number" wire:model.defer="purchase_price" class="form-control"
-                                        placeholder="Enter purchase price" min="0">
-                                    @error('purchase_price')
+                                    <label for=""><b>Selling price:</b></label>
+                                    <input type="number" wire:model.defer="selling_price" class="form-control"
+                                        placeholder="Enter selling price" min="0"
+                                        wire:input="calculatePayoutPrice">
+                                    @error('selling_price')
                                         <span class="text-danger"> {{ $message }} </span>
                                     @enderror
                                 </div>
                             </div>
                             <div class="col-md-6 mb-10">
                                 <div class="form-group">
-                                    <label for=""><b>Selling price:</b></label>
-                                    <input type="number" wire:model.defer="selling_price" class="form-control"
-                                        placeholder="Enter selling price" min="0">
-                                    @error('selling_price')
+                                    <label for=""><b>Consign percentage:</b></label>
+                                    <input type="number" wire:model.defer="commission_percentage" class="form-control"
+                                        placeholder="Enter consign commission" readonly>
+                                    @error('commission_percentage')
                                         <span class="text-danger"> {{ $message }} </span>
                                     @enderror
                                 </div>
                             </div>
                         </div>
                         <div class="row pd-10">
-                            <div class="col-md-6 mb-10">
+                            {{-- <div class="col-md-6 mb-10">
                                 <div class="form-group">
-                                    <label for=""><b>Consign percentage:</b></label>
-                                    <input type="number" wire:model.defer="commission_percentage"
-                                        class="form-control" placeholder="Enter consign commission" readonly>
-                                    @error('commission_percentage')
-                                        <span class="text-danger"> {{ $message }} </span>
-                                    @enderror
+                                    <label for=""><b>Payout price:</b></label>
+                                    <input type="number" wire:model="payout_price" class="form-control"
+                                        placeholder="Payout price" readonly>
                                 </div>
-                            </div>
-                            <div class="col-md-6 mb-10">
+                            </div> --}}
+
+                            <div class="col-md-12 mb-10">
                                 <div class="form-group">
                                     <label for=""><b>Quantity:</b></label>
                                     <input type="number" wire:model.defer="qty" class="form-control"
-                                        placeholder="Enter quantity in stock">
+                                        placeholder="Enter quantity in stock" wire:input="calculatePayoutPrice">
                                     @error('qty')
                                         <span class="text-danger"> {{ $message }} </span>
                                     @enderror
@@ -204,16 +204,22 @@
                     </div>
                 </div>
             </div>
-            @if ($pictures && !$temporary_pictures)
+            @if ($pictures != '[]' && !$temporary_pictures)
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card-box pd-20 mb-20">
                             <div class="d-flex flex-wrap gap-4">
                                 @foreach ($pictures as $picture)
-                                    <img src="{{ Storage::url('images/consignments/' . trim($picture, '[]"')) }}"
-                                        class="img-thumbnail"
-                                        style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;"
-                                        wire:click.prevent="removePicture({{ json_encode(trim($picture, '[]"')) }})">
+                                    @if ($picture != '[]')
+                                        <img src="{{ Storage::url('images/consignments/' . trim($picture, '[]"')) }}"
+                                            class="img-thumbnail"
+                                            style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;"
+                                            wire:click.prevent="removePicture({{ json_encode(trim($picture, '[]"')) }})">
+                                    @else
+                                        <img src="{{ asset('storage/images/default-img.png') }}"
+                                            class="img-thumbnail"
+                                            style="width: 200px; height: 200px; object-fit: cover;">
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -224,14 +230,18 @@
                     <div class="col-md-12">
                         <div class="card-box pd-20 mb-20">
                             <div class="d-flex flex-wrap gap-4">
-                                @if ($pictures)
-                                    @foreach ($pictures as $picture)
+                                @foreach ($pictures as $picture)
+                                    @if ($picture != '[]')
                                         <img src="{{ Storage::url('images/consignments/' . trim($picture, '[]"')) }}"
                                             class="img-thumbnail"
                                             style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;"
                                             wire:click.prevent="removePicture({{ json_encode(trim($picture, '[]"')) }})">
-                                    @endforeach
-                                @endif
+                                    @else
+                                        <img src="{{ asset('storage/images/default-img.png') }}"
+                                            class="img-thumbnail"
+                                            style="width: 200px; height: 200px; object-fit: cover;">
+                                    @endif
+                                @endforeach
                                 @foreach ($temporary_pictures as $index => $tempPicture)
                                     <img src="{{ $tempPicture->temporaryUrl() }}" class="img-thumbnail"
                                         style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;"
