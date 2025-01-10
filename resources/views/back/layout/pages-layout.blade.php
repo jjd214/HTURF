@@ -340,7 +340,7 @@
                         <li class="dropdown">
                             <a href="javascript:;"
                                 class="dropdown-toggle {{ Route::is('admin.product.*') ? 'active' : '' }}">
-                                <span class="micon bi bi-cart2"></span><span class="mtext">Products</span>
+                                <span class="micon bi bi-cart2"></span><span class="mtext">Store Products</span>
                             </a>
                             <ul class="submenu">
                                 <li><a href="{{ route('admin.product.all-products') }}"
