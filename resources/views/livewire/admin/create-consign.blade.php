@@ -3,40 +3,40 @@
         @csrf
         <div class="row">
             <div class="col-md-6 mb-20">
-                <div class="card-box height-100-p pd-20" style="position: relative; height: 1050px;">
+                <div class="card-box height-100-p pd-20" style="position: relative; height: auto;">
                     <div class="form-group">
                         <label for=""><b>Product name:</b></label>
                         <input type="text" class="form-control" wire:model="name" placeholder="Enter product name">
                         @error('name')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small> {{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for=""><b>Brand name:</b></label>
                         <input type="text" class="form-control" wire:model="brand" placeholder="Enter brand name">
                         @error('brand')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for=""><b>Sku:</b></label>
                         <input type="text" class="form-control" wire:model="sku" placeholder="Enter style code">
                         @error('sku')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for=""><b>Colorway:</b></label>
                         <input type="text" class="form-control" wire:model="color" placeholder="Enter color">
                         @error('color')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for=""><b>Size</b></label>
                         <input type="text" class="form-control" wire:model="size" placeholder="Enter size">
                         @error('size')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
@@ -44,7 +44,7 @@
                         <textarea wire:model="description" class="form-control" cols="30" rows="10"
                             placeholder="Enter product description (Optional)"></textarea>
                         @error('description')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                     </div>
                     <div class="form-group">
@@ -53,7 +53,7 @@
                             accept="image/png, image/jpeg" id="picture-input">
                         <span class="pd-5"><small><b>Note:</b> You can select multiple images</small></span>
                         @error('pictures')
-                            <span class="text-danger"> {{ $message }} </span>
+                            <span class="text-danger"> <small>{{ $message }}</small> </span>
                         @enderror
                         <div wire:loading wire:target="picture" class="spinner-grow spinner-grow-sm" role="status">
                             <span class="visually-hidden"></span>
@@ -106,7 +106,7 @@
                                 <option value="female">Female</option>
                             </select>
                             @error('sex')
-                                <span class="text-danger">{{ $message }}</span>
+                                <span class="text-danger"> <small>{{ $message }}</small> </span>
                             @enderror
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                                     placeholder="Enter selling price" wire:model="selling_price"
                                     wire:input="calculatePayoutPrice">
                                 @error('selling_price')
-                                    <span class="text-danger"> {{ $message }} </span>
+                                    <span class="text-danger"> <small>{{ $message }}</small> </span>
                                 @enderror
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                                 <input type="number" wire:model="commission_percentage" class="form-control"
                                     placeholder="Enter consign commission" readonly>
                                 @error('commission_percentage')
-                                    <span class="text-danger"> {{ $message }} </span>
+                                    <span class="text-danger"> <small>{{ $message }}</small> </span>
                                 @enderror
                             </div>
                         </div>
@@ -143,24 +143,24 @@
                                 <input type="number" wire:model="payout_price" class="form-control"
                                     placeholder="Calculated payout price" min="0" readonly>
                                 @error('purchase_price')
-                                    <span class="text-danger"> {{ $message }} </span>
+                                    <span class="text-danger"> <small>{{ $message }}</small> </span>
                                 @enderror
                             </div>
                         </div>
                         <div class="col-md-6 mb-10">
                             <div class="form-group">
                                 <label for=""><b>Quantity:</b></label>
-                                <input type="number" wire:model="qty" class="form-control" wire:input="calculatePayoutPrice"
-                                    placeholder="Enter quantity in stock">
+                                <input type="number" wire:model="qty" class="form-control"
+                                    wire:input="calculatePayoutPrice" placeholder="Enter quantity in stock">
                                 @error('qty')
-                                    <span class="text-danger"> {{ $message }} </span>
+                                    <span class="text-danger"> <small>{{ $message }}</small> </span>
                                 @enderror
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="card-box min-height-200px pd-20"
-                    style="position: relative; height: 390px; margin-top: 20px;">
+                    style="position: relative; height: auto; margin-top: 20px;">
                     <div class="row pd-10">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -230,8 +230,10 @@
             </div>
         @endif
         <div class="d-flex mb-20">
-            <button class="btn btn-success mr-2">Add product</button>
-            <button class="btn btn-info">Reset</button>
+            <button class="btn btn-success d-none d-md-inline-block btn-md">Add Consignment</button>
+
+            <!-- Button for smaller screens -->
+            <button class="btn btn-success d-md-none w-100">Add Consignment</button>
         </div>
         <script>
             $(document).ready(function() {
