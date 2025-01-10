@@ -15,7 +15,7 @@ class EditConsign extends Component
 {
     use WithFileUploads;
 
-    public $consignment_id, $name, $brand, $sku, $color, $size, $description, $temporary_pictures = [], $pictures = [], $visibility, $sex, $payout_price, $selling_price, $commission_percentage, $qty, $consignor_account, $consignor_name, $start_date, $expiry_date;
+    public $consignment_id, $name, $brand, $sku, $color, $size, $description, $temporary_pictures = [], $pictures = [], $visibility, $sex, $selling_price, $commission_percentage, $qty, $consignor_account, $consignor_name, $start_date, $expiry_date;
 
     protected $rules = [
         'name' => 'required',
@@ -148,21 +148,6 @@ class EditConsign extends Component
             unset($this->temporary_pictures[$pictureIndex]);
             // Re-index array to avoid gaps
             $this->temporary_pictures = array_values($this->temporary_pictures);
-        }
-    }
-
-    public function calculatePayoutPrice()
-    {
-        // Ensure numeric values
-        if ($this->selling_price != null || $this->payout_price != null) {
-            $selling_price = (float) $this->selling_price;
-            $commission_percentage = (float) $this->commission_percentage;
-            $quantity = $this->qty;
-            $this->payout_price = $selling_price - (($selling_price * $commission_percentage) / 100);
-
-            if ($this->qty != null) {
-                $this->payout_price *= $quantity;
-            }
         }
     }
 

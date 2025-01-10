@@ -117,8 +117,7 @@
                                 <div class="form-group">
                                     <label for=""><b>Selling price:</b></label>
                                     <input type="number" wire:model.defer="selling_price" class="form-control"
-                                        placeholder="Enter selling price" min="0"
-                                        wire:input="calculatePayoutPrice">
+                                        placeholder="Enter selling price" min="0">
                                     @error('selling_price')
                                         <span class="text-danger"> {{ $message }} </span>
                                     @enderror
@@ -148,7 +147,7 @@
                                 <div class="form-group">
                                     <label for=""><b>Quantity:</b></label>
                                     <input type="number" wire:model.defer="qty" class="form-control"
-                                        placeholder="Enter quantity in stock" wire:input="calculatePayoutPrice">
+                                        placeholder="Enter quantity in stock">
                                     @error('qty')
                                         <span class="text-danger"> {{ $message }} </span>
                                     @enderror
