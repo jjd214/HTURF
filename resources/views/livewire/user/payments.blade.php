@@ -1,19 +1,17 @@
 <div>
     <div class="card-box pd-20 mb-20">
-        <div class="row">
-            <div class="col-md-3 mb-10">
+        <div class="row d-flex justify-content-between align-items-center">
+            <!-- Search and Filter -->
+            <div class="col-12 col-md-4">
                 <div class="input-group custom">
                     <div class="input-group-prepend custom">
                         <span class="input-group-text"><i class="fa fa-search"></i></span>
                     </div>
-                    <input type="text" id="search" class="form-control" wire:model.live.debounce.300ms="search"
-                        placeholder="Search...">
+                    <input type="text" class="form-control" wire:model.live.debounce.300ms="search"
+                        placeholder="Payment, Reference no.">
                 </div>
             </div>
-            <div class="col-md-6 col-sm-12 mb-10">
-
-            </div>
-            <div class="col-md-3 mb-10">
+            <div class="col-12 col-md-3 mb-30">
                 <select class="custom-select form-control" wire:model.live="status">
                     <option value="">All</option>
                     <option value="Pending">Pending</option>
@@ -22,7 +20,9 @@
                 </select>
             </div>
         </div>
-        <div class="responsive">
+
+
+        <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                     <tr>
