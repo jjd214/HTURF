@@ -1,7 +1,7 @@
 <div>
-    <div class="row">
+    <div class="row d-flex justify-content-between align-items-center">
         <!-- Search and Filter -->
-        <div class="col-md-3 mb-10">
+        <div class="col-12 col-md-4">
             <div class="input-group custom">
                 <div class="input-group-prepend custom">
                     <span class="input-group-text"><i class="fa fa-search"></i></span>
@@ -10,15 +10,14 @@
                     placeholder="Search consign name">
             </div>
         </div>
-        <div class="col-md-6"></div>
-        <div class="col-md-3 mb-10">
+        <div class="col-12 col-md-3 mb-30">
             <select class="custom-select form-control" wire:model.live="visibility">
                 <option value="">All</option>
-                <option value="public">Public</option>
-                <option value="private">Private</option>
+                <option value="public">In Sales</option>
             </select>
         </div>
     </div>
+
 
     <!-- Responsive Table -->
     <div class="table-responsive">
