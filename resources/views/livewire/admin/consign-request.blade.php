@@ -1,7 +1,7 @@
 <div>
-    <div class="row">
+    <div class="row d-flex justify-content-between align-items-center">
         <!-- Search and Filter -->
-        <div class="col-md-3 mb-10">
+        <div class="col-12 col-md-4">
             <div class="input-group custom">
                 <div class="input-group-prepend custom">
                     <span class="input-group-text"><i class="fa fa-search"></i></span>
@@ -9,12 +9,11 @@
                 <input type="text" class="form-control" wire:model.live.debounce.300ms="search" placeholder="Search">
             </div>
         </div>
-        <div class="col-md-6"></div>
-        <div class="col-md-3 mb-10">
-            <select class="custom-select form-control" wire:model.live="visibility">
+        <div class="col-12 col-md-3 mb-30">
+            <select class="custom-select form-control" wire:model.live="status">
                 <option value="">All</option>
-                <option value="public">Public</option>
-                <option value="private">Private</option>
+                <option value="Pending">Pending</option>
+                <option value="Rejected">Rejected</option>
             </select>
         </div>
     </div>
@@ -70,5 +69,20 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+    <!-- Pagination and Per Page Control -->
+    <div class="row mt-20">
+        <div class="col-md-3">
+            <select class="custom-select form-control" wire:model.live="per_page">
+                <option value="">Select Per Page</option>
+                <option value="1">1</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+        <div class="col-md-9 text-right">
+            {{ $rows->links() }}
+        </div>
     </div>
 </div>
