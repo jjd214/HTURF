@@ -78,14 +78,7 @@
                         placeholder="Search product name">
                 </div>
             </div>
-            <div class="col-md-6"></div>
-            <div class="col-md-3 mb-10">
-                <select class="custom-select form-control" wire:model.live="visibility">
-                    <option value="">All</option>
-                    <option value="public">Selling</option>
-                    <option value="private">Not selling</option>
-                </select>
-            </div>
+
         </div>
 
         <!-- Responsive Table -->
