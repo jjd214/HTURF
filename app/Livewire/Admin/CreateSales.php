@@ -281,6 +281,11 @@ class CreateSales extends Component
 
         $query->orderBy('created_at', 'desc');
 
+        $query->where(function ($q) {
+            $q->whereNull('consignment_id')
+                ->orWhere('qty', '>', 0);
+        });
+
         // Paginate the results
         $rows = $query->paginate($this->per_page);
 

@@ -23,7 +23,7 @@
     <!-- Responsive Table -->
     <div class="table-responsive">
         <table class="table table-hover stripe" wire:poll.keep-alive>
-            <thead class="">
+            <thead>
                 <tr>
                     <th><b>Item</b></th>
                     <th class="sorting" wire:click="setSortBy('sku')" style="cursor: pointer;">
@@ -31,8 +31,7 @@
                         <i class="fa fa-arrow-up"
                             style="{{ $sortBy === 'sku' && $sortDir === 'ASC' ? 'color: #007bff;' : 'color: #000;' }}"></i>
                         <i class="fa fa-arrow-down"
-                            style="{{ $sortBy === 'sku' && $sortDir === 'DESC' ? 'color: #007bff;' : 'color: #000;' }}">
-                        </i>
+                            style="{{ $sortBy === 'sku' && $sortDir === 'DESC' ? 'color: #007bff;' : 'color: #000;' }}"></i>
                     </th>
                     <th class="sorting" wire:click="setSortBy('name')" style="cursor: pointer;">
                         <b>Name</b>
@@ -49,12 +48,13 @@
                             style="{{ $sortBy === 'brand' && $sortDir === 'DESC' ? 'color: #007bff;' : 'color: #000;' }}"></i>
                     </th>
                     <th><b>Size</b></th>
+                    <th><b>Status</b></th> <!-- Added Status Column -->
                     <th><b>Action</b></th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($rows as $item)
-                    <tr wire:key={{ $item->id }}>
+                    <tr wire:key="{{ $item->id }}">
                         <td>
                             @php
                                 // Decode the picture array from JSON
@@ -75,8 +75,13 @@
                         <td>{{ $item->sku }}</td>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->brand }}</td>
+                        <td>{{ $item->size }}</td>
                         <td>
-                            {{ $item->size }}
+                            @if ($item->qty == 0)
+                                <span class="badge badge-danger">Out of Stock</span>
+                            @else
+                                <span class="badge badge-success">In Stock</span>
+                            @endif
                         </td>
                         <td>
                             <div wire:ignore class="dropdown">
@@ -98,11 +103,12 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center">No products found.</td>
+                        <td colspan="7" class="text-center">No products found.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
+
     </div>
 
     <!-- Pagination and Per Page Control -->
