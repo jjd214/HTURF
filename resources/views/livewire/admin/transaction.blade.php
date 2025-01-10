@@ -1,16 +1,16 @@
 <div>
-    <div class="row">
+    <div class="row d-flex justify-content-between align-items-center">
         <!-- Search and Filter -->
-        <div class="col-md-4 mb-10">
+        <div class="col-12 col-md-4">
             <div class="input-group custom">
                 <div class="input-group-prepend custom">
                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                 </div>
-                <input type="text" class="form-control" wire:model.live.debounce.300ms="search" placeholder="Search transactions">
+                <input type="text" class="form-control" wire:model.live.debounce.300ms="search"
+                    placeholder="Search transactions">
             </div>
         </div>
-        <div class="col-md-5"></div>
-        <div class="col-md-3 mb-10">
+        <div class="col-12 col-md-3 mb-30">
             <select class="custom-select form-control" wire:model.live="status">
                 <option value="">All</option>
                 <option value="Completed">Completed</option>
@@ -38,34 +38,41 @@
                     $total = 0;
                 @endphp
                 @forelse ($rows as $item)
-                @php
-                    $itemTotal = $item->selling_price * $item->qty;
-                    $total += $itemTotal;
-                @endphp
-                <tr>
-                    <td><small><b>{{ $item->transaction_code }}</b></small></td>
-                    <td><span class="badge {{ $item->status == 'Completed' ? 'badge-success' : 'badge-danger' }}">{{ $item->status }}</span></td>
-                    <td>{{ $item->created_at->format('Y-m-d') }}</td>
-                    <td><i class="fa fa-user-circle fa-sm ml-2"></i>
-                        {{ $item->customer_name }}</td>
-                    <td>{{ $item->quantity_sold }}</td>
-                    <td>{{ number_format($item->total_amount) }}</td>
-                    <td>
-                        <div wire:ignore class="dropdown">
-                            <a class="btn btn-link dropdown-toggle" href="javascript:;" role="button" data-toggle="dropdown">
-                                <i class="dw dw-more"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="{{ route('admin.sales.transaction-details', ['transaction_code' => $item->transaction_code]) }}" ><i class="dw dw-eye"></i> View</a>
-                                <a class="dropdown-item" href="{{ route('admin.sales.refund', ['transaction_code' => $item->transaction_code]) }}" ><i class="dw dw-money"></i> Refund</a>
+                    @php
+                        $itemTotal = $item->selling_price * $item->qty;
+                        $total += $itemTotal;
+                    @endphp
+                    <tr>
+                        <td><small><b>{{ $item->transaction_code }}</b></small></td>
+                        <td><span
+                                class="badge {{ $item->status == 'Completed' ? 'badge-success' : 'badge-danger' }}">{{ $item->status }}</span>
+                        </td>
+                        <td>{{ $item->created_at->format('Y-m-d') }}</td>
+                        <td><i class="fa fa-user-circle fa-sm ml-2"></i>
+                            {{ $item->customer_name }}</td>
+                        <td>{{ $item->quantity_sold }}</td>
+                        <td>{{ number_format($item->total_amount) }}</td>
+                        <td>
+                            <div wire:ignore class="dropdown">
+                                <a class="btn btn-link dropdown-toggle" href="javascript:;" role="button"
+                                    data-toggle="dropdown">
+                                    <i class="dw dw-more"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item"
+                                        href="{{ route('admin.sales.transaction-details', ['transaction_code' => $item->transaction_code]) }}"><i
+                                            class="dw dw-eye"></i> View</a>
+                                    <a class="dropdown-item"
+                                        href="{{ route('admin.sales.refund', ['transaction_code' => $item->transaction_code]) }}"><i
+                                            class="dw dw-money"></i> Refund</a>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 @empty
-                <tr>
-                    <td colspan="7" class="text-center">No result found.</td>
-                </tr>
+                    <tr>
+                        <td colspan="7" class="text-center">No result found.</td>
+                    </tr>
                 @endforelse
             </tbody>
 
