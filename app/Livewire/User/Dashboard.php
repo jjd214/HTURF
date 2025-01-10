@@ -15,7 +15,10 @@ class Dashboard extends Component
 
     public function mount()
     {
-        $this->selling_items = Consignment::where('consignor_id', auth('user')->id())->count();
+        $this->selling_items = Consignment::join('inventories', 'consignments.id', '=', 'inventories.consignment_id')
+            ->where('consignments.consignor_id', auth('user')->id())
+            ->where('inventories.qty', '!=', 0)
+            ->count();
         $this->pending_consignments = ConsignmentRequest::where('consignor_id', auth('user')->id())->count();
         $this->total_payouts_claimed = $this->total_payouts_claimed();
         $this->total_expected_payouts = $this->total_expected_payouts();
