@@ -163,7 +163,7 @@
                                     @else
                                         <img src="{{ asset('storage/images/default-img.png') }}"
                                             class="img-thumbnail"
-                                            style="width: 200px; height: 200px; object-fit: cover;">
+                                            style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;">
                                     @endif
                                 @endforeach
                             </div>
@@ -184,7 +184,7 @@
                                     @else
                                         <img src="{{ asset('storage/images/default-img.png') }}"
                                             class="img-thumbnail"
-                                            style="width: 200px; height: 200px; object-fit: cover;">
+                                            style="width: 200px; height: 200px; object-fit: cover; margin-right: 10px;">
                                     @endif
                                 @endforeach
                                 @foreach ($temporary_pictures as $index => $tempPicture)
