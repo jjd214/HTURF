@@ -1,24 +1,16 @@
 <div>
-    <div class="row">
-        <div class="col-md-3 mb-10">
+    <div class="row d-flex justify-content-between align-items-center">
+        <!-- Search and Filter -->
+        <div class="col-12 col-md-4">
             <div class="input-group custom">
                 <div class="input-group-prepend custom">
                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                 </div>
-                <input type="text" id="search" class="form-control" wire:model.live.debounce.300ms="search" placeholder="Payment, Consignor, or Ref. No.">
+                <input type="text" class="form-control" wire:model.live.debounce.300ms="search"
+                    placeholder="Payment, Consignor, Ref no.">
             </div>
         </div>
-        <div class="col-md-6 col-sm-12 mb-10">
-            <div class="row">
-                <div class="col-md-6 col-sm-12 mb-10">
-                    <input type="date" class="form-control" wire:model.live="startDate">
-                </div>
-                <div class="col-md-6">
-                    <input type="date" class="form-control" wire:model.live="endDate">
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mb-10">
+        <div class="col-12 col-md-3 mb-30">
             <select class="custom-select form-control" wire:model.live="status">
                 <option value="">All</option>
                 <option value="Pending">Pending</option>
@@ -27,6 +19,7 @@
             </select>
         </div>
     </div>
+
     <div class="table-responsive">
         <table class="table table-hover stripe" style="width: 100%;" wire:poll.keep-alive>
             <thead class="">
@@ -40,29 +33,31 @@
             </thead>
             <tbody>
                 @forelse ($rows as $item)
-                <tr style="cursor: pointer;" wire:click.prevent="showPaymentForm({{ $item->id }})" wire:key={{ $item->id }}>
-                    <td><small><b>{{ $item->payment_code }}</b></small></td>
-                    <td>
-                        <span class="badge
+                    <tr style="cursor: pointer;" wire:click.prevent="showPaymentForm({{ $item->id }})"
+                        wire:key={{ $item->id }}>
+                        <td><small><b>{{ $item->payment_code }}</b></small></td>
+                        <td>
+                            <span
+                                class="badge
                             {{ $item->status == 'Completed' ? 'badge-success' : '' }}
                             {{ $item->status == 'Notified' ? 'badge-warning' : '' }}
                             {{ $item->status == 'Pending' ? 'badge-info' : '' }}
                             {{ $item->status == 'Incomplete' ? 'badge-danger' : '' }}">
-                            {{ $item->status }}
-                        </span>
-                    </td>
-                    <td>
-                        {{ ($item->date_of_payment === null) ? 'Not yet emailed' : \Carbon\Carbon::parse        ($item->date_of_payment)->toFormattedDateString() }}
-                    </td>
-                    <td><i class="fa fa-user-circle fa-sm ml-2"></i>
-                        {{ $item->consignor_name }}
-                    </td>
-                    <td>{{ $item->quantity }}</td>
-                </tr>
+                                {{ $item->status }}
+                            </span>
+                        </td>
+                        <td>
+                            {{ $item->date_of_payment === null ? 'Not yet emailed' : \Carbon\Carbon::parse($item->date_of_payment)->toFormattedDateString() }}
+                        </td>
+                        <td><i class="fa fa-user-circle fa-sm ml-2"></i>
+                            {{ $item->consignor_name }}
+                        </td>
+                        <td>{{ $item->quantity }}</td>
+                    </tr>
                 @empty
-                <tr>
-                    <td colspan="6" class="text-center">No result found</td>
-                </tr>
+                    <tr>
+                        <td colspan="6" class="text-center">No result found</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>

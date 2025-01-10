@@ -23,9 +23,6 @@ class Payments extends Component
     #[Url()]
     public $per_page = 10;
 
-    public $startDate;
-    public $endDate;
-
     public function showPaymentForm($id)
     {
         $payment_code = DB::table('payments')
@@ -71,14 +68,6 @@ class Payments extends Component
         // Apply status filter
         if (!empty($this->status)) {
             $query->where('payments.status', $this->status);
-        }
-
-        // Apply date range filter
-        if ($this->startDate && $this->endDate) {
-            $query->whereBetween('payments.created_at', [
-                Carbon::parse($this->startDate)->startOfDay(),
-                Carbon::parse($this->endDate)->endOfDay(),
-            ]);
         }
 
         $rows = $query->orderBy('payments.id', 'desc')->paginate($this->per_page);
