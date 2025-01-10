@@ -88,8 +88,8 @@ class AdminDataAnalysisServices
     {
         $totalItems = array(
             'storeItems' => Inventory::where('consignment_id', null)->count(),
-            'consignItems' => Inventory::where('consignment_id', '!=', null)->count(),
-            'sellingItems' => Inventory::where('visibility', '!=', 'private')->count(),
+            'consignItems' => Inventory::where('consignment_id', '!=', null)->where('qty', "!=", 0)->count(),
+            'sellingItems' => Inventory::where('visibility', '!=', 'private')->where('qty', "!=", 0)->count(),
             'refundItems' => Refund::where('status', 'Refunded')->count()
         );
 
