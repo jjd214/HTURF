@@ -120,6 +120,11 @@ class PaymentController extends Controller
     {
         $payment_details = Payment::find($request->payment_id);
 
+        if (!$payment_details) {
+            return redirect()->back()->with('fail', 'Payment not found.');
+        }
+
+        // Generate a unique reference number if not already present
         if (!$payment_details->reference_no) {
             do {
                 $reference_number = mt_rand(1000000000, 9999999999);
@@ -127,12 +132,38 @@ class PaymentController extends Controller
             $payment_details->reference_no = $reference_number;
         }
 
-        $payment_details->status = "Completed";
+        $inventory_details = Inventory::find($payment_details->inventory_id);
+        $consignment_details = Consignment::find($inventory_details->consignment_id ?? null);
+        $consignor_details = User::find($consignment_details->consignor_id ?? null);
 
-        if ($payment_details->save()) {
+        if (!$consignor_details) {
+            return redirect()->back()->with('fail', 'Consignor details not found.');
+        }
+
+        $data = [
+            'consignor_name' => $consignment_details->name ?? $consignment_details->username,
+            'payment_id' => $payment_details->payment_code,
+            'payment_amount' => $payment_details->total,
+            'payment_date' => now()->format('F j, Y, g:i A'),
+        ];
+
+        $mail_body = view('email-templates.user-complete-payment-email-template', $data)->render();
+
+        $mailConfig = [
+            'mail_from_email' => env('MAIL_FROM_ADDRESS', 'default@example.com'),
+            'mail_from_name' => env('MAIL_FROM_NAME', 'Your Company'),
+            'mail_recipient_email' => $consignor_details->email,
+            'mail_recipient_name' => $consignor_details->name,
+            'mail_subject' => 'Payment Completed',
+            'mail_body' => $mail_body,
+        ];
+
+        if (sendEmail($mailConfig)) {
+            $payment_details->status = "Completed";
+            $payment_details->save();
             return redirect()->back()->with('success', 'Payment completed 👍');
         } else {
-            return redirect()->back()->with('fail', 'Something went wrong.');
+            return redirect()->back()->with('fail', 'Failed to send payment confirmation email.');
         }
     }
 }
