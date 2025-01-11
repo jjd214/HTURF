@@ -151,7 +151,10 @@
             </div>
         </div>
         @if ($product->status === 'Rejected')
-            <button class="btn btn-danger" id="cancel-button">Delete</button>
+            <form action="{{ route('consignor.consignment.destroy-consignment-request', $product->id) }}" method="post">
+                @csrf
+                <button class="btn btn-danger" id="cancel-button">Delete</button>
+            </form>
         @else
             <form id="cancelRequestForm"
                 action="{{ route('consignor.consignment.destroy-consignment-request', $product->id) }}" method="post">
