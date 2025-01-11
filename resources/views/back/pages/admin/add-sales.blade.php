@@ -67,7 +67,7 @@
                     </ol>
                 </nav>
             </div>
-            <div class="col-md-6 col-sm-12 text-md-right text-sm-left">
+            <div class="col-md-6 col-sm-12 text-md-right text-sm-left p-2">
                 <a href="{{ route('admin.sales.all-transactions') }}" class="btn btn-primary">View all transactions</a>
             </div>
         </div>

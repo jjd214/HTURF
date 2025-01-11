@@ -18,7 +18,7 @@
                     </ol>
                 </nav>
             </div>
-            <div class="col-md-6 col-sm-12 text-right">
+            <div class="col-md-6 col-sm-12 text-md-right text-sm-left p-2">
                 <a href="{{ route('admin.sales.all-refunds') }}" class="btn btn-primary">View all refunds</a>
             </div>
         </div>
