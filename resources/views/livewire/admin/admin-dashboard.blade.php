@@ -10,7 +10,7 @@
                         </div>
                     </div>
                     <div class="widget-icon">
-                        <div class="icon" data-color="#00eccf" style="color: rgb(0, 236, 207);">
+                        <div class="icon" data-color="#fff">
                             <i class="icon-copy fa fa-line-chart"></i>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="widget-icon">
-                        <div class="icon" data-color="#ff5b5b" style="color: rgb(255, 91, 91);">
+                        <div class="icon" data-color="#fff">
                             <span class="icon-copy fa fa-bar-chart"></span>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                         <div class="font-17 text-dark weight-500"><small>Total commission fee</small></div>
                     </div>
                     <div class="widget-icon">
-                        <div class="icon" data-color="#09cc06" style="color: rgb(9, 204, 6);">
+                        <div class="icon" data-color="#fff">
                             <i class="icon-copy fa fa-money" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -73,7 +73,8 @@
         <div class="col-xl-4 col-lg-6 mb-4">
             <div class="card-box shadow-sm border-0">
                 <div class="card-body d-flex align-items-center">
-                    <div class="icon-circle" style="background-color: #007bff; color: white; padding: 15px; border-radius: 50%; margin-right: 15px;">
+                    <div class="icon-circle bg-dark"
+                        style=" color: white; padding: 15px; border-radius: 50%; margin-right: 15px;">
                         <i class="fa fa-users fa-lg"></i>
                     </div>
                     <div>
@@ -88,7 +89,8 @@
         <div class="col-xl-4 col-lg-6 mb-4">
             <div class="card-box shadow-sm border-0">
                 <div class="card-body d-flex align-items-center">
-                    <div class="icon-circle" style="background-color: #f39c12; color: white; padding: 15px; border-radius: 50%; margin-right: 15px;">
+                    <div class="icon-circle bg-dark"
+                        style=" color: white; padding: 15px; border-radius: 50%; margin-right: 15px;">
                         <i class="fa fa-hourglass-half fa-lg"></i>
                     </div>
                     <div>
@@ -103,7 +105,8 @@
         <div class="col-xl-4 col-lg-6 mb-4">
             <div class="card-box shadow-sm border-0">
                 <div class="card-body d-flex align-items-center">
-                    <div class="icon-circle" style="background-color: #e74c3c; color: white; padding: 15px; border-radius: 50%; margin-right: 15px;">
+                    <div class="icon-circle bg-dark"
+                        style=" color: white; padding: 15px; border-radius: 50%; margin-right: 15px;">
                         <i class="fa fa-money fa-lg"></i>
                     </div>
                     <div>
@@ -129,7 +132,8 @@
                             </div>
                             <div class="browser-name flex-grow-1">Store Items</div>
                             <div class="visit">
-                                <span class="badge badge-pill badge-dark">{{ $totalInventoryItems['storeItems'] }}</span>
+                                <span
+                                    class="badge badge-pill badge-dark">{{ $totalInventoryItems['storeItems'] }}</span>
                             </div>
                         </li>
                         <!-- Consign Items with fa-handshake -->
@@ -139,7 +143,8 @@
                             </div>
                             <div class="browser-name flex-grow-1">Consign Items</div>
                             <div class="visit">
-                                <span class="badge badge-pill badge-dark">{{ $totalInventoryItems['consignItems'] }}</span>
+                                <span
+                                    class="badge badge-pill badge-dark">{{ $totalInventoryItems['consignItems'] }}</span>
                             </div>
                         </li>
                         <!-- Selling Items with fa-shopping-cart -->
@@ -149,7 +154,8 @@
                             </div>
                             <div class="browser-name flex-grow-1">Selling Items</div>
                             <div class="visit">
-                                <span class="badge badge-pill badge-dark">{{ $totalInventoryItems['sellingItems'] }}</span>
+                                <span
+                                    class="badge badge-pill badge-dark">{{ $totalInventoryItems['sellingItems'] }}</span>
                             </div>
                         </li>
                         <!-- Refund with fa-undo -->
@@ -159,7 +165,8 @@
                             </div>
                             <div class="browser-name flex-grow-1">Refund</div>
                             <div class="visit">
-                                <span class="badge badge-pill badge-dark">{{ $totalInventoryItems['refundItems'] }}</span>
+                                <span
+                                    class="badge badge-pill badge-dark">{{ $totalInventoryItems['refundItems'] }}</span>
                             </div>
                         </li>
                     </ul>
@@ -168,13 +175,14 @@
             <div class="card-box pd-30 pt-10 height-50-p" style="height: 185px; margin-top: 20px;">
                 <div class="d-flex justify-content-between align-items-center mb-30">
                     <h2 class="h4 mb-0">Sales</h2>
-                        <select class="custom-select form-control" style="width: 150px;" wire:model.live="selectedDay">
-                            <option value="today">Today</option>
-                            <option value="week">This Week</option>
-                            <option value="month">This Month</option>
-                        </select>
+                    <select class="custom-select form-control" style="width: 150px;" wire:model.live="selectedDay">
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
                 </div>
-                <h1 class="h2 text-center" style="margin-top: -20px;" wire:poll.keep-alive><b>₱ {{ number_format($totalSales, 0) }}</b></h1>
+                <h1 class="h2 text-center" style="margin-top: -20px;" wire:poll.keep-alive><b>₱
+                        {{ number_format($totalSales, 0) }}</b></h1>
                 <h2 class="h4 mb-0">Items Sold</h2>
                 <h1 class="h4 text-center"><b>{{ $totalItemsSold }}</b></h1>
             </div>
@@ -185,10 +193,7 @@
             <div class="card-box pd-30 pt-10 height-100-p">
                 <div class="d-flex justify-content-between align-items-center mb-30">
                     <h2 class="h4 mb-0">Best Selling Products</h2>
-                    <select
-                        class="custom-select form-control"
-                        style="width: 150px;"
-                        id="dateFilter"
+                    <select class="custom-select form-control" style="width: 150px;" id="dateFilter"
                         wire:model.live="filterBestSellingProducts">
                         <option value="">Select Month</option>
                         @foreach ($lastFiveYearsDates as $date)
@@ -208,16 +213,16 @@
                         </thead>
                         <tbody>
                             @forelse ($bestSellingProducts as $product)
-                            <tr>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->sku }}</td>
-                                <td>{{ $product->total_quantity_sold }}</td>
-                                <td>₱ {{ number_format($product->total_sales, 0) }}</td>
-                            </tr>
+                                <tr>
+                                    <td>{{ $product->name }}</td>
+                                    <td>{{ $product->sku }}</td>
+                                    <td>{{ $product->total_quantity_sold }}</td>
+                                    <td>₱ {{ number_format($product->total_sales, 0) }}</td>
+                                </tr>
                             @empty
-                            <tr>
-                                <td colspan="4" class="text-center">{{ __('No sales found.') }}</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="4" class="text-center">{{ __('No sales found.') }}</td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -227,13 +232,15 @@
                                 <i class="bi bi-arrow-left"></i>
                             </button>
                         @else
-                            <button class="btn btn-primary btn-sm mr-2" wire:click="previousPage" wire:loading.attr="disabled">
+                            <button class="btn btn-primary btn-sm mr-2" wire:click="previousPage"
+                                wire:loading.attr="disabled">
                                 <i class="bi bi-arrow-left"></i>
                             </button>
                         @endif
 
                         @if ($bestSellingProducts->hasMorePages())
-                            <button class="btn btn-primary btn-sm" wire:click="nextPage" wire:loading.attr="disabled">
+                            <button class="btn btn-primary btn-sm" wire:click="nextPage"
+                                wire:loading.attr="disabled">
                                 <i class="bi bi-arrow-right"></i>
                             </button>
                         @else
