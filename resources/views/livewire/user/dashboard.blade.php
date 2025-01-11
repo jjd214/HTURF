@@ -41,7 +41,7 @@
             <div class="card-box height-100-p widget-style3">
                 <div class="d-flex flex-wrap">
                     <div class="widget-data">
-                        <div class="weight-700 font-24 text-dark">2</div>
+                        <div class="weight-700 font-24 text-dark">{{ $total_pending_items }}</div>
                         <div class="font-14 text-secondary weight-500">Total Pending Items</div>
                     </div>
                     <div class="widget-icon">
@@ -57,7 +57,7 @@
             <div class="card-box height-100-p widget-style3">
                 <div class="d-flex flex-wrap">
                     <div class="widget-data">
-                        <div class="weight-700 font-24 text-dark">5</div>
+                        <div class="weight-700 font-24 text-dark">{{ $total_notified_items }}</div>
                         <div class="font-14 text-secondary weight-500">Notified Payments</div>
                     </div>
                     <div class="widget-icon">
