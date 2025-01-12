@@ -1,4 +1,5 @@
 <div>
+
     <div class="row">
         <!-- Pending Payments -->
         <div class="col-xl-6 col-lg-6 col-md-12 mb-20">
@@ -101,5 +102,30 @@
             </div>
         </div>
     </div>
-    
+
+    <div class="row">
+        <!-- Card 1 -->
+        <div class="col-md-6 mb-4">
+            <a href="{{ route('consignor.payment.all-payments') }}" class="text-decoration-none">
+                <div class="card text-center shadow-sm border-dark">
+                    <div class="card-body">
+                        <h4 class="card-title">Pending Claims</h4>
+                        <p class="card-text display-4">₱{{ number_format($total_pending_claims, 0) }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Card 2 -->
+        <div class="col-md-6 mb-4">
+            <div class="card text-center shadow-sm border-dark">
+                <div class="card-body">
+                    <h4 class="card-title">Total Items Sold</h4>
+                    <p class="card-text display-4">{{ number_format($total_items_sold, 0) }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 </div>

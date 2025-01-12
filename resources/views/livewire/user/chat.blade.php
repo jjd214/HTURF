@@ -55,7 +55,7 @@
                                 @endif
                             </div>
                             <div class="right text-right">
-                                <div class="dropdown">
+                                {{-- <div class="dropdown">
                                     <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button"
                                         data-toggle="dropdown">
                                         Setting
@@ -63,7 +63,7 @@
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item text-light-orange" href="#">Delete Chat</a>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="chat-box">
@@ -105,8 +105,9 @@
 
                             <div class="chat-footer">
                                 <div class="file-upload">
-                                    <a href="#"><i class="fa fa-paperclip"></i></a>
+                                    <a href="#" style="visibility: hidden;"><i class="fa fa-paperclip"></i></a>
                                 </div>
+
                                 <div class="chat_text_area">
                                     <textarea placeholder="Type your message…" wire:model='chat_message'></textarea>
                                 </div>

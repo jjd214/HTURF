@@ -49,6 +49,8 @@ class Payments extends Component
             $query->where('payments.status', $this->status);
         }
 
+        $query->orderBy('paymentId', 'desc');
+
         $payments = $query->paginate($this->per_page);
 
         return view('livewire.user.payments', [

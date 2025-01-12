@@ -13,6 +13,7 @@ class Dashboard extends Component
     public $selling_items, $pending_consignments;
     public $total_payouts_claimed, $total_expected_payouts;
     public $total_pending_items, $total_notified_items;
+    public $total_pending_claims, $total_items_sold;
 
     public function mount()
     {
@@ -25,7 +26,34 @@ class Dashboard extends Component
         $this->total_expected_payouts = $this->total_expected_payouts();
         $this->total_pending_items = $this->total_pending_items();
         $this->total_notified_items = $this->total_notified_items();
+        $this->total_pending_claims = $this->total_pending_claims();
+        $this->total_items_sold = $this->total_items_sold();
     }
+
+    public function total_items_sold()
+    {
+        return Payment::leftJoin('inventories', 'payments.inventory_id', 'inventories.id')
+            ->leftJoin('consignments', 'inventories.consignment_id', 'consignments.id')
+            ->where('consignments.consignor_id', auth('user')->id())
+            ->where(function ($query) {
+                $query->where('payments.status', 'Pending')
+                    ->orWhere('payments.status', 'Notified');
+            })
+            ->count();
+    }
+
+    public function total_pending_claims()
+    {
+        return Payment::leftJoin('inventories', 'payments.inventory_id', 'inventories.id')
+            ->leftJoin('consignments', 'inventories.consignment_id', 'consignments.id')
+            ->where('consignments.consignor_id', auth('user')->id())
+            ->where(function ($query) {
+                $query->where('payments.status', 'Pending')
+                    ->orWhere('payments.status', 'Notified');
+            })
+            ->sum('payments.total');
+    }
+
 
     public function total_pending_items()
     {
@@ -50,6 +78,7 @@ class Dashboard extends Component
         return Payment::leftJoin('inventories', 'payments.inventory_id', 'inventories.id')
             ->leftJoin('consignments', 'inventories.consignment_id', 'consignments.id')
             ->where('consignments.consignor_id', auth('user')->id())
+            ->where('payments.status', 'Completed')
             ->sum('payments.total');
     }
 
