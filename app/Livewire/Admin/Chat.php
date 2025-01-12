@@ -16,6 +16,9 @@ class Chat extends Component
     public $messages = [];
     public $admin;
 
+    #[Url(history: true)]
+    public $search_contact = '';
+
     public $sender_id, $receiver_id, $chat_message;
 
     public function mount()
@@ -88,12 +91,19 @@ class Chat extends Component
 
     public function render()
     {
-        $users = User::leftJoin('conversations', 'users.id', '=', 'conversations.users_id')
+        $query = User::leftJoin('conversations', 'users.id', '=', 'conversations.users_id')
             ->select('users.*', 'users.id AS userId', 'conversations.*')
-            ->orderBy('conversations.updated_at', 'desc')
-            ->get();
+            ->orderBy('conversations.updated_at', 'desc');
 
-        // $users = User::all();
+        if (!empty($this->search_contact)) {
+            $query->where(function ($q) {
+                $q->where('users.name', 'like', '%' . $this->search_contact . '%')
+                    ->orWhere('users.email', 'like', '%' . $this->search_contact . '%');
+            });
+        }
+
+        $users = $query->get();
+
         return view('livewire.admin.chat', [
             'users' => $users,
             'messages' => $this->messages
