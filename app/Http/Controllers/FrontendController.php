@@ -12,6 +12,7 @@ class FrontendController extends Controller
         $data = [
             'pageTitle' => 'Hype archive'
         ];
-        return view('front.pages.home', $data);
+        return view('back.pages.user.auth.login', $data);
+        // return view('front.pages.home', $data);
     }
 }
