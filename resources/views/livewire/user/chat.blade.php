@@ -1,4 +1,9 @@
 <div>
+    <style>
+        .chat_send .icon i {
+            color: black !important;
+        }
+    </style>
     <div class="bg-white border-radius-4 box-shadow mb-30">
         <div class="row no-gutters">
             <div class="col-lg-3 col-md-4 col-sm-12">
@@ -16,7 +21,7 @@
                                     <a href="#">
                                         <img src="{{ $admin->picture }}" alt="{{ $admin->name }}"
                                             class="mCS_img_loaded">
-                                        <h3 class="clearfix">{{ $admin->name }}</h3>
+                                        <h3 class="clearfix text-dark">{{ $admin->name }}</h3>
                                         <p>
                                             <i
                                                 class="fa fa-circle {{ $admin->is_online ? 'text-light-green' : 'text-light-red text-muted' }} text-light-green"></i>
@@ -43,7 +48,7 @@
                                                 alt="{{ $adminProfileHeader->name }}">
                                         </div>
                                         <div class="chat-profile-name">
-                                            <h3>{{ $adminProfileHeader->name }}</h3>
+                                            <h3 class="text-dark">{{ $adminProfileHeader->name }}</h3>
                                             <span>{{ $adminProfileHeader->email }}</span>
                                         </div>
                                     </div>
@@ -51,13 +56,11 @@
                             </div>
                             <div class="right text-right">
                                 <div class="dropdown">
-                                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button"
+                                    <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button"
                                         data-toggle="dropdown">
                                         Setting
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">Export Chat</a>
-                                        <a class="dropdown-item" href="#">Search</a>
                                         <a class="dropdown-item text-light-orange" href="#">Delete Chat</a>
                                     </div>
                                 </div>
@@ -109,7 +112,9 @@
                                 </div>
                                 <div class="chat_send">
                                     <button class="btn btn-link" type="submit">
-                                        <i class="icon-copy ion-paper-airplane"></i>
+                                        <div class="icon">
+                                            <i class="icon-copy ion-paper-airplane"></i>
+                                        </div>
                                     </button>
                                 </div>
                             </div>
