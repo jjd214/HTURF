@@ -14,13 +14,9 @@ use App\Http\Controllers\user\ConsignmentController as userConsignmentController
 use App\Http\Controllers\user\PaymentController as userPaymentController;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// test routesx`
-Route::view('/example-page', 'example-page');
-Route::view('/example-auth', 'example-auth');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::controller(FrontendController::class)->group(function () {
     Route::get('/', 'homePage')->name('home-page');
