@@ -43,7 +43,7 @@
     <div class="login-header box-shadow black">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="brand-logo">
-                <a href="{{ route('consignor.login') }}">
+                <a href="{{ route('home-page') }}">
                     <img src="/images/site/{{ get_settings()->site_logo }}" alt="" />
                 </a>
             </div>

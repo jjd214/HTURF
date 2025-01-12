@@ -1,0 +1,110 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    color: white;
+    font-family: "Roboto", serif;
+    background-color: rgb(39, 39, 39);
+  }
+
+  main {
+    background-color: black;
+  }
+
+  header {
+    position: fixed;
+    width: 100%;
+    background-color: black;
+  }
+
+  .logo {
+    width: 10%;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 3%;
+    vertical-align: middle;
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  nav ul li {
+    margin-left: 20px;
+  }
+
+  ul li a {
+    color: inherit; /* Inherits the color from the parent element */
+    text-decoration: none; /* Removes the underline */
+  }
+
+  div img {
+    width: 100%;
+  }
+
+  section div {
+    display: inline-block;
+    padding: 3% 8%;
+    vertical-align: middle;
+  }
+
+  #signupButton {
+    background-color: white;
+    color: black;
+    border-radius: 1em;
+    padding: 0.5em 1em;
+  }
+
+  .gray {
+    color: #ffce3b;
+  }
+
+  .main_text {
+    font-size: 45px;
+    font-weight: bold;
+  }
+
+  #loginButton {
+    font-weight: bold;
+  }
+
+  .desc_text {
+    margin-top: 5%;
+  }
+
+  section {
+    height: 100vh;
+    padding-top: 5em;
+  }
+
+  .first_section {
+    height: 85vh;
+  }
+
+  .second_section {
+    background-color: white;
+    height: 15vh;
+  }
+
+  .brands_container {
+    background-color: rgb(39, 39, 39);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 1.5% 5%;
+  }
+
+  .brands_container img {
+    width: 5%;
+  }
