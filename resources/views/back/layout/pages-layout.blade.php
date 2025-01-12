@@ -5,9 +5,9 @@
     <!-- Basic Page Info -->
     <meta charset="utf-8" />
     <title>@yield('pageTitle')</title>
-    {{-- <meta name="description" content="@yield('pageDescription', 'Default description for the page')" />
-		<meta name="keywords" content="keyword1, keyword2, keyword3" />
-		<meta name="author" content="Your Site Name" /> --}}
+    <meta name="description" content="{{ get_settings()->site_meta_description }}" />
+    <meta name="keywords" content="{{ get_settings()->site_meta_keywords }}" />
+    <meta name="author" content="{{ get_settings()->site_name }}" />
     <!-- Site favicon -->
 
     <link rel="icon" type="image/png" sizes="16x16" href="/images/site/{{ get_settings()->site_favicon }}" />
@@ -24,23 +24,20 @@
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="/back/vendors/styles/core.css" />
     <link rel="stylesheet" type="text/css" href="/back/vendors/styles/icon-font.min.css" />
-    {{-- <!-- Mobile Specific Metas -->
-		<meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1"
-        /> --}}
-    {{-- <meta property="og:type" content="website" />
-		<meta property="og:title" content="@yield('pageTitle')" />
-		<meta property="og:description" content="@yield('pageDescription', 'Default description for the page')" />
-		<meta property="og:image" content="/images/site/{{ get_settings()->site_image }}" />
-		<meta property="og:url" content="{{ url()->current() }}" />
-		<meta property="og:site_name" content="Your Site Name" />
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ get_settings()->site_meta_keywords }}" />
+    <meta property="og:description" content="{{ get_settings()->site_meta_description }}" />
+    <meta property="og:image" content="/images/site/{{ get_settings()->site_image }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:site_name" content="{{ get_settings()->site_name }}" />
 
-		<!-- Twitter -->
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content="@yield('pageTitle')" />
-		<meta name="twitter:description" content="@yield('pageDescription', 'Default description for the page')" />
-		<meta name="twitter:image" content="/images/site/{{ get_settings()->site_image }}" /> --}}
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ get_settings()->site_name }}" />
+    <meta name="twitter:description" content="{{ get_settings()->site_meta_description }}" />
+    <meta name="twitter:image" content="/images/site/{{ get_settings()->site_image }}" />
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -164,8 +161,8 @@
                         <label class="custom-control-label" for="sidebaricon-2"><i class="ion-plus-round"></i></label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="sidebaricon-3" name="menu-dropdown-icon" class="custom-control-input"
-                            value="icon-style-3" />
+                        <input type="radio" id="sidebaricon-3" name="menu-dropdown-icon"
+                            class="custom-control-input" value="icon-style-3" />
                         <label class="custom-control-label" for="sidebaricon-3"><i
                                 class="fa fa-angle-double-right"></i></label>
                     </div>
@@ -174,14 +171,14 @@
                 <h4 class="weight-600 font-18 pb-10">Menu List Icon</h4>
                 <div class="sidebar-radio-group pb-30 mb-10">
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="sidebariconlist-1" name="menu-list-icon" class="custom-control-input"
-                            value="icon-list-style-1" checked="" />
+                        <input type="radio" id="sidebariconlist-1" name="menu-list-icon"
+                            class="custom-control-input" value="icon-list-style-1" checked="" />
                         <label class="custom-control-label" for="sidebariconlist-1"><i
                                 class="ion-minus-round"></i></label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="sidebariconlist-2" name="menu-list-icon" class="custom-control-input"
-                            value="icon-list-style-2" />
+                        <input type="radio" id="sidebariconlist-2" name="menu-list-icon"
+                            class="custom-control-input" value="icon-list-style-2" />
                         <label class="custom-control-label" for="sidebariconlist-2"><i class="fa fa-circle-o"
                                 aria-hidden="true"></i></label>
                     </div>
