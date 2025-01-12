@@ -141,7 +141,7 @@ class PaymentController extends Controller
         }
 
         $data = [
-            'consignor_name' => $consignment_details->name ?? $consignment_details->username,
+            'consignor_name' => $consignor_details->name,
             'payment_id' => $payment_details->payment_code,
             'payment_amount' => $payment_details->total,
             'payment_date' => now()->format('F j, Y, g:i A'),
@@ -150,8 +150,8 @@ class PaymentController extends Controller
         $mail_body = view('email-templates.user-complete-payment-email-template', $data)->render();
 
         $mailConfig = [
-            'mail_from_email' => env('MAIL_FROM_ADDRESS', 'default@example.com'),
-            'mail_from_name' => env('MAIL_FROM_NAME', 'Your Company'),
+            'mail_from_email' =>  env('EMAIL_FROM_ADDRESS'),
+            'mail_from_name' => env('EMAIL_FROM_NAME'),
             'mail_recipient_email' => $consignor_details->email,
             'mail_recipient_name' => $consignor_details->name,
             'mail_subject' => 'Payment Completed',
