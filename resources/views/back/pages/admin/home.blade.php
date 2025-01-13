@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card-box pd-20 mb-20" style="height: 479px;">
+            <div class="card-box pd-20 mb-20" style="height: auto;">
                 <div class="d-flex justify-content-between align-items-center mb-30">
                     <h2 class="h4 mb-0">Revenue breakdown</h2>
                     <form method="GET" action="{{ route('admin.home') }}">

@@ -37,10 +37,10 @@ class CreateConsignment extends Component
             'size' => 'required|numeric',
             'description' => 'nullable',
             'sex' => 'required',
-            'quantity' => 'required|integer|min:0',
+            'quantity' => 'required|integer|min:1',
             'condition' => 'nullable',
             'payout_price' => 'required|numeric|min:0',
-            'selling_price' => 'required|numeric|min:0',
+            'selling_price' => 'required|numeric|min:1',
             'consignor_commission' => 'required|numeric|min:0',
             'pullout_date' => 'required|date',
             'images.*' => 'nullable|image',
@@ -76,7 +76,7 @@ class CreateConsignment extends Component
         $consignment->selling_price = $validatedData['selling_price'];
         $consignment->consignor_commission = $validatedData['consignor_commission'];
         $consignment->pullout_date = $validatedData['pullout_date'];
-        $consignment->image = $validatedData['images'] ?? '';
+        $consignment->image = $validatedData['images'] ?? '[]';
         $consignment->note = $validatedData['note'];
 
         $this->reset();

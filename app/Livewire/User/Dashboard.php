@@ -39,7 +39,7 @@ class Dashboard extends Component
                 $query->where('payments.status', 'Pending')
                     ->orWhere('payments.status', 'Notified');
             })
-            ->count();
+            ->sum('quantity');
     }
 
     public function total_pending_claims()
