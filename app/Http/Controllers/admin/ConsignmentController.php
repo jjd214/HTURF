@@ -89,7 +89,7 @@ class ConsignmentController extends Controller
             'description' => $product->description,
             'purchase_price' => $product->purchase_price,
             'selling_price' => $product->selling_price,
-            'picture' => null,
+            'picture' => '[]',
             'visibility' => 'public',
             'status' => 1,
         ]);

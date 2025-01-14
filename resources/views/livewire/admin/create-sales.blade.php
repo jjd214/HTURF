@@ -249,7 +249,7 @@
             </div>
 
             <div class="row mt-2">
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-4 col-sm-12 mb-3">
                     <label for=""><small><b>Customer name:</b></small></label>
                     <input type="text" class="form-control" wire:model="customer_name"
                         placeholder="Enter customer name" required>

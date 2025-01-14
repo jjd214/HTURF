@@ -84,6 +84,26 @@ class CreateProduct extends Component
         $this->dispatch('toast', type: 'success', message: 'Product added successfully.');
     }
 
+    public function updatedSearch($value)
+    {
+        $product = InventoryModel::where('brand', $value)->first();
+
+        if ($product) {
+            $this->name = $product->name;
+            $this->brand = $product->brand;
+            $this->sku = $product->sku;
+            $this->color = $product->color;
+            $this->size = $product->size;
+            $this->description = $product->description;
+            $this->purchase_price = $product->purchase_price;
+            $this->selling_price = $product->selling_price;
+            $this->qty = $product->qty;
+            $this->sex = $product->sex;
+        } else {
+            $this->reset(['name', 'brand', 'sku', 'color', 'size', 'description', 'purchase_price', 'selling_price', 'qty', 'sex']);
+        }
+    }
+
     public function removePicture($pictureIndex)
     {
         if (isset($this->pictures[$pictureIndex])) {
@@ -96,6 +116,9 @@ class CreateProduct extends Component
 
     public function render()
     {
-        return view('livewire.admin.create-product');
+        $brands = InventoryModel::select('brand')->distinct()->pluck('brand');
+        return view('livewire.admin.create-product', [
+            'brands' => $brands,
+        ]);
     }
 }

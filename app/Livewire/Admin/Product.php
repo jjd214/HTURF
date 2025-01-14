@@ -102,14 +102,16 @@ class Product extends Component
         $data->delete();
     }
 
-
-
     public function render()
     {
         return view('livewire.admin.product', [
             'rows' => InventoryModel::search($this->search)
-                ->when($this->visibility != '', function ($query) {
-                    $query->where('visibility', $this->visibility);
+                ->when($this->visibility, function ($query) {
+                    if ($this->visibility == 'in_stock') {
+                        $query->where('qty', '>', 0); // Fetch rows where qty > 0
+                    } elseif ($this->visibility == 'out_of_stock') {
+                        $query->where('qty', '=', 0); // Fetch rows where qty = 0
+                    }
                 })
                 ->where('consignment_id', null)
                 ->orderBy($this->sortBy, $this->sortDir)

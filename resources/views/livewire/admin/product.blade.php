@@ -13,7 +13,8 @@
         <div class="col-12 col-md-3 mb-30">
             <select class="custom-select form-control" wire:model.live="visibility">
                 <option value="">All</option>
-                <option value="public">In stock</option>
+                <option value="in_stock">In stock</option>
+                <option value="out_of_stock">Out of stock</option>
             </select>
         </div>
     </div>
