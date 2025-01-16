@@ -60,7 +60,7 @@
         <div class="invoice-box">
             <div class="invoice-header">
                 <div class="logo text-center">
-                    <img src="vendors/images/deskapp-logo.png" alt="">
+                    {{-- <img src="vendors/images/deskapp-logo.png" alt=""> --}}
                 </div>
             </div>
             <h4 class="text-center mb-30 weight-600">Order details</h4>

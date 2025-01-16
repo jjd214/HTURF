@@ -87,7 +87,7 @@
                         <p><small><b>Quantity:</b> {{ $itemDetails['quantity'] }}</small></p>
                     </div>
                     <div class="col-md-6 d-flex justify-content-end align-items-center">
-                        @if ($itemDetails['picture'] === null)
+                        {{-- @if ($itemDetails['picture'] === null)
                             <img src="{{ asset('storage/images/default-img.png') }}" alt="Item Image" class="img-thumbnail"
                                 style="width: 200px; height: 200px;">
                         @else
@@ -97,7 +97,7 @@
                             @endphp
                             <img src="{{ asset('storage/images/consignments/' . $firstPicture) }}" alt="Item Image"
                                 class="img-thumbnail" style="width: 100px; height: auto;">
-                        @endif
+                        @endif --}}
                     </div>
                 </div>
                 <hr>
@@ -234,8 +234,8 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="claimTime">Select Time</label>
-                                                <input type="time" name="claim_time" id="claimTime"
-                                                    class="form-control" required>
+                                                <input type="time" name="claim_time" id="claimTime" class="form-control"
+                                                    required>
                                             </div>
                                             <div class="form-group text-right">
                                                 <button type="submit" class="btn btn-primary">Set Claim Date &

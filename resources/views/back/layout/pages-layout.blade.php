@@ -10,7 +10,7 @@
     <meta name="author" content="{{ get_settings()->site_name }}" /> --}}
     <!-- Site favicon -->
 
-    {{-- <link rel="icon" type="image/png" sizes="16x16" href="/images/site/{{ get_settings()->site_favicon }}" /> --}}
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/site/{{ get_settings()->site_favicon }}" />
 
     <!-- Mobile Specific Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
