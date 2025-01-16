@@ -22,7 +22,7 @@ class Dashboard extends Component
             ->where('inventories.qty', '!=', 0)
             ->count();
         $this->pending_consignments = ConsignmentRequest::where('consignor_id', auth('user')->id())->count();
-        $this->total_payouts_claimed = $this->total_payouts_claimed();
+        // $this->total_payouts_claimed = $this->total_payouts_claimed();
         $this->total_expected_payouts = $this->total_expected_payouts();
         $this->total_pending_items = $this->total_pending_items();
         $this->total_notified_items = $this->total_notified_items();
@@ -73,14 +73,14 @@ class Dashboard extends Component
             ->count();
     }
 
-    public function total_payouts_claimed()
-    {
-        return Payment::leftJoin('inventories', 'payments.inventory_id', 'inventories.id')
-            ->leftJoin('consignments', 'inventories.consignment_id', 'consignments.id')
-            ->where('consignments.consignor_id', auth('user')->id())
-            ->where('payments.status', 'Completed')
-            ->sum('payments.total');
-    }
+    // public function total_payouts_claimed()
+    // {
+    //     return Payment::leftJoin('inventories', 'payments.inventory_id', 'inventories.id')
+    //         ->leftJoin('consignments', 'inventories.consignment_id', 'consignments.id')
+    //         ->where('consignments.consignor_id', auth('user')->id())
+    //         ->where('payments.status', 'Completed')
+    //         ->sum('payments.total');
+    // }
 
     public function total_expected_payouts()
     {

@@ -6,12 +6,12 @@
             <div class="card-box height-100-p widget-style3">
                 <div class="d-flex flex-wrap">
                     <div class="widget-data">
-                        <div class="weight-700 font-24 text-dark">{{ number_format($total_payouts_claimed, 0) }}</div>
-                        <div class="font-14 text-secondary weight-500">Total Payouts Claimed</div>
+                        <div class="weight-700 font-24 text-dark">{{ $selling_items }}</div>
+                        <div class="font-14 text-secondary weight-500">Selling Items</div>
                     </div>
                     <div class="widget-icon">
-                        <div class="icon" data-color="#d35400">
-                            <i class="icon-copy fa fa-credit-card text-white"></i>
+                        <div class="icon" data-color="#09cc06">
+                            <i class="icon-copy fa fa-shopping-cart text-white"></i>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
 
     <div class="row pb-10">
         <!-- Total Payouts Claimed -->
-        <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+        <div class="col-xl-4 col-lg-3 col-md-6 mb-20">
             <div class="card-box height-100-p widget-style3">
                 <div class="d-flex flex-wrap">
                     <div class="widget-data">
@@ -54,7 +54,7 @@
             </div>
         </div>
         <!-- Total Expected Payouts -->
-        <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+        <div class="col-xl-4 col-lg-3 col-md-6 mb-20">
             <div class="card-box height-100-p widget-style3">
                 <div class="d-flex flex-wrap">
                     <div class="widget-data">
@@ -70,7 +70,7 @@
             </div>
         </div>
         <!-- Total Pending Consignments -->
-        <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+        <div class="col-xl-4 col-lg-3 col-md-6 mb-20">
             <div class="card-box height-100-p widget-style3">
                 <div class="d-flex flex-wrap">
                     <div class="widget-data">
@@ -85,22 +85,7 @@
                 </div>
             </div>
         </div>
-        <!-- Total Selling Items -->
-        <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
-            <div class="card-box height-100-p widget-style3">
-                <div class="d-flex flex-wrap">
-                    <div class="widget-data">
-                        <div class="weight-700 font-24 text-dark">{{ $selling_items }}</div>
-                        <div class="font-14 text-secondary weight-500">Selling Items</div>
-                    </div>
-                    <div class="widget-icon">
-                        <div class="icon" data-color="#09cc06">
-                            <i class="icon-copy fa fa-shopping-cart text-white"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 
     <div class="row">
