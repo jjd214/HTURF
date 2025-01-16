@@ -1,4 +1,4 @@
-@extends('back.layout.pages-layout')
+{{-- @extends('back.layout.pages-layout')
 @section('pageTitle', isset($pageTitle) ? $pageTitle : 'Chat')
 @section('content')
     <div class="page-header">
@@ -23,4 +23,4 @@
 
     @livewire('user.chat')
 
-@endsection
+@endsection --}}

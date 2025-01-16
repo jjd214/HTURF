@@ -1,4 +1,4 @@
-<div>
+{{-- <div>
     <style>
         .chat_send .icon i {
             color: black !important;
@@ -64,9 +64,9 @@
                                         <a class="dropdown-item text-light-orange" href="#">Delete Chat</a>
                                     </div>
                                 </div> --}}
-                            </div>
-                        </div>
-                        <div class="chat-box">
+{{-- </div>
+                        </div> --}}
+{{-- <div class="chat-box">
                             <div class="chat-desc "
                                 style="max-height: 500px; overflow-y: auto; display: flex; flex-direction: column-reverse;"
                                 wire:poll="selectedAdmin({{ $admin->id }})">
@@ -124,5 +124,5 @@
                 </form>
             </div>
         </div>
-    </div>
-</div>
+    </div> --}}
+{{-- </div> --}}

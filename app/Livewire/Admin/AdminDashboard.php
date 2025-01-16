@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Services\AdminDataAnalysisServices;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
+use Carbon\Carbon;
 
 class AdminDashboard extends Component
 {
@@ -20,6 +21,12 @@ class AdminDashboard extends Component
 
     public $monthlySalesAnalytics = [];
 
+    public $selectedMonth;
+    public $totalExpenses;
+    public $totalExpectedRevenue;
+    public $totalRevenue;
+    public $totalCommissionFee;
+    public $months;
 
     protected $dataAnalysisService;
 
@@ -27,7 +34,34 @@ class AdminDashboard extends Component
     public function mount(AdminDataAnalysisServices $adminDataAnalysisServices)
     {
         $this->dataAnalysisService = $adminDataAnalysisServices;
+        $this->selectedMonth = now()->format('F Y'); // Default to the current month
+        $this->months = $this->getLastTwelveMonths();
         $this->selectedDay = 'today';
+    }
+
+    public function updatedSelectedMonth()
+    {
+        $this->updateData();
+    }
+
+    private function updateData()
+    {
+        [$month, $year] = explode(' ', $this->selectedMonth);
+        $this->totalExpenses = $this->dataAnalysisService->getTotalExpensesByMonth($month, $year);
+        $this->totalExpectedRevenue = $this->dataAnalysisService->getTotalExpectedRevenueByMonth($month, $year);
+        $this->totalRevenue = $this->dataAnalysisService->getTotalRevenueByMonth($month, $year);
+        $this->totalCommissionFee = $this->dataAnalysisService->getTotalCommissionFeeByMonth($month, $year);
+    }
+
+    private function getLastTwelveMonths()
+    {
+        $months = [];
+        $currentDate = Carbon::now();
+        for ($i = 0; $i < 12; $i++) {
+            $months[] = $currentDate->format('F Y');
+            $currentDate->subMonth();
+        }
+        return $months;
     }
 
     // Rehydrate the service on every request
@@ -50,10 +84,10 @@ class AdminDashboard extends Component
 
     public function render()
     {
-        $totalExpenses = $this->dataAnalysisService->getTotalExpenses();
-        $totalExpectedRevenue = $this->dataAnalysisService->getTotalExpectedRevenue();
-        $totalRevenue = $this->dataAnalysisService->getTotalRevenue();
-        $totalCommissionFee = $this->dataAnalysisService->getTotalCommissionFee();
+        // $totalExpenses = $this->dataAnalysisService->getTotalExpenses();
+        // $totalExpectedRevenue = $this->dataAnalysisService->getTotalExpectedRevenue();
+        // $totalRevenue = $this->dataAnalysisService->getTotalRevenue();
+        // $totalCommissionFee = $this->dataAnalysisService->getTotalCommissionFee();
         $totalConsignors = $this->dataAnalysisService->getTotalConsignors();
         $totalPendingConsignmentRequest = $this->dataAnalysisService->getTotalPendingConsignmentRequest();
         $totalPendingPayments = $this->dataAnalysisService->getTotalPendingPayments();
@@ -63,10 +97,10 @@ class AdminDashboard extends Component
 
         return view('livewire.admin.admin-dashboard', [
             'pageTitle' => 'Home',
-            'totalExpenses' => $totalExpenses,
-            'totalExpectedRevenue' => $totalExpectedRevenue,
-            'totalRevenue' => $totalRevenue,
-            'totalCommissionFee' => $totalCommissionFee,
+            // 'totalExpenses' => $totalExpenses,
+            // 'totalExpectedRevenue' => $totalExpectedRevenue,
+            // 'totalRevenue' => $totalRevenue,
+            // 'totalCommissionFee' => $totalCommissionFee,
             'totalConsignors' => $totalConsignors,
             'totalPendingConsignmentRequest' => $totalPendingConsignmentRequest,
             'totalPendingPayments' => $totalPendingPayments,

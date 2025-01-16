@@ -1,4 +1,14 @@
 <div>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <label for="monthDropdown"><strong>Select Month:</strong></label>
+            <select id="monthDropdown" wire:model="selectedMonth" class="form-control">
+                @foreach ($months as $month)
+                    <option value="{{ $month }}">{{ $month }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
     <div class="row pb-10">
         <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
             <div class="card-box height-100-p widget-style3">

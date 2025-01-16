@@ -5,12 +5,12 @@
     <!-- Basic Page Info -->
     <meta charset="utf-8" />
     <title>@yield('pageTitle')</title>
-    <meta name="description" content="{{ get_settings()->site_meta_description }}" />
+    {{-- <meta name="description" content="{{ get_settings()->site_meta_description }}" />
     <meta name="keywords" content="{{ get_settings()->site_meta_keywords }}" />
-    <meta name="author" content="{{ get_settings()->site_name }}" />
+    <meta name="author" content="{{ get_settings()->site_name }}" /> --}}
 
     <!-- Site favicon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/site/{{ get_settings()->site_favicon }}" />
+    {{-- <link rel="icon" type="image/png" sizes="16x16" href="/images/site/{{ get_settings()->site_favicon }}" /> --}}
 
     <!-- Mobile Specific Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
@@ -27,13 +27,13 @@
     <link rel="stylesheet" type="text/css" href="/back/vendors/styles/background.css" />
 
     <!-- Mobile Specific Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    {{-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ get_settings()->site_meta_keywords }}" />
     <meta property="og:description" content="{{ get_settings()->site_meta_description }}" />
     <meta property="og:image" content="/images/site/{{ get_settings()->site_image }}" />
     <meta property="og:url" content="{{ url()->current() }}" />
-    <meta property="og:site_name" content="{{ get_settings()->site_name }}" />
+    <meta property="og:site_name" content="{{ get_settings()->site_name }}" /> --}}
 
     @livewireStyles
     @stack('stylesheets')

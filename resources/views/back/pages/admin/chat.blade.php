@@ -1,7 +1,7 @@
 @extends('back.layout.pages-layout')
 @section('pageTitle', isset($pageTitle) ? $pageTitle : 'Chat')
 @section('content')
-<div class="page-header">
+    {{-- <div class="page-header">
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="title">
@@ -21,6 +21,6 @@
     </div>
 </div>
 
-@livewire('admin.chat')
+@livewire('admin.chat') --}}
 
 @endsection

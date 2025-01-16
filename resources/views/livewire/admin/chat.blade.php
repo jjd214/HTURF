@@ -1,4 +1,4 @@
-<div>
+{{-- <div>
     <style>
         .chat_send .icon i {
             color: black !important;
@@ -125,4 +125,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}

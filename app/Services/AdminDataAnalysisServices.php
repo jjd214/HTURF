@@ -15,33 +15,35 @@ use Illuminate\Support\Facades\DB;
 
 class AdminDataAnalysisServices
 {
-    public function getTotalExpenses()
+    public function getTotalExpensesByMonth($month, $year)
     {
-        return Expense::sum(DB::raw('purchase_price * qty'));
+        return Expense::whereMonth('created_at', date('m', strtotime($month)))
+            ->whereYear('created_at', $year)
+            ->sum(DB::raw('purchase_price * qty'));
     }
 
-    public function getTotalExpectedRevenue()
+    public function getTotalExpectedRevenueByMonth($month, $year)
     {
-        return Inventory::whereNull('consignment_id')
+        return Inventory::whereMonth('created_at', date('m', strtotime($month)))
+            ->whereYear('created_at', $year)
+            ->whereNull('consignment_id')
             ->sum(DB::raw('selling_price * qty'));
     }
 
-
-    public function getTotalRevenue()
+    public function getTotalRevenueByMonth($month, $year)
     {
-        $totalRev = Transaction::leftJoin('transaction_items', 'transactions.transaction_code', '=', 'transaction_items.code')
-            ->leftJoin('inventories', 'transaction_items.inventory_id', '=', 'inventories.id')
-            ->whereNull('inventories.consignment_id') // Simplified syntax for checking NULL
-            ->select(DB::raw('SUM(transaction_items.original_price * transaction_items.qty) as total_amount'))
-            ->value('total_amount'); // Retrieve the summed value directly
-
-        return $totalRev;
+        return Transaction::whereMonth('created_at', date('m', strtotime($month)))
+            ->whereYear('created_at', $year)
+            ->sum('total_amount');
     }
 
-    public function getTotalCommissionFee()
+    public function getTotalCommissionFeeByMonth($month, $year)
     {
-        return Transaction::sum('commission_amount');
+        return Transaction::whereMonth('created_at', date('m', strtotime($month)))
+            ->whereYear('created_at', $year)
+            ->sum('commission_amount');
     }
+
 
     public function getTotalConsignors()
     {
